@@ -99,6 +99,10 @@ const Viewer = function Viewer(targetOption, options = {}) {
 
   const getFeatureinfo = () => featureinfo;
 
+  const getCenter = () => getcenter;
+
+  const getMapUtils = () => maputils;
+
   const getMapName = () => mapName;
 
   const getTileGrid = () => tileGrid;
@@ -465,6 +469,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
     addStyle,
     getBaseUrl,
     getBreakPoints,
+    getCenter,
     getClusterOptions,
     getConsoleId,
     getControlByName,
@@ -477,6 +482,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
     getGroups,
     getMain,
     getMapSource,
+    getMapUtils,
     getQueryableLayers,
     getResolutions,
     getSearchableLayers,
