@@ -63,52 +63,52 @@
     "visible": true
   }
 },
-  "projectionCode": "EPSG:3857",
-  "projectionExtent": [
-    -20026376.39,
-    -20048966.10,
-    20026376.39,
-    20048966.10
-  ],
-  "proj4Defs": [
-      {
-        "code": "EPSG:3006",
-        "projection": "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
-      }
-  ],
-  "extent": [
-    -20026376.39,
-    -20048966.10,
-    20026376.39,
-    20048966.10
-  ],
-  "center": [
-    1770000,
-    8770000
-  ],
-  "zoom": 7,
-  "resolutions": [
-    156543.03,
-    78271.52,
-    39135.76,
-    19567.88,
-    9783.94,
-    4891.97,
-    2445.98,
-    1222.99,
-    611.50,
-    305.75,
-    152.87,
-    76.437,
-    38.219,
-    19.109,
-    9.5546,
-    4.7773,
-    2.3887,
-    1.1943,
-    0.5972
-  ],
+"projectionCode": "EPSG:3006",
+"projectionExtent": [
+  487000,
+  6803000,
+  773720,
+  7376440
+],
+"proj4Defs": [
+    {
+      "code": "EPSG:3006",
+      "projection": "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+    }
+],
+"extent": [
+  487000,
+  6803000,
+  773720,
+  7376440
+],
+"center": [
+  617820,
+  6920585
+],
+"zoom": 2,
+"resolutions": [
+  280,
+  140,
+  70,
+  28,
+  14,
+  7,
+  4.2,
+  2.8,
+  1.4,
+  0.56,
+  0.28,
+  0.14,
+  0.112,
+  0.056
+],
   "source": {
+    "sundsvall": {
+        "url": "https://karta.sundsvall.se/geoserver/wms",
+        "version": "1.1.1",
+        "service": "WMS"
+    },
     "local": {
       "url": "http://localhost/geoserver/wms"
     }
@@ -122,38 +122,41 @@
   ],
   "layers": [
     {
-      "name": "origo-cities",
-      "title": "Origokommuner",
-      "group": "root",
-      "source": "data/origo-cities-3857.geojson",
-      "style": "origo-logo",
-      "type": "GEOJSON",
-      "attributes": [
-          {
-            "name": "name"
-          }
-      ],
-      "visible": true
+        "name": "Lantmateriet:topowebbkartan_nedtonad",
+        "title": "Karta, grå",
+        "format": "image/png",
+        "queryable": false,
+        "visible": true,
+        "type": "WMS",
+        "group": "background",
+        "attribution": "Kartan har ingen rättsverkan och du kan alltså INTE se exakta gränser i denna karttjänst &copy Lantmäteriet Geodatasamverkan",
+        "source": "sundsvall",
+        "style": "karta_gra"
     },
     {
-      "name": "origo-mask",
-      "opacity": 0.25,
-      "title": "origo-mask",
-      "group": "none",
-      "queryable": false,
-      "source": "data/origo-mask-3857.geojson",
-      "style": "mask",
-      "type": "GEOJSON",
-      "visible": true
+        "name": "Lantmateriet:topowebbkartan",
+        "id": "Lantmateriet:topowebbkartan",
+        "title": "Karta, färg",
+        "format": "image/png",
+        "queryable": false,
+        "visible": false,
+        "type": "WMS",
+        "group": "background",
+        "attribution": "Kartan har ingen rättsverkan och du kan alltså INTE se exakta gränser i denna karttjänst &copy Lantmäteriet Geodatasamverkan",
+        "source": "sundsvall",
+        "style": "karta_farg"
     },
     {
-      "name": "osm",
-      "title": "OpenStreetMap",
-      "group": "background",
-      "queryable": false,
-      "style": "karta_osm",
-      "type": "OSM",
-      "visible": true
+        "name": "Lantmateriet:Ortofoto50_25cm",
+        "title": "Flygfoto",
+        "format": "image/jpeg",
+        "queryable": false,
+        "visible": false,
+        "type": "WMS",
+        "group": "background",
+        "attribution": "Kartan har ingen rättsverkan och du kan alltså INTE se exakta gränser i denna karttjänst &copy Lantmäteriet Geodatasamverkan",
+        "source": "sundsvall",
+        "style": "orto"
     }
   ],
   "styles": {
@@ -222,7 +225,7 @@
             }
           }
         ]
-      ],      
+      ],
       "karta_gra": [
         [
           {
