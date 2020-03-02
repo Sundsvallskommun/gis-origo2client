@@ -7,6 +7,7 @@ import proj from './projection';
 import MapSize from './utils/mapsize';
 import Featureinfo from './featureinfo';
 import maputils from './maputils';
+import utils from './utils';
 import Layer from './layer';
 import Main from './components/main';
 import Footer from './components/footer';
@@ -102,6 +103,8 @@ const Viewer = function Viewer(targetOption, options = {}) {
   const getCenter = () => getcenter;
 
   const getMapUtils = () => maputils;
+
+  const getUtils = () => utils;
 
   const getMapName = () => mapName;
 
@@ -483,6 +486,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
     getMain,
     getMapSource,
     getMapUtils,
+    getUtils,
     getQueryableLayers,
     getResolutions,
     getSearchableLayers,
