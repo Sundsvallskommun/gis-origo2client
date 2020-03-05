@@ -1,0 +1,30 @@
+image: docker:stable
+
+stages:
+  - Build image
+  - push
+  - deploy
+
+
+docker build:
+  stage: Build image  
+  tags:
+    - docker
+  script:
+  - docker info
+  - docker build -t git.sundsvall.se:8082/joh17bla/origo2client .
+  
+docker push:
+  stage: push  
+  tags:
+    - docker
+  script:
+  - echo "C9qPzk2aJZFsTxynFKqS" | docker login git.sundsvall.se:8082 -u robin.flink@sundsvall.se --password-stdin
+  - docker push git.sundsvall.se:8082/joh17bla/origo2client
+  
+deploy:
+  stage: deploy
+  tags:
+    - ssh
+  script:
+    - docker-compose -f /srv/docker/docker-compose/origo/docker-compose.yml up -d
