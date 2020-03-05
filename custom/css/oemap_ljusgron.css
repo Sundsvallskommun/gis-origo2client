@@ -1,0 +1,112 @@
+.o-geolocation-button-true .o-icon-fa-location-arrow {
+    fill: rgb(106,176,35);
+}
+.o-svg-container {
+    position: absolute;
+    background: #FFF;
+    height: 2.1em;;
+    top: 0;
+    width: 2em;
+    right: 0;
+    border-radius: 0 4px 4px  0 ;
+    -webkit-box-shadow:  -1px 0 5px rgb(106,176,35);
+    box-shadow:  -1px 0 5px rgb(106,176,35);
+    cursor: pointer;
+}
+.o-card-title {
+    margin: 0!important;
+    padding: 8px 14px!important;  
+    font-size: 14px!important;
+    font-weight: bold!important;
+    line-height: 22px!important;
+    background-color: rgb(106,176,35)!important;
+    color:#ffffff!important;
+    border-bottom: 1px solid #ebebeb!important;
+    border-radius: 5px 5px 0 0!important;
+  }
+
+.o-measure-button-true .o-icon-fa-pencil,
+.o-measure-button-true .o-icon-steady-measure,
+.o-measure-button-true .o-icon-minicons-square-vector,
+.o-measure-button-true .o-icon-minicons-line-vector,
+.o-measure-button-true .o-icon-fa-height,
+.o-geolocation-button-true .o-icon-fa-location-arrow,
+#o-draw-polygon:hover svg,
+#o-draw-point:hover svg,
+#o-draw-polyline:hover svg,
+#o-draw-text:hover svg,
+#o-draw-delete:hover svg,
+#o-draw-close:hover svg,
+.o-btn-3.o-control-active svg 
+{
+    fill:rgb(106,176,35);
+}
+
+button.o-button:hover,
+button.o-button:focus,
+.ol-control button:hover {
+    color: #EEEEEE;
+    text-decoration: none;
+    background-color: rgb(106,176,35);
+    fill:rgb(106,176,35);
+}
+
+#o-search-button svg,
+#o-search-button-close svg{
+    fill:rgb(106,176,35);
+}
+
+.o-search-field::-webkit-input-placeholder { color:rgb(106,176,35); }
+.o-search-field::-moz-placeholder { color:rgb(106,176,35); } /* firefox 19+ */
+.o-search-field:-ms-input-placeholder { color:rgb(106,176,35); } /* ie */
+input.o-search-field:-moz-placeholder { color:rgb(106,176,35); }
+.tt-input
+{
+      color:rgb(106,176,35)!important;
+}
+
+.o-search-result-header{
+    font-style: normal; 
+    font-weight: bold; 
+    background-color:rgb(106,176,35); 
+    color:#ffffff; 
+    padding:8px; 
+    font-size:1em;
+    border-bottom:1px solid #ececec;
+} 
+
+#o-map-legend, #o-map-legendExtendedLegend{
+    border-top: 6px solid rgb(106,176,35);
+}
+
+.o-logotype {
+    background-color:rgb(106,176,35);
+     padding: 5px;
+    
+        text-align: center;
+    }
+    .o-logotype svg{
+        width:215px;
+        height:135px;
+        fill:white;
+    }
+
+    .o-map .o-button:hover,
+.o-map .o-button:focus {
+    background-color: rgb(106,176,35);
+}
+.o-map .ol-control button:hover {
+    background-color:  rgb(106,176,35);
+}
+
+.o-map .o-geolocation-button-true .o-icon-fa-location-arrow {
+    fill:  rgb(106,176,35);
+}
+.o-map .o-measure-button-true .o-icon-fa-pencil, 
+.o-map .o-measure-button-true .o-icon-steady-measure, 
+.o-map .o-measure-button-true .o-icon-minicons-square-vector, 
+.o-map .o-measure-button-true .o-icon-minicons-line-vector {
+    fill:  rgb(106,176,35);
+}
+
+

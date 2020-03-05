@@ -1,0 +1,18 @@
+.o-logotype svg {
+
+    width: 314px;
+    height: 85px;
+    fill: white;
+
+}
+
+.o-map #o-menutools li:first-child {
+    height: 0px;
+}
+
+.o-logotype {
+    background-color: white;
+    padding: 5px;
+    text-align: center;
+}
+
