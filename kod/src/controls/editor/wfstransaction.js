@@ -31,8 +31,8 @@ function wfsTransaction(transObj, layerName, viewer) {
     gmlOptions: {
       srsName
     },
-    featureNS: source.workspace,
-    featurePrefix: source.prefix || source.workspace,
+    featureNS: source.prefix + source.workspace,
+    featurePrefix: source.workspace,
     featureType
   };
   const node = writeWfsTransaction(transObj, options);
