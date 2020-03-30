@@ -16,10 +16,17 @@
       "name": "sharemap"
     },
     {
-      "name": "geoposition"
-    },
-    {
-      "name": "print"
+        "name": "print",
+        "options": {
+            "attribution": "Kartan har ingen rättsverkan och kan alltså INTE se exakta gränser i denna karttjänst © Lantmäteriet Geodatasamverkan",
+            "logo": {
+              "cls": "padding-bottom-small",
+              "src": "img/png/drake_red_50.png",
+              "style": {
+                  "height": "3rem"
+                }
+              }
+        }
     },
     {
       "name": "about",
