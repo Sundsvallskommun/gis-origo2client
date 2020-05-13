@@ -140,12 +140,42 @@ const loadResources = async function loadResources(mapOptions, config) {
     return null;
   }
 
+  function processResponse(result) {
+    const jsonResponse = Object.assign({}, result);
+    let groupsAllowed = [];
+    if (config.groupsAllowed) {
+      groupsAllowed = Object.assign({}, config.groupsAllowed);
+    }
+    let verified = false;
+    if (config.groupsKey) {
+      if (config.groupsKey in jsonResponse) {
+        jsonResponse[config.groupsKey].forEach((group) => {
+          Object.keys(groupsAllowed).forEach(function(key) {
+            if (group === groupsAllowed[key]) {
+              verified = true;
+              console.log(groupsAllowed[key]);
+            }
+          })
+        })
+      }
+    } else {
+      verified = true;
+    }
+    if (verified) {
+      return loadMapOptions();
+    } else {
+      alert('Åtkomst nekad!');
+    }
+  }
+
   // Check if authorization is required before map options is loaded
   if (config.authorizationUrl) {
     return $.ajax({
       url: config.authorizationUrl
     })
-      .then(() => loadMapOptions());
+      .then(function ( dataResponse ) {
+        return processResponse(dataResponse)
+      });
   }
   return loadMapOptions();
 };
