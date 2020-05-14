@@ -170,12 +170,31 @@ const loadResources = async function loadResources(mapOptions, config) {
 
   // Check if authorization is required before map options is loaded
   if (config.authorizationUrl) {
-    return $.ajax({
-      url: config.authorizationUrl
+    return fetch(config.authorizationUrl, {
+    method: 'GET', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    redirect: 'follow', // manual, *follow, error
+  })
+    .then(response => {
+      console.log(response);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      } else {
+        return loadMapOptions();
+      }
     })
-      .then(function ( dataResponse ) {
-        return processResponse(dataResponse)
-      });
+    .catch(error => {
+      console.error('There has been a problem with your fetch operation:', error);
+    });
+    //return $.ajax({
+    //  url: config.authorizationUrl
+    //})
+    //.then(() => loadMapOptions())
+    //.fail(() => alert('Åtkomst nekad!'));
+      //.then(function ( dataResponse ) {
+      //  return processResponse(dataResponse)
+      //});
   }
   return loadMapOptions();
 };
