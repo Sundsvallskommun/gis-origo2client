@@ -172,7 +172,7 @@ const loadResources = async function loadResources(mapOptions, config) {
   if (config.authorizationUrl) {
     return fetch(config.authorizationUrl, {
     method: 'GET', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
+    mode: 'no-cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     redirect: 'follow', // manual, *follow, error
   })
