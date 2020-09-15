@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
-	<title>Origo exempel</title>
+	<title>Planeringskartan</title>
 	<link href="css/style.css" rel="stylesheet">
 	<link href="plugins/draw.css" rel="stylesheet">
 	<link href="plugins/lmsearch.css" rel="stylesheet">
+	<link href="plugins/geouttag.css" rel="stylesheet">
 	<link rel="shortcut icon" href="img/png/logo.png">
 </head>
 <body>
@@ -16,9 +18,10 @@
 <script src="js/origo.js"></script>
 <script src="plugins/lmsearch.min.js"></script>
 <script src="plugins/draw.min.js"></script>
+<script src="plugins/geouttag.min.js"></script>
 <script type="text/javascript">
 //Init origo
-var origo = Origo('index.json');
+var origo = Origo('index.json', {svgSpritePath: '/css/svg/'});
 origo.on('load', function (viewer) {
 		var lmsearch = Lmsearch({
 			"geometryAttribute": "st_astext",
@@ -28,15 +31,15 @@ origo.on('load', function (viewer) {
 			"contentAttribute": "NAMN",
 			"title": "Sökresultat",
 			"hintText": "Sök adress, fastigheter...",
-			"estateLookup": true,
+			"estateLookup": false,
 			"minLength": 4,
 			"limit": 10,
 			"municipalities": "Sundsvall",
-			"urlFastighet": "https://kartatest.sundsvall.se/origoserver/lm/registerenheter?lmuser=sundsvall&srid=3014",
-			"urlAdress": "https://kartatest.sundsvall.se/origoserver/lm/addresses?lmuser=sundsvall&srid=3014",
-			"urlOrt": "https://kartatest.sundsvall.se/origoserver/lm/placenames?lmuser=sundsvall&srid=3014",
-			"urlYta": "https://kartatest.sundsvall.se/origoserver/lm/registerenheter/objectId/enhetsomraden?lmuser=sundsvall&srid=3014",
-			"urlYtaKordinat": "https://kartatest.sundsvall.se/origoserver/lm/enhetsomraden?x=easting&y=northing&srid=3014"
+			"urlFastighet": "https://kartatest.sundsvall.se/origoserver/lm/registerenheter?lmuser=sundsvall",
+			"urlAdress": "https://kartatest.sundsvall.se/origoserver/lm/addresses?lmuser=sundsvall",
+			"urlOrt": "https://kartatest.sundsvall.se/origoserver/lm/placenames?lmuser=sundsvall",
+			"urlYta": "https://kartatest.sundsvall.se/origoserver/lm/registerenheter/objectId/enhetsomraden?lmuser=sundsvall",
+			"urlYtaKordinat": "https://kartatest.sundsvall.se/origoserver/lm/enhetsomraden?x=easting&y=northing&srid=3006"
 		});
 		viewer.addComponent(lmsearch);
 	});
@@ -46,7 +49,8 @@ origo.on('load', function (viewer) {
 			drawTools: {
 				"Polygon": ["freehand", "box"],
 				"LineString": ["freehand"]
-			}
+			},
+			palette: ['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)','rgb(255,255,153)','rgb(177,89,40)']
 		});
 		viewer.addComponent(draw);
 	});
