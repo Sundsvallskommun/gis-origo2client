@@ -1,7 +1,7 @@
 import convertHtml2canvas from 'html2canvas';
 import LoadScript from './load-script';
 
-const pdfLibUrl = 'https://unpkg.com/jspdf@latest/dist/jspdf.min.js';
+const pdfLibUrl = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.1.1/jspdf.umd.min.js';
 
 const jsPDFLoader = LoadScript({
   src: pdfLibUrl,
