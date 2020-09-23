@@ -170,7 +170,12 @@ const loadResources = async function loadResources(mapOptions, config) {
 
   // Check if authorization is required before map options is loaded
   if (config.authorizationUrl) {
-    return fetch(config.authorizationUrl)
+    let options = {
+        mode :'no-cors',
+        method: 'GET',
+        cache: 'no-cache'
+    };
+    return fetch(config.authorizationUrl, options)
     .then(response => {
       console.log(response);
       if (!response.ok) {
