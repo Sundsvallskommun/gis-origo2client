@@ -173,11 +173,13 @@ const loadResources = async function loadResources(mapOptions, config) {
     let options = {
         mode :'no-cors',
         method: 'GET',
-        cache: 'no-cache'
+        cache: 'no-cache',
+        redirect: 'follow'
     };
     return fetch(config.authorizationUrl, options)
     .then(response => {
       console.log(response);
+      console.log(response.url);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       } else {
