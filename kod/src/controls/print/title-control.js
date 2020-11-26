@@ -4,11 +4,11 @@ export default function TitleControl(options = {}) {
   const {
     title = '',
     alignment = 'center',
-    size = 'H4'
+    size = 'h4'
   } = options;
-  const cls = 'placeholder-text-smaller smaller width-100';
+  const cls = 'placeholder-text-smaller smaller';
   const placeholderText = 'Här kan du skriva en rubrik';
-  const style = { height: '2rem', margin: 0, width: '88% !important' };
+  const style = { height: '2rem', margin: 0, width: '88%' };
   const align = ['text-align-left', 'text-align-center', 'text-align-right'];
   const sizes = ['h1', 'h2', 'h3', 'h4', 'h5'];
   const formatId = cuid();
@@ -35,7 +35,7 @@ export default function TitleControl(options = {}) {
         cls: 'grow light text-smaller',
         text: '...',
         state: 'initial',
-        style: { width: '9%' }
+        style: { width: '8%' }
       });
       alignLeftComponent = Button({
         cls: 'grow light text-smaller',
