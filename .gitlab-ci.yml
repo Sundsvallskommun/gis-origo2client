@@ -12,15 +12,15 @@ docker build:
     - docker
   script:
   - docker info
-  - docker build -t git.sundsvall.se:8082/joh17bla/origo2client .
+  - docker build -t docker.sundsvall.se/joh17bla/origo2client .
   
 docker push:
   stage: push  
   tags:
     - docker
   script:
-  - echo "C9qPzk2aJZFsTxynFKqS" | docker login git.sundsvall.se:8082 -u robin.flink@sundsvall.se --password-stdin
-  - docker push git.sundsvall.se:8082/joh17bla/origo2client
+  - echo "C9qPzk2aJZFsTxynFKqS" | docker login docker.sundsvall.se -u robin.flink@sundsvall.se --password-stdin
+  - docker push docker.sundsvall.se/joh17bla/origo2client
   
 deploy:
   stage: deploy
