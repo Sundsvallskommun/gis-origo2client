@@ -19,6 +19,7 @@
 <script src="plugins/lmsearch.min.js"></script>
 <script src="plugins/draw.min.js"></script>
 <script src="plugins/geouttag.min.js"></script>
+<script src="plugins/multiselect.min.js"></script>
 <script type="text/javascript">
 //Init origo
 var origo = Origo('index.json', {svgSpritePath: '/css/svg/'});
@@ -54,6 +55,10 @@ origo.on('load', function (viewer) {
 		});
 		viewer.addComponent(draw);
 	});
+	origo.on('load', function (viewer) {
+    var multiselect = Multiselect();
+    viewer.addComponent(multiselect);
+  });
 </script>
 
 </body>
