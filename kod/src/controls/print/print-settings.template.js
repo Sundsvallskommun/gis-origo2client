@@ -8,11 +8,13 @@ export default function printTemplate({
   titleControl,
   createdControl,
   northArrowControl,
-  rotationControl
+  rotationControl,
+  setScaleControl,
+  resolutionControl,
+  showScaleControl
 }) {
   return `
   <div id="${id}" class="flex column no-print padding-large width-16">
-    <h6>Rubrik</h6>
     ${titleControl.render()}
     <div class="padding-top"></div>
     <h6>Beskrivning</h6>
@@ -25,6 +27,11 @@ export default function printTemplate({
     <div class="padding-top"></div>
     <h6>Orientering</h6>
     ${orientationControl.render()}
+    <div class="padding-top"></div>
+    <h6>Upplösning</h6>
+    ${resolutionControl.render()}
+    <div class="padding-top"></div>
+      ${setScaleControl.render()}
     <div class="padding-top-large"></div>
     <div class="flex padding-right-small">
       <div class="grow text-normal">Använd marginaler</div>
@@ -37,10 +44,15 @@ export default function printTemplate({
     </div>
     <div class="padding-top-large"></div>
     <div class="flex padding-right-small">
+      <div class="grow text-normal">Visa skala</div>
+      ${showScaleControl.render()}
+    </div>
+    <div class="padding-top-large"></div>
+    <div class="flex padding-right-small">
       <div class="grow text-normal">Visa Norrpil</div>
       ${northArrowControl.render()}
     </div>
-      ${rotationControl.render()}
-    <div class="padding-top"></div>
+    ${rotationControl.render()}
+  <div class="padding-top"></div>
   </div>`;
 }
