@@ -3,10 +3,12 @@ import { Input, cuid, Component, Button, Dropdown, ToggleGroup } from '../../ui'
 export default function TitleControl(options = {}) {
   const {
     title = '',
-    alignment = 'center',
+    alignment = 'center'
+  } = options;
+  let {
     size = 'h4'
   } = options;
-  const cls = 'placeholder-text-smaller smaller width-88';
+  const cls = 'placeholder-text-smaller smaller';
   const placeholderText = 'Här kan du skriva en rubrik';
   const style = { height: '2rem', margin: 0 };
   const align = ['text-align-left', 'text-align-center', 'text-align-right'];
@@ -85,6 +87,7 @@ export default function TitleControl(options = {}) {
     onChangeSize(evt) {
       this.dispatch('change:titleSize', { class: evt });
       selectSize.setButtonText(evt);
+      size = evt;
     },
     onRender() {
       formatEl = document.getElementById(formatId);
@@ -111,12 +114,17 @@ export default function TitleControl(options = {}) {
       <div class="padding-top-large"></div>
       <h6>Rubrik</h6>
       <div class="padding-smaller o-tooltip active">
-        ${inputTitle.render()} ${formatButton.render()}
+        <div class="float-left flex align-center">
+          ${inputTitle.render()}
+        </div>
+        <div class="float-right flex align-center">
+          ${formatButton.render()}
+        </div>
       </div>
       <div class="hidden" id="${formatId}">
-        Justering
+        <h6>Justering titel</h6>
         ${alignControl.render()}
-        Storlek
+        <h6>Fontstorlek titel</h6>
         ${selectSize.render()}
       </div>
       `;
