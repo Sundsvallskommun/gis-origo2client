@@ -162,10 +162,14 @@ const PrintSettings = function PrintSettings({
       const visible = evt.size === 'custom';
       customSizeControl.dispatch('change:visible', { visible });
     },
-    onRender() {
-      rotationControl.setRotation();
+    setMaxHeight() {
       const height = Number.isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
       document.getElementById(contentComponent.getId()).style.maxHeight = `${height - (height * 0.1)}px`;
+    },
+    onRender() {
+      rotationControl.setRotation();
+      this.setMaxHeight();
+      window.addEventListener('resize', this.setMaxHeight());
       this.dispatch('render');
     },
     render() {
@@ -175,3 +179,4 @@ const PrintSettings = function PrintSettings({
 };
 
 export default PrintSettings;
+0
