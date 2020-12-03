@@ -14,7 +14,7 @@ export default function printTemplate({
   showScaleControl
 }) {
   return `
-  <div id="${id}" class="flex column no-print padding-large width-16">
+  <div id="${id}" class="flex column no-print padding-large overflow-auto width-16">
     ${titleControl.render()}
     <div class="padding-top"></div>
     ${descriptionControl.render()}
