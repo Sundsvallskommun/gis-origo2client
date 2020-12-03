@@ -168,8 +168,7 @@ const PrintSettings = function PrintSettings({
     },
     onRender() {
       rotationControl.setRotation();
-      this.setMaxHeight();
-      window.addEventListener('resize', this.setMaxHeight());
+      // this.setMaxHeight();
       this.dispatch('render');
     },
     render() {
@@ -179,4 +178,3 @@ const PrintSettings = function PrintSettings({
 };
 
 export default PrintSettings;
-0
