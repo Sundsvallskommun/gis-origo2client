@@ -162,13 +162,8 @@ const PrintSettings = function PrintSettings({
       const visible = evt.size === 'custom';
       customSizeControl.dispatch('change:visible', { visible });
     },
-    setMaxHeight() {
-      const height = Number.isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
-      document.getElementById(contentComponent.getId()).style.maxHeight = `${height - (height * 0.1)}px`;
-    },
     onRender() {
       rotationControl.setRotation();
-      // this.setMaxHeight();
       this.dispatch('render');
     },
     render() {

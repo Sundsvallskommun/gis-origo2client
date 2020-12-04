@@ -2,7 +2,6 @@
   overflow: hidden;
   position: relative;
   transition: all 0.3s;
-  height: 100%;
 }
 
 .collapse {
@@ -15,7 +14,6 @@
   }
   &.expanded > .collapse-header {
     border-bottom: none;
-    height: 100%;
     .rotate {
       &.icon {
         transform: rotate(90deg);
