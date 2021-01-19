@@ -3,7 +3,7 @@ import { templateNoEmpty } from '../utils/templatehelpers';
 function getLI(obj) {
   let li = `<li><b>${obj.prop}</b> : ${obj.value}</li>`;
   if (typeof obj.value === 'string') {
-    if (obj.value.startsWith('http')) {
+    if (obj.value.toLowerCase().startsWith('http')) {
       const urls = obj.value.split(',');
       let urlValue = '';
       urls.forEach(url => {

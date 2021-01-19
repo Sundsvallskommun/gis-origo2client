@@ -1,0 +1,198 @@
+.hide{display: none;}
+
+.link{color:#0000B9; cursor: pointer; cursor: hand; text-decoration:underline;}
+.link:active { color: darkred; }
+
+.link2{color:#428bca; cursor: pointer; cursor: hand; text-decoration:underline;}
+.link2:active { color: darkred; }
+
+.pad1{padding-top: 10px;}
+.b{font-weight: bold;}
+.fsize-small{font-size: 95%;}
+.brSmall{font-size:8px;}
+
+.iframe-popup{
+  background-image: none;
+  width: 240px;
+}
+
+/*--------------------------------------------------------------------------------*/
+/* För att PopupFrame ska anpassa sig till vidd som anges i lagrets attribut ---*/
+/*--------------------------------------------------------------------------------*/
+/*.o-map .o-identify-content{width: calc(100%);}*/
+
+/*---------------------------------------------------------------------------------*/
+/* Lagersymbolen i legenden läggs längst upp (syns vid långa lagernamn med radbrytning)*/
+/*---------------------------------------------------------------------------------*/
+.o-ui .flex .align-center {
+  /* align-items: center; */
+  align-items: unset;
+}
+
+/*--------------------------------------------------------------------------------*/
+/* Visa och dölj info-framen -----------------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+iframe{
+  border-style: none;
+  width: 100%;
+  /*height: calc(100% - 0.2em);*/
+  height: 0;
+  background-image: url(../img/gif/loading.gif);
+  background-repeat: no-repeat;
+  background-size: 7em;
+  background-position-x: 5em;
+  background-position-y: 2em;
+}
+#infoFrame{
+  height: calc(100% - 0.2em);
+}
+#infoDiv{
+  position: fixed;
+  bottom: 1.8em;
+  right:0;
+  top:0;
+  width: 300px;
+  z-index: 80;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
+  background-color: white;
+}
+@media screen and (max-width:768px){
+  #infoDiv{
+    bottom:0;
+  }
+}
+
+
+.dold {
+  -moz-animation: hideFrame 0.2s ease-in 0s forwards; /* Firefox */
+  -webkit-animation: hideFrame 0.2s ease-in 0s forwards; /* Safari and Chrome */
+  -o-animation: hideFrame 0.2s ease-in 0s forwards; /* Opera */
+  animation: hideFrame 0.2s ease-in 0s forwards; /* IE 10+, Fx 29+ */
+}
+.visa {
+  -moz-animation: showFrame 0.2s ease-in 0s forwards; /* Firefox */
+  -webkit-animation: showFrame 0.2s ease-in 0s forwards; /* Safari and Chrome */
+  -o-animation: showFrame 0.2s ease-in 0s forwards; /* Opera */
+  animation: showFrame 0.2s ease-in 0s forwards; /* IE 10+, Fx 29+ */
+  display: block;
+}
+@keyframes hideFrame {
+  to   { right: -300px;}
+}
+@keyframes showFrame {
+  from { right: -300px;}
+  to   { right: 0px;}
+}
+
+/*--------------------------------------------------------------------------------*/
+/* Knappen som stänger info-framen -----------------------------------------------*/
+/*--------------------------------------------------------------------------------*/
+.close:hover::before, .close:hover::after {
+  background: darkred;
+}
+.close::before, .close::after {
+  content: '';
+  position: absolute;
+  height: 2.5px;
+  width: 13px;
+  top: 0.9em;
+  right: 1.5em;
+  margin-top: 0px;
+  background: #333;
+}
+.close::before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.close::after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+
+/*---------------------------*/
+/* Mörkare rubrik i söklista */
+/*---------------------------*/
+.o-map .awesomplete > ul > li > .heading {
+    background-color: rgba(128, 128, 128, 0.3);
+}
+
+/*-----------------------------------------------------------------------------*/
+/* Skroll och smal skroll i sölista */
+/*-----------------------------------------------------------------------------*/
+.o-map .awesomplete > ul {
+    max-height: calc(100vh - 10em);
+    overflow-y: auto;
+    -ms-overflow-style: auto;
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+    width: 6px;  /* for vertical scrollbars */
+    height: 6px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/*-----------------------------------------------------------------------------*/
+/* För att menyn ska hamna över legenden när de "krockar" */
+/*-----------------------------------------------------------------------------*/
+.o-ui .top-right{
+  z-index: 60;
+}
+
+/*-----------------------------------------------------------------------------*/
+/* Copyrighttexten */
+/*-----------------------------------------------------------------------------*/
+.o-map .ol-attribution.ol-uncollapsible{
+  max-width: 50%;
+}
+
+/*-----------------------------------------------------------------------------*/
+/* Bredd på bild och koordinatvisning */
+/*-----------------------------------------------------------------------------*/
+.o-map .o-footer .o-footer-middle{
+  width: 100px;
+}
+.o-map .o-footer .o-footer-left{
+  width: 45%;
+}
+
+/*-----------------------------------------------------------------------------*/
+/* Vänsterställd copyrighttext i utskriften */
+/*-----------------------------------------------------------------------------*/
+.o-map .print-attribution{
+  text-align: left;
+}
+
+/*-----------------------------------------------------------------------------*/
+/* Mindre marginal på utskriften */
+/*-----------------------------------------------------------------------------*/
+.o-map .print-margin {
+  padding: 10mm 10mm;
+}
+
+/*-----------------------------------------------------------------------------*/
+/* Dölj bilden funktionsvariation när data är nej */
+/*-----------------------------------------------------------------------------*/
+p[data-funktionsvariation="Nej"] {
+  display: none;
+}
+
+p[data-lank="null"] {
+  display: none;
+}
+
+/*-----------------------------------------------------------------------------*/
