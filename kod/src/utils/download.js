@@ -145,6 +145,7 @@ export const printToScalePDF = async function printToScalePDF({
     exportOptions.width = widthImage;
     exportOptions.height = heightImage;
   }
+
   const pdf = new jsPDF({ orientation, format, unit: 'mm', compress: true });
   const styleAttributes = el.getAttribute('style');
   el.setAttribute('style', styleAttributes.split('transform: scale')[0]); // Remove scaling to get correct print size of image
