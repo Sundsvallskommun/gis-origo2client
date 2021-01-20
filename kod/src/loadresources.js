@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import permalink from './permalink/permalink';
 import getUrl from './utils/geturl';
 import isUrl from './utils/isurl';
@@ -33,9 +32,9 @@ const loadSvgSprites = function loadSvgSprites(baseUrl, config) {
   const svgPath = config.svgSpritePath;
   const svgPromises = [];
   svgSprites.forEach((sprite) => {
-    const promise = $.get(baseUrl + svgPath + sprite, (data) => {
+    const promise = fetch(baseUrl + svgPath + sprite).then(res => res.text()).then((data) => {
       const div = document.createElement('div');
-      div.innerHTML = new XMLSerializer().serializeToString(data.documentElement);
+      div.innerHTML = data;
       document.body.insertBefore(div, document.body.childNodes[0]);
     });
     svgPromises.push(promise);
@@ -62,7 +61,7 @@ const loadResources = async function loadResources(mapOptions, config) {
         urlParams = permalink.parsePermalink(window.location.href);
       }
       baseUrl = config.baseUrl || '';
-      map.options = $.extend(config, mapOptions);
+      map.options = Object.assign(config, mapOptions);
       if (mapOptions.controls) {
         map.options.controls = config.defaultControls.concat(mapOptions.controls);
       } else {
@@ -73,7 +72,7 @@ const loadResources = async function loadResources(mapOptions, config) {
       map.options.params = urlParams;
       map.options.baseUrl = baseUrl;
 
-      return $.when(loadSvgSprites(baseUrl, config))
+      return Promise.all(loadSvgSprites(baseUrl, config) || [])
         .then(() => map);
     } else if (typeof (mapOptions) === 'string') {
       if (isUrl(mapOptions)) {
@@ -101,13 +100,13 @@ const loadResources = async function loadResources(mapOptions, config) {
         mapUrl = getUrl();
       }
 
-      return $.when(loadSvgSprites(baseUrl, config))
-        .then(() => $.ajax({
-          url,
+      return Promise.all(loadSvgSprites(baseUrl, config) || [])
+        .then(() => fetch(url, {
           dataType: format
         })
+          .then(res => res.json())
           .then((data) => {
-            map.options = $.extend(config, data);
+            map.options = Object.assign(config, data);
             if (data.controls) {
               map.options.controls = config.defaultControls.concat(data.controls);
             } else {
@@ -168,6 +167,34 @@ const loadResources = async function loadResources(mapOptions, config) {
     }
   }
 
+  function checkSAMLRequest(samlRequest) {
+    // Check if authorization is required before map options is loaded
+    if (config.samlUrl) {
+      return fetch(config.samlUrl + '?SAMLRequest=' + samlRequest)
+      .then(response => {
+        console.log(response);
+        console.log(response.url);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        } else {
+          //const samlRequest = response.json();
+          //console.log(JSON.parse(samlRequest));
+
+          // return loadMapOptions();
+          return response.json();
+        }
+      })
+      .then(function(data) {
+        // `data` is the parsed version of the JSON returned from the above endpoint.
+        console.log(data);  // { "userId": 1, "id": 1, "title": "...", "body": "..." }
+        // return loadMapOptions();
+      })
+      .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
+    }
+  }
+
   // Check if authorization is required before map options is loaded
   if (config.authorizationUrl) {
     let options = {
@@ -176,15 +203,25 @@ const loadResources = async function loadResources(mapOptions, config) {
         cache: 'no-cache',
         redirect: 'follow'
     };
-    return fetch(config.authorizationUrl, options)
+    return fetch(config.authorizationUrl)
     .then(response => {
       console.log(response);
       console.log(response.url);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       } else {
-        return loadMapOptions();
+        //const samlRequest = response.json();
+        //console.log(JSON.parse(samlRequest));
+
+        // return loadMapOptions();
+        return response.json();
       }
+    })
+    .then(function(data) {
+      // `data` is the parsed version of the JSON returned from the above endpoint.
+      console.log(data);  // { "userId": 1, "id": 1, "title": "...", "body": "..." }
+      checkSAMLRequest(data.SAMLRequest);
+      // return loadMapOptions();
     })
     .catch(error => {
       console.error('There has been a problem with your fetch operation:', error);
