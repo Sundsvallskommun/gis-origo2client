@@ -37,7 +37,7 @@ iframe{
   width: 100%;
   /*height: calc(100% - 0.2em);*/
   height: 0;
-  background-image: url(../img/gif/loading.gif);
+  background-image: url(../img/loading.gif);
   background-repeat: no-repeat;
   background-size: 7em;
   background-position-x: 5em;
