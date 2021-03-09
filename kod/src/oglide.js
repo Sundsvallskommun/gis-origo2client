@@ -21,16 +21,23 @@ const generateBullets = function generateBullets(o) {
 
 function OGlide(options) {
   // Polyfill for IE11 to set class on svg element
-  if (!Object.getOwnPropertyDescriptor(Element.prototype,'classList')){
-    if (HTMLElement&&Object.getOwnPropertyDescriptor(HTMLElement.prototype,'classList')){
-      Object.defineProperty(Element.prototype,'classList',Object.getOwnPropertyDescriptor(HTMLElement.prototype,'classList'));
+  if (!Object.getOwnPropertyDescriptor(Element.prototype, 'classList')) {
+    if (HTMLElement && Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'classList')) {
+      Object.defineProperty(Element.prototype, 'classList', Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'classList'));
     }
-  } 
-  const { id, callback } = options;
-  const oiContent = Array.from(document.querySelectorAll('.o-identify-content'));
+  }
+  const {
+    id,
+    callback,
+    oClass = '.o-identify-content',
+    glideClass = 'glide-content',
+    autoplay = false
+  } = options;
+  const oiContent = Array.from(document.querySelectorAll(oClass));
   const target = document.querySelector(id);
   const glide = document.createElement('div');
   glide.classList.add('glide');
+  glide.classList.add(glideClass);
   target.appendChild(glide);
   const track = document.createElement('div');
   track.classList.add('glide__track');
@@ -82,14 +89,16 @@ function OGlide(options) {
   generateBullets({ bullets, oiItems: oiContent });
   glide.appendChild(bullets);
 
-  const el = new Glide('.glide', {
+  const el = new Glide(`.${glideClass}`, {
     type: 'carousel',
     ocusAt: '1',
     startAt: 0,
     perView: 1,
     direction: 'ltr',
     gap: 0,
-    perTouch: 1
+    perTouch: 1,
+    animationDuration: 0,
+    autoplay
   });
   el.mount();
   el.on('move', () => {

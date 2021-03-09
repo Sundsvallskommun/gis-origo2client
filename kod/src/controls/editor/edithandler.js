@@ -16,6 +16,8 @@ import shapes from './shapes';
 import searchList from './addons/searchList/searchList';
 import validate from '../../utils/validate';
 
+const axios = require('axios');
+
 const editsStore = store();
 let editLayers = {};
 let autoSave;
@@ -333,13 +335,11 @@ function attributesSaveHandler(feature, formEl) {
   });
 }
 
-function onAttributesSave(feature, attrs) {
+async function onAttributesSave(feature, attrs) {
   document.getElementById('o-save-button').addEventListener('click', (e) => {
     const editEl = {};
     const valid = {};
-    let fileReader;
-    let input;
-    let file;
+    const fileReaders = [];
 
     // Read values from form
     attrs.forEach((attribute) => {
@@ -363,11 +363,11 @@ function onAttributesSave(feature, attrs) {
       }
       // Check if file. If file, read and trigger resize
       if (inputType === 'file') {
-        input = document.getElementById(attribute.elId);
-        file = input.files[0];
+        const input = document.getElementById(attribute.elId);
+        const file = input.files[0];
 
         if (file) {
-          fileReader = new FileReader();
+          const fileReader = new FileReader();
           fileReader.onload = () => {
             getImageOrientation(file, (orientation) => {
               imageresizer(fileReader.result, attribute, orientation, (resized) => {
@@ -379,6 +379,7 @@ function onAttributesSave(feature, attrs) {
           };
 
           fileReader.readAsDataURL(file);
+          fileReaders.push(fileReader);
         } else {
           editEl[attribute.name] = document.getElementById(attribute.elId).getAttribute('value');
         }
@@ -530,6 +531,10 @@ function onAttributesSave(feature, attrs) {
             valid.searchList = true;
           }
           break;
+        case 'lookup':
+          console.log(adress);
+          valid.text = adress;
+          break;
         default:
       }
       valid.validates = !Object.values(valid).includes(false);
@@ -537,7 +542,7 @@ function onAttributesSave(feature, attrs) {
 
     // If valid, continue
     if (valid.validates) {
-      if (fileReader && fileReader.readyState === 1) {
+      if (fileReaders.length > 0 && fileReaders.every(reader => reader.readyState === 1)) {
         document.addEventListener('imageresized', () => {
           attributesSaveHandler(feature, editEl);
         });
@@ -556,7 +561,7 @@ function addListener() {
   const fn = (obj) => {
     document.getElementById(obj.elDependencyId).addEventListener(obj.eventType, () => {
       const containerClass = `.${obj.elId}`;
-      if (document.getElementById(`${obj.elDependencyId} option:selected`).textContent === obj.requiredVal) {
+      if (document.getElementById(obj.elDependencyId).value === obj.requiredVal) {
         document.querySelector(containerClass).classList.remove('o-hidden');
       } else {
         document.querySelector(containerClass).classList.add('o-hidden');
@@ -583,6 +588,7 @@ function addImageListener() {
     });
 
     document.querySelector(`${containerClass} input[type=button]`).addEventListener('click', (e) => {
+      document.getElementById(obj.elId).setAttribute('value', '');
       document.getElementById(obj.elId).value = '';
       document.querySelector(`${containerClass} img`).classList.add('o-hidden');
       e.target.classList.add('o-hidden');
@@ -592,10 +598,11 @@ function addImageListener() {
   return fn;
 }
 
-function editAttributes(feat) {
+async function editAttributes(feat) {
   let feature = feat;
   let attributeObjects;
   let features;
+  let adress;
 
   // Get attributes from the created, or the selected, feature and fill DOM elements with the values
   if (feature) {
@@ -608,11 +615,31 @@ function editAttributes(feat) {
     dispatcher.emitChangeEdit('attribute', true);
     feature = features.item(0);
     if (attributes.length > 0) {
+      const projCode = viewer.getProjectionCode();
+      const projNr = projCode.split(':');
+      const lookupCoord = feature.getGeometry().getCoordinates();
+      const lookupUrl = `https://kartatest.sundsvall.se/origoserver/lm/addresses?northing=${lookupCoord[1]}&easting=${lookupCoord[0]}&srid=${projNr[1]}`;
+      (async () => {
+        try {
+          const response = await axios.get(lookupUrl);
+          adress = response.data.adress;
+          console.log(adress);
+        } catch (error) {
+          console.log(error.response.body);
+        }
+      })();
       // Create an array of defined attributes and corresponding values from selected feature
       attributeObjects = attributes.map((attributeObject) => {
         const obj = {};
         Object.assign(obj, attributeObject);
-        obj.val = feature.get(obj.name) !== undefined ? feature.get(obj.name) : '';
+        if (obj.type === 'lookup') {
+          obj.val = adress;
+          console.log(obj.type);
+          console.log(adress);
+          console.log(obj.val);
+        } else {
+          obj.val = feature.get(obj.name) !== undefined ? feature.get(obj.name) : '';
+        }
         if ('constraint' in obj) {
           const constraintProps = obj.constraint.split(':');
           if (constraintProps.length === 3) {
