@@ -110,7 +110,7 @@ const getContent = {
           const attribution = attribute.attribution ? `<div class="o-image-attribution">${attribute.attribution}</div>` : '';
           slides += `<div class="o-image-content"><img src="${url}">${attribution}</div>`;
         });
-        val = `<div id="o-image-carousel"><div>${slides}</div></div>`;
+        val = `<div id="o-image-carousel">${slides}</div>`;
       }
     } else {
       const featGet = attribute.carousel ? feature.get(attribute.carousel) : feature.get(attribute.name);
