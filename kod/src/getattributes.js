@@ -185,6 +185,7 @@ function getAttributes(feature, layer, map) {
             val = getContent.html(feature, attribute, attributes, map);
           } else if (attribute.carousel) {
             val = getContent.carousel(feature, attribute, attributes, map);
+            ulList.classList.add('o-carousel-list');
           } else {
             val = customAttribute(feature, attribute, attributes, map);
           }
