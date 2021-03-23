@@ -7,7 +7,7 @@ function getLI(obj) {
       const urls = obj.value.split(',');
       let urlValue = '';
       urls.forEach(url => {
-        urlValue += `<a href="${url}">${url}</a><br/>`;
+        urlValue += `<a href="${url}" target="_blank">${url}</a><br/>`;
       });
       li = `<li><b>${obj.prop}</b> : ${urlValue}</li>`;
     }
