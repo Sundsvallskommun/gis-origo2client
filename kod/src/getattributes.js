@@ -27,6 +27,12 @@ function parseUrl(urlattr, feature, attribute, attributes, map) {
   } else if (attribute.target === 'modal-full') {
     aTarget = 'modal-full';
     aCls = 'o-identify-link-modal';
+  } else if (attribute.target === '_self') {
+    aTarget = '_self';
+  } else if (attribute.target === '_top') {
+    aTarget = '_top';
+  } else if (attribute.target === '_parent') {
+    aTarget = '_parent';
   }
   val = `<a class="${aCls}" target="${aTarget}" href="${url}" title="${aTargetTitle}">${text}</a>`;
   return val;
@@ -56,7 +62,9 @@ const getContent = {
       }
     }
     const newElement = document.createElement('li');
-    newElement.classList.add(attribute.cls);
+    if (typeof (attribute.cls) !== 'undefined') {
+      newElement.classList.add(attribute.cls);
+    }
     newElement.innerHTML = `${title}${val}`;
     return newElement;
   },
@@ -73,7 +81,9 @@ const getContent = {
       val = parseUrl(feature.get(attribute.url), feature, attribute, attributes, map);
     }
     const newElement = document.createElement('li');
-    newElement.classList.add(attribute.cls);
+    if (typeof (attribute.cls) !== 'undefined') {
+      newElement.classList.add(attribute.cls);
+    }
     newElement.innerHTML = val;
     return newElement;
   },
@@ -95,7 +105,9 @@ const getContent = {
       }
     }
     const newElement = document.createElement('li');
-    newElement.classList.add(attribute.cls);
+    if (typeof (attribute.cls) !== 'undefined') {
+      newElement.classList.add(attribute.cls);
+    }
     newElement.innerHTML = val;
     return newElement;
   },
@@ -108,9 +120,9 @@ const getContent = {
         imgArr.forEach((img) => {
           const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(img, attributes, null, map));
           const attribution = attribute.attribution ? `<div class="o-image-attribution">${attribute.attribution}</div>` : '';
-          slides += `<div class="o-image-content"><img src="${url}">${attribution}</div>`;
+          slides += `<div class="o-image-content o-image-content${feature.ol_uid}"><img src="${url}">${attribution}</div>`;
         });
-        val = `<div id="o-image-carousel">${slides}</div>`;
+        val = `<div class="o-image-carousel o-image-carousel${feature.ol_uid}">${slides}</div>`;
       }
     } else {
       const featGet = attribute.carousel ? feature.get(attribute.carousel) : feature.get(attribute.name);
@@ -121,7 +133,9 @@ const getContent = {
       }
     }
     const newElement = document.createElement('li');
-    newElement.classList.add(attribute.cls);
+    if (typeof (attribute.cls) !== 'undefined') {
+      newElement.classList.add(attribute.cls);
+    }
     newElement.innerHTML = val;
     return newElement;
   },
@@ -131,7 +145,9 @@ const getContent = {
       helperArg: feature.getGeometry()
     }, map);
     const newElement = document.createElement('li');
-    newElement.classList.add(attribute.cls);
+    if (typeof (attribute.cls) !== 'undefined') {
+      newElement.classList.add(attribute.cls);
+    }
     newElement.innerHTML = val;
     return newElement;
   }
