@@ -30,14 +30,17 @@ const ShareMap = function ShareMap(options = {}) {
     inputElement.select();
   };
 
+  const getPermalink = function getPermalink() {
+    permalink.saveStateToServer(viewer).then((data) => permalink.getPermalink(viewer, data));
+  };
+
   return Component({
     name: 'sharemap',
+    createLink,
     addParamsToGetMapState(key, callback) {
       permalink.addParamsToGetMapState(key, callback);
     },
-    getPermalink() {
-      permalink.saveStateToServer(viewer).then((data) => permalink.getPermalink(viewer, data));
-    },
+    getPermalink,
     onInit() {
       if (storeMethod && serviceEndpoint) {
         permalink.setSaveOnServerServiceEndpoint(serviceEndpoint);
