@@ -31,6 +31,8 @@ const ShareMap = function ShareMap(options = {}) {
   };
 
   const getPermalink = function getPermalink() {
+    console.log('test');
+    console.log(viewer);
     permalink.saveStateToServer(viewer).then((data) => permalink.getPermalink(viewer, data));
   };
 
