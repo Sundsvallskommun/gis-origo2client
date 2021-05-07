@@ -15,6 +15,7 @@ import getImageOrientation from '../../utils/getimageorientation';
 import shapes from './shapes';
 import searchList from './addons/searchList/searchList';
 import validate from '../../utils/validate';
+import slugify from '../../utils/slugify';
 
 const axios = require('axios');
 
@@ -57,6 +58,11 @@ function setActive(editType) {
     case 'draw':
       draw.setActive(true);
       modify.setActive(true);
+      select.setActive(false);
+      break;
+    case 'custom':
+      draw.setActive(false);
+      modify.setActive(false);
       select.setActive(false);
       break;
     default:
@@ -143,8 +149,8 @@ function onModifyEnd(evt) {
   });
 }
 
-function onDrawEnd(evt) {
-  const feature = evt.feature;
+// Helper for adding new features. Typically called from various eventhandlers
+function addFeature(feature) {
   const layer = viewer.getLayer(currentLayer);
   const defaultAttributes = getDefaultValues(layer.get('attributes'));
   feature.setProperties(defaultAttributes);
@@ -162,6 +168,34 @@ function onDrawEnd(evt) {
     // eslint-disable-next-line no-use-before-define
     editAttributes(feature);
   }
+}
+
+// Handler for OL Draw interaction
+function onDrawEnd(evt) {
+  addFeature(evt.feature);
+}
+
+// Handler for external draw. It just adds a new feature to the layer, no questions asked.
+// Intended usage is creating a feature in a drawTool custom tool
+// event contains the new feature to be added.
+// if no feature is provided action is aborted.
+function onCustomDrawEnd(e) {
+  // Check if a feature has been created, or tool canceled
+  const feature = e.detail.feature;
+  if (feature) {
+    if (feature.getGeometry().getType() !== editLayers[currentLayer].get('geometryType')) {
+      alert('Kan inte lägga till en geometri av den typen i det lagret');
+    } else {
+      // Must move geometry to correct property. Setting geometryName is not enough.
+      if (editLayers[currentLayer].get('geometryName') !== feature.getGeometryName()) {
+        feature.set(editLayers[currentLayer].get('geometryName'), feature.getGeometry());
+        feature.unset(feature.getGeometryName());
+        e.detail.feature.setGeometryName(editLayers[currentLayer].get('geometryName'));
+      }
+      addFeature(e.detail.feature);
+    }
+  }
+  setActive();
 }
 
 function addSnapInteraction(sources) {
@@ -311,9 +345,15 @@ function cancelDraw() {
   dispatcher.emitChangeEdit('draw', false);
 }
 
+// Event from drawTools
 function onChangeShape(e) {
-  setInteractions(e.detail.shape);
-  startDraw();
+  // Custom shapes are handled entirely in drawTools, just wait for a feature to land in onCustomDrawEnd
+  if (e.detail.shape === 'custom') {
+    setActive('custom');
+  } else {
+    setInteractions(e.detail.shape);
+    startDraw();
+  }
 }
 
 function cancelAttribute() {
@@ -561,6 +601,8 @@ function addListener() {
   const fn = (obj) => {
     document.getElementById(obj.elDependencyId).addEventListener(obj.eventType, () => {
       const containerClass = `.${obj.elId}`;
+      console.log(containerClass);
+      console.log(obj);
       if (document.getElementById(obj.elDependencyId).value === obj.requiredVal) {
         document.querySelector(containerClass).classList.remove('o-hidden');
       } else {
@@ -648,7 +690,7 @@ async function editAttributes(feat) {
             obj.requiredVal = constraintProps[2];
             obj.isVisible = obj.dependencyVal === obj.requiredVal;
             obj.addListener = addListener();
-            obj.elId = `input-${obj.name}-${obj.requiredVal}`;
+            obj.elId = `input-${obj.name}-${slugify(obj.requiredVal)}`;
             obj.elDependencyId = `input-${constraintProps[1]}`;
           } else {
             alert('Villkor verkar inte vara rätt formulerat. Villkor formuleras enligt principen change:attribute:value');
@@ -744,4 +786,5 @@ export default function editHandler(options, v) {
   document.addEventListener('toggleEdit', onToggleEdit);
   document.addEventListener('changeEdit', onChangeEdit);
   document.addEventListener('editorShapes', onChangeShape);
+  document.addEventListener('customDrawEnd', onCustomDrawEnd);
 }
