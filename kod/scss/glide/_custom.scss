@@ -1,6 +1,7 @@
 @import './variables';
 @import './controls';
 @import './bullets';
+
 .glide {
   &__track {
     overflow-y: auto;
@@ -14,132 +15,62 @@
     height:0;
   }
 }
+
+.o-image-carousel .glide {
+  &_arrows {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+  }
+  &__arrow {
+    transform: translateY(-100%);
+    box-shadow: none;
+    border: 1px solid $o-glide-border-color;
+    padding: .2em;
+    background-color: rgba(255,255,255,0.6);
+    transition: background-color 0.5s;
+    &:hover {
+      background-color: rgba(255,255,255,0.8);
+    }
+  }
+  &__bullets {
+    display: flex;
+    justify-content: center;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  &__bullet {
+    width: 100%;
+    height: 3px;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    &--active {
+      background-color: $o-btn-active-color;
+    }
+    &:hover {
+      background-color: $o-glide-bullets-color-hover
+    }
+  }
+}
+
+.o-image-carousel button.glide {
+  color: $o-glide-border-color;
+  &__arrow {
+    &--left {
+      left: 1rem;
+      border-radius: 50%;
+    }
+
+    &--right {
+      right: 1rem;
+      border-radius: 50%;
+    }
+  }
+}
+
 @media (hover: none) {
   .glide__arrow:hover {
     border-color: $o-glide-border-color;
   }
 }
-
-$mockup-width: 1440px;
-@function strip-units($number-with-units) {
-  @return $number-with-units / ($number-with-units * 0 + 1);
-}
-@function pxvw($px:10px, $mockup-size:$mockup-width) {
-  $mockup-size:   strip-units($mockup-width);
-  $px: strip-units($px);
-  @return (1/($mockup-size/100)*1vw)*$px;
-}
-
-
-
-
-.header-slider {
-    position: relative;
-    width: 90%;
-    overflow: hidden;
-    max-width: 888px;
-    height: pxvw(512px);
-    margin: 0 auto;
-    background-color: transparent;
-    ul {
-      width: 100%;
-      height: 100%;
-      padding: 0;
-      li {
-        height: 100%;
-        float: left;
-      }
-      .slide {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    .slide-arrows-container {
-      $arrow-height: 15px;
-      $arrow-thickness: 5px;
-      $arrown-space-from-edge: 10px;
-      position: absolute;
-      bottom: 50%;
-      width: 100%;
-      opacity: 0; // Show after hover on slides
-      transition: opacity 0.25s ease-in-out;
-      .slide-arrow {
-        background-image: none;
-        background-color: transparent;
-        width:  ($arrow-height*4.25); // Clickable area
-        height: ($arrow-height*4.25); // Clickable area
-        cursor: pointer;
-        &:before,
-        &:after {
-          content: "";
-          position: absolute;
-          height: $arrow-thickness;
-          width: ($arrow-height*2);
-          pointer-events: none;
-          background: white;
-        }
-        &:after {
-          top: (($arrow-height*1.2)+1px);
-          border-radius: $arrow-thickness;
-        }
-        &:before {
-          bottom: (($arrow-height*1.2)+1px);
-          border-radius: $arrow-thickness;
-        }
-      }
-      .left-arrow {
-        position: relative;
-        left: $arrown-space-from-edge;
-        float: left;
-        &:before {
-          transform: rotate(56deg);
-          left: 0;
-        }
-        &:after {
-          transform: rotate(-56deg);
-          left: 0;
-        }
-      }
-      .right-arrow {
-        position: relative;
-        right: $arrown-space-from-edge;
-        float: right;
-        &:before {
-          transform: rotate(304deg);
-          right: 0;
-        }
-        &:after {
-          transform: rotate(-304deg);
-          right: 0;
-        }
-      }
-    }
-    // Show arrows on slide hover
-    ul:hover {
-      ~ .slide-arrows-container {
-        opacity: 1;
-        transition: opacity 0.25s ease-in-out;
-      }
-    }
-
-    .slider-nav {
-      $slider-bullet-size: 6px;
-      position: absolute;
-      bottom: 0;
-      .nav-bullet {
-        position: relative;
-        bottom: pxvw($slider-bullet-size*2);
-        display: block;
-        float: left;
-        background-color: transparent;
-        border-radius: 50%;
-        border: 1px solid black;
-        width: $slider-bullet-size;
-        height: $slider-bullet-size;
-        margin-right: $slider-bullet-size/2;
-        &.active {
-          background-color: black;
-        }
-      }
-    }
-  }
