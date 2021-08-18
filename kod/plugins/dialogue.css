@@ -129,6 +129,9 @@
 .o-form-checkbox input[type="checkbox"] {
   vertical-align: middle; }
 
+.o-map .o-modal {
+  width: 90%; }
+
 .o-voterup-true .o-icon-24 {
   fill: #00ca40; }
 
