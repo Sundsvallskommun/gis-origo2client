@@ -56,6 +56,7 @@ const externalurlSeveralButtons = function externalurlSeveralButtons(options = {
         const subButton = Button({
           cls: 'o-measure-length padding-small margin-bottom-smaller icon-smaller round light box-shadow hidden',
           icon: buttonImage,
+          title: tooltipText,
           tooltipText,
           tooltipPlacement: 'east',
           click() {
