@@ -203,6 +203,7 @@ const Legend = function Legend(options = {}) {
 
       toolsCmp = El({
         cls: 'flex padding-small no-shrink hidden',
+        tooltipText: 'Lagerbytare',
         style: {
           'background-color': '#fff',
           'justify-content': 'flex-end',
@@ -226,7 +227,6 @@ const Legend = function Legend(options = {}) {
       mainContainerCmp = El({
         cls: 'flex column overflow-hidden relative',
         components: mainContainerComponents,
-        tooltipText: 'Lagerbytare',
         style: {
           'max-height': `${maxHeight}px`
         }
