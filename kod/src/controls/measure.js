@@ -596,11 +596,6 @@ const Measure = function Measure({
       if (type === 'LineString' || type === 'Polygon') {
         document.getElementById(undoButton.getId()).classList.remove('hidden');
       }
-      if (bufferTool) {
-        if (document.getElementById(bufferToolButton.getId()).classList.contains('active')) {
-          createRadiusModal(evt.feature);
-        }
-      }
     }, this);
 
     measure.on('drawend', (evt) => {
@@ -611,7 +606,6 @@ const Measure = function Measure({
       }
       pointerMoveHandler(evt);
       feature.setStyle(createStyle(feature));
-      feature.getStyle()[0].getText().setText(label);
       document.getElementsByClassName('o-tooltip-measure')[0].remove();
       overlayArray.push(...tempOverlayArray);
       tempOverlayArray = [];
@@ -622,10 +616,15 @@ const Measure = function Measure({
       document.getElementById(undoButton.getId()).classList.add('hidden');
       if (feature.getGeometry().getType() === 'Point') {
         if (bufferTool) {
-          if (!document.getElementById(bufferToolButton.getId()).classList.contains('active')) {
+          if (document.getElementById(bufferToolButton.getId()).classList.contains('active')) {
+            feature.getStyle()[0].getText().setText('');
+            createRadiusModal(evt.feature);
+          } else {
+            feature.getStyle()[0].getText().setText(label);
             getElevation(evt.feature);
           }
         } else {
+          feature.getStyle()[0].getText().setText(label);
           getElevation(evt.feature);
         }
       }
