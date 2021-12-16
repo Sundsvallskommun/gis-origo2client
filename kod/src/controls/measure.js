@@ -606,6 +606,7 @@ const Measure = function Measure({
       }
       pointerMoveHandler(evt);
       feature.setStyle(createStyle(feature));
+      feature.getStyle()[0].getText().setText(label);
       document.getElementsByClassName('o-tooltip-measure')[0].remove();
       overlayArray.push(...tempOverlayArray);
       tempOverlayArray = [];
