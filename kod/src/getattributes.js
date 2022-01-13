@@ -65,15 +65,48 @@ function buildUrlContent(feature, attribute, attributes, map) {
   return parseUrl(feature.get(attribute.url), feature, attribute, attributes, map);
 }
 
+/**
+ * Creates HTML containing clickable links from attribute content. Internal helper.
+ * @param {any} feature The feature in question
+ * @param {any} attribute The current attribute configuration to format
+ * @param {any} attributes All other attribute configurations
+ * @param {any} map The map
+ */
+
+function replaceValue(featureValue, replace) {
+  if (featureValue in replace) {
+    return replace[featureValue];
+  }
+  return featureValue;
+}
+
 const getContent = {
   name(feature, attribute, attributes, map) {
     let val = '';
     let title = '';
+    let prefix = '';
+    let suffix = '';
     const featureValue = feature.get(attribute.name) === 0 ? feature.get(attribute.name).toString() : feature.get(attribute.name);
     if (featureValue) {
       val = featureValue;
       if (attribute.title) {
         title = `<b>${attribute.title}</b>`;
+      }
+      if (attribute.prefix) {
+        prefix = attribute.prefix;
+      }
+      if (attribute.suffix) {
+        suffix = attribute.suffix;
+      }
+      if (attribute.replaceValue) {
+        val = replaceValue(featureValue, attribute.replaceValue);
+      }
+      if (attribute.formatDatetime) {
+        if (!Number.isNaN(Date.parse(featureValue))) {
+          const locale = 'locale' in attribute.formatDatetime ? attribute.formatDatetime.locale : 'default';
+          const options = 'options' in attribute.formatDatetime ? attribute.formatDatetime.options : { dateStyle: 'full', timeStyle: 'long' };
+          val = new Intl.DateTimeFormat(locale, options).format(Date.parse(featureValue));
+        }
       }
       if (attribute.url) {
         val = buildUrlContent(feature, attribute, attributes, map);
@@ -83,7 +116,7 @@ const getContent = {
     if (typeof (attribute.cls) !== 'undefined') {
       newElement.classList.add(attribute.cls);
     }
-    newElement.innerHTML = `${title}${val}`;
+    newElement.innerHTML = `${title}${prefix}${val}${suffix}`;
     return newElement;
   },
   url(feature, attribute, attributes, map) {
