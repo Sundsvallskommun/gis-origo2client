@@ -36,16 +36,13 @@ permalinkStore.getState = function getState(viewer, isExtended) {
 
   if (isExtended) {
     const draw = viewer.getControlByName('draw');
-    if (draw) {
-      state.controls = {
-        draw: draw.getState()
-      };
-    }
     const measure = viewer.getControlByName('measure');
+    state.controls = {};
+    if (draw) {
+      state.controls.draw = draw.getState();
+    }
     if (measure) {
-      state.controls = {
-        measure: measure.getState()
-      };
+      state.controls.measure = measure.getState();
     }
   }
 
