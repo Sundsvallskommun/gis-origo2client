@@ -34,10 +34,10 @@ export default function InputRange(options = {}) {
     render() {
       return `
       <div class="flex no-wrap text-smaller align-center">
-        <input id="${this.getId()}" type="range" min="${minValue}" max="${maxValue}" value="${initialValue}" step="${step}" class="${cls}" style="${style}" tabindex="-99" oninput="this.nextElementSibling.value = this.value">
+        <input id="${this.getId()}" type="range" min="${minValue}" max="${maxValue}" value="${initialValue}" step="${step}" class="${cls}" style="${style}" tabindex="-99" oninput="this.nextElementSibling.value = this.value" aria-labelledby="inputRange${this.getId()}">
         <output class="padding-left-small text-align-center">${initialValue}</output><div>&nbsp;${unit}</div>
       </div>
-      <div class="text-smaller text-align-center padding-smallpadding-top-smallest width-full">${label}</div>
+      <div class="text-smaller text-align-center padding-smallpadding-top-smallest width-full"><label id="inputRange${this.getId()}" for="${this.getId()}">${label}</label></div>
       `;
     }
   });

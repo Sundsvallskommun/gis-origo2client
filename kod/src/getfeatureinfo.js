@@ -122,6 +122,59 @@ function getFeatureInfoUrl({
       });
   }
   // #endregion
+  // Workaround for WMS that don't have response in application/json such as Länstyrelsen ArcGIS WMS.
+  // Set property 'infoFormat' on layer with value 'application/geo+json'
+  if (layer.get('infoFormat') === 'application/geo+json') {
+    const url = layer.getSource().getFeatureInfoUrl(coordinate, resolution, projection, {
+      INFO_FORMAT: 'application/geo+json',
+      FEATURE_COUNT: '20'
+    });
+
+    return fetch(url, { type: 'GET' })
+      .then((res) => {
+        if (res.error) {
+          return [];
+        }
+        return res.json();
+      })
+      .then(json => {
+        console.log(json);
+        if (json.features.length > 0) {
+          const copyJson = json;
+          copyJson.features.forEach((item, i) => {
+            if (!item.geometry) {
+              copyJson.features[i].geometry = { type: 'Point', coordinates: coordinate };
+            }
+          });
+          const feature = maputils.geojsonToFeature(copyJson);
+          return feature;
+        }
+        return [];
+      })
+      .catch(error => console.error(error));
+  }
+  /*if (layer.get('infoFormat') === 'text/plain') {
+    const url = layer.getSource().getFeatureInfoUrl(coordinate, resolution, projection, {
+      INFO_FORMAT: 'text/plain',
+      FEATURE_COUNT: '20'
+    });
+
+    return fetch(url, { type: 'GET' })
+      .then((res) => {
+        console.log(res);
+        if (res.error) {
+          return [];
+        }
+        return res.text();
+      })
+      .then(text => {
+        console.log(text);
+        const result = text.split(/;/);
+        console.log(result);
+        return [];
+      })
+      .catch(error => console.error(error));
+  }*/
   const url = layer.getSource().getFeatureInfoUrl(coordinate, resolution, projection, {
     INFO_FORMAT: 'application/json',
     FEATURE_COUNT: '20'
