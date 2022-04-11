@@ -124,9 +124,9 @@ function getFeatureInfoUrl({
   // #endregion
   // Workaround for WMS that don't have response in application/json such as Länstyrelsen ArcGIS WMS.
   // Set property 'infoFormat' on layer with value 'application/geo+json'
-  if (layer.get('infoFormat') === 'application/geo+json') {
+  if (layer.get('infoFormat') === 'application/geo+json' || layer.get('infoFormat') === 'application/geojson') {
     const url = layer.getSource().getFeatureInfoUrl(coordinate, resolution, projection, {
-      INFO_FORMAT: 'application/geo+json',
+      INFO_FORMAT: layer.get('infoFormat'),
       FEATURE_COUNT: '20'
     });
 
@@ -138,7 +138,6 @@ function getFeatureInfoUrl({
         return res.json();
       })
       .then(json => {
-        console.log(json);
         if (json.features.length > 0) {
           const copyJson = json;
           copyJson.features.forEach((item, i) => {
