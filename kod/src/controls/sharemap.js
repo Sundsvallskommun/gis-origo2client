@@ -30,11 +30,29 @@ const ShareMap = function ShareMap(options = {}) {
     inputElement.select();
   };
 
+  const getLink = async function getLink(data) {
+    const url = await permalink.getPermalink(viewer, data);
+    return url;
+  };
+
+  const getPermalink = async () => {
+    let link = '';
+    if (storeMethod === 'saveStateToServer') {
+      await permalink.saveStateToServer(viewer).then((data) => {
+        link = getLink(data).then((value) => value);
+      });
+    } else {
+      link = permalink.getPermalink(viewer);
+    }
+    return link;
+  };
+
   return Component({
     name: 'sharemap',
     addParamsToGetMapState(key, callback) {
       permalink.addParamsToGetMapState(key, callback);
     },
+    getPermalink,
     onInit() {
       if (storeMethod && serviceEndpoint) {
         permalink.setSaveOnServerServiceEndpoint(serviceEndpoint);
