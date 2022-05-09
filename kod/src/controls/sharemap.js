@@ -30,11 +30,13 @@ const ShareMap = function ShareMap(options = {}) {
     inputElement.select();
   };
 
+  // Special for Sundsvall expose getPermalink
   const getLink = async function getLink(data) {
     const url = await permalink.getPermalink(viewer, data);
     return url;
   };
 
+  // Special for Sundsvall expose getPermalink
   const getPermalink = async () => {
     let link = '';
     if (storeMethod === 'saveStateToServer') {
@@ -52,6 +54,7 @@ const ShareMap = function ShareMap(options = {}) {
     addParamsToGetMapState(key, callback) {
       permalink.addParamsToGetMapState(key, callback);
     },
+    // Special for Sundsvall expose getPermalink
     getPermalink,
     onInit() {
       if (storeMethod && serviceEndpoint) {

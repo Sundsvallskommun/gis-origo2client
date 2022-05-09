@@ -71,7 +71,9 @@ const OverlayLayer = function OverlayLayer(options) {
     cls: `${headerIconCls} round compact icon-small light relative no-shrink`,
     click() {
       if (!secure) {
-        toggleVisible(layer.getVisible());
+        // Special for Sundsvall toggle on name and show style on icon
+        document.getElementById(this.getId()).dispatchEvent(eventOverlayProps);
+        //toggleVisible(layer.getVisible());
       }
     },
     style: {
@@ -89,8 +91,10 @@ const OverlayLayer = function OverlayLayer(options) {
     onRender() {
       const labelEl = document.getElementById(this.getId());
       labelEl.addEventListener('click', (e) => {
-        layerIcon.dispatch('click');
-        e.preventDefault();
+        //layerIcon.dispatch('click');
+        //e.preventDefault();
+        // Special for Sundsvall toggle on name and show style on icon
+        toggleVisible(layer.getVisible());
       });
     },
     render() {
