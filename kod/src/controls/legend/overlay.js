@@ -106,9 +106,11 @@ const OverlayLayer = function OverlayLayer(options) {
   const toggleButton = Button({
     cls: 'round small icon-smaller no-shrink',
     click() {
+      /* Make the padlock clickable which triggers a login dialog
       if (!secure) {
         toggleVisible(layer.getVisible());
-      }
+      }*/
+      toggleVisible(layer.getVisible());
     },
     style: {
       'align-self': 'center',
