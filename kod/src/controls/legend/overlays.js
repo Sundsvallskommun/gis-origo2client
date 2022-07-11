@@ -20,7 +20,8 @@ const Overlays = function Overlays(options) {
     expanded = true,
     style: styleSettings = {},
     viewer,
-    labelOpacitySlider
+    labelOpacitySlider,
+    styleFromServer
   } = options;
 
   const cls = `${clsSettings} o-layerswitcher-overlays flex row overflow-hidden`.trim();
@@ -36,7 +37,7 @@ const Overlays = function Overlays(options) {
 
   const groupCmps = viewer.getGroups().reduce((acc, group) => {
     if (nonGroupNames.includes(group.name)) return acc;
-    return acc.concat(Group(group, viewer));
+    return acc.concat(Group(viewer, group));
   }, []);
 
   groupCmps.forEach((groupCmp) => {
@@ -155,7 +156,7 @@ const Overlays = function Overlays(options) {
     const styleName = layer.get('styleName') || null;
     const layerStyle = styleName ? viewer.getStyle(styleName) : undefined;
     const overlay = Overlay({
-      layer, style: layerStyle, position, viewer
+      layer, style: layerStyle, position, viewer, styleFromServer
     });
     const groupName = layer.get('group');
     if (rootGroupNames.includes(groupName)) {
@@ -182,7 +183,7 @@ const Overlays = function Overlays(options) {
   };
 
   const addGroup = function addGroup(groupOptions) {
-    const groupCmp = Group(groupOptions, viewer);
+    const groupCmp = Group(viewer, groupOptions);
     groupCmps.push(groupCmp);
     if (groupCmp.type === 'grouplayer') {
       const parent = groupCmps.find((cmp) => cmp.name === groupCmp.parent);
