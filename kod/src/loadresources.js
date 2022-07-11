@@ -174,91 +174,90 @@ const loadResources = async function loadResources(mapOptions, config) {
     if (config.groupsKey) {
       if (config.groupsKey in jsonResponse) {
         jsonResponse[config.groupsKey].forEach((group) => {
-          Object.keys(groupsAllowed).forEach(function(key) {
+          Object.keys(groupsAllowed).forEach((key) => {
             if (group === groupsAllowed[key]) {
               verified = true;
               console.log(groupsAllowed[key]);
             }
-          })
-        })
+          });
+        });
       }
     } else {
       verified = true;
     }
     if (verified) {
       return loadMapOptions();
-    } else {
-      alert('Åtkomst nekad!');
     }
+    alert('Åtkomst nekad!');
   }
 
   function checkSAMLRequest(samlRequest) {
     // Check if authorization is required before map options is loaded
     if (config.samlUrl) {
-      return fetch(config.samlUrl + '?SAMLRequest=' + samlRequest)
+      return fetch(`${config.samlUrl}?SAMLRequest=${samlRequest}`)
+        .then(response => {
+          console.log(response);
+          console.log(response.url);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          } else {
+          // const samlRequest = response.json();
+          // console.log(JSON.parse(samlRequest));
+
+            // return loadMapOptions();
+            return response.json();
+          }
+        })
+        .then((data) => {
+        // `data` is the parsed version of the JSON returned from the above endpoint.
+          console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
+        // return loadMapOptions();
+        })
+        .catch(error => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+  }
+
+  // Check if authorization is required before map options is loaded
+  if (config.authorizationUrl) {
+    const options = {
+      mode: 'no-cors',
+      method: 'GET',
+      cache: 'no-cache',
+      redirect: 'follow'
+    };
+    return fetch(config.authorizationUrl)
       .then(response => {
         console.log(response);
         console.log(response.url);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         } else {
-          //const samlRequest = response.json();
-          //console.log(JSON.parse(samlRequest));
+        // const samlRequest = response.json();
+        // console.log(JSON.parse(samlRequest));
 
           // return loadMapOptions();
           return response.json();
         }
       })
-      .then(function(data) {
-        // `data` is the parsed version of the JSON returned from the above endpoint.
-        console.log(data);  // { "userId": 1, "id": 1, "title": "...", "body": "..." }
-        // return loadMapOptions();
+      .then((data) => {
+      // `data` is the parsed version of the JSON returned from the above endpoint.
+        console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
+        checkSAMLRequest(data.SAMLRequest);
+      // return loadMapOptions();
       })
       .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
       });
-    }
-  }
-
-  // Check if authorization is required before map options is loaded
-  if (config.authorizationUrl) {
-    let options = {
-        mode :'no-cors',
-        method: 'GET',
-        cache: 'no-cache',
-        redirect: 'follow'
-    };
-    return fetch(config.authorizationUrl)
-    .then(response => {
-      console.log(response);
-      console.log(response.url);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      } else {
-        //const samlRequest = response.json();
-        //console.log(JSON.parse(samlRequest));
-
-        // return loadMapOptions();
-        return response.json();
-      }
-    })
-    .then(function(data) {
-      // `data` is the parsed version of the JSON returned from the above endpoint.
-      console.log(data);  // { "userId": 1, "id": 1, "title": "...", "body": "..." }
-      checkSAMLRequest(data.SAMLRequest);
-      // return loadMapOptions();
-    })
-    .catch(error => {
-      console.error('There has been a problem with your fetch operation:', error);
-    });
-    //return $.ajax({
+    // return $.ajax({
     //  url: config.authorizationUrl
-    //})
-    //.then(() => loadMapOptions())
-    //.fail(() => alert('Åtkomst nekad!'));
-      //.then(function ( dataResponse ) {
-      //  return processResponse(dataResponse)
-      //});
+    // })
+    // .then(() => loadMapOptions())
+    // .fail(() => alert('Åtkomst nekad!'));
+    // .then(function ( dataResponse ) {
+    //  return processResponse(dataResponse)
+    // });
   }
   return loadMapOptions();
 };

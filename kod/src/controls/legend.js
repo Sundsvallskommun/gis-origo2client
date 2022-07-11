@@ -25,7 +25,8 @@ const Legend = function Legend(options = {}) {
     searchLayersMinLength = 2,
     searchLayersLimit = 10,
     searchLayersParameters = ['name', 'title'],
-    searchLayersPlaceholderText = 'Sök lager'
+    searchLayersPlaceholderText = 'Sök lager',
+    styleFromServer = false,
   } = options;
 
   let {
@@ -517,7 +518,7 @@ const Legend = function Legend(options = {}) {
       target = document.getElementById(viewer.getMain().getId());
       const maxHeight = calcMaxHeight(getTargetHeight());
       overlaysCmp = Overlays({
-        viewer, cls: contentCls, style: contentStyle, labelOpacitySlider
+        viewer, cls: contentCls, style: contentStyle, labelOpacitySlider, styleFromServer
       });
       visibleOverlaysCmp = VisibleOverlays({
         viewer, cls: `${contentCls} hidden`, style: contentStyle, labelOpacitySlider
