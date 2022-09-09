@@ -1,6 +1,6 @@
 import Awesomplete from 'awesomplete';
 import {
-  Component, Button, Element as El, ToggleGroup, dom, Input
+  Component, Button, Element as El, ToggleGroup, dom, Input, Dropdown
 } from '../ui';
 import imageSource from './legend/imagesource';
 import Overlays from './legend/overlays';
@@ -20,6 +20,7 @@ const Legend = function Legend(options = {}) {
     labelOpacitySlider = '',
     visibleLayersControl = false,
     turnOffLayersControl = false,
+    themesControl = false,
     useGroupIndication = true,
     searchLayersControl = false,
     searchLayersMinLength = 2,
@@ -143,6 +144,17 @@ const Legend = function Legend(options = {}) {
     });
   };
 
+  const themesLayers = function themesLayers(selectedTheme) {
+    const layers = viewer.getLayers();
+    layers.forEach((el) => {
+      if (typeof el.get('theme') !== 'undefined') {
+        if (el.get('theme').includes(selectedTheme)) {
+          el.setVisible(true);
+        }
+      }
+    });
+  };
+
   const divider = El({
     cls: 'divider margin-x-small',
     style: {
@@ -246,6 +258,16 @@ const Legend = function Legend(options = {}) {
     style: { height: '1.5rem', margin: 0, width: '100%' },
     placeholderText: searchLayersPlaceholderText,
     value: ''
+  });
+
+  const themesDropdown = Dropdown({
+    direction: 'up',
+    cls: 'o-scalepicker text-white flex',
+    contentCls: 'bg-grey-darker text-smallest rounded',
+    buttonCls: 'bg-grey-lightest text-black',
+    ariaLabel: 'Tänd tema lager',
+    style: { height: '1.5rem', margin: 0, width: '100%' },
+    buttonIconCls: 'black'
   });
 
   const toggleVisibility = function toggleVisibility() {
@@ -450,14 +472,13 @@ const Legend = function Legend(options = {}) {
       restoreState(params);
     },
     getuseGroupIndication() { return useGroupIndication; },
-    addButtonToTools(button, addDiveder = true) {
+    getOverlaysCollapse() { return overlaysCmp.overlaysCollapse; },
+    addButtonToTools(button) {
       const toolsEl = document.getElementById(toolsCmp.getId());
       toolsEl.classList.remove('hidden');
       if (toolsCmp.getComponents().length > 0) {
         toolsEl.style.justifyContent = 'space-between';
-        if (addDiveder) {
-          toolsEl.insertBefore(dom.html(divider.render()), toolsEl.firstChild);
-        }
+        toolsEl.insertBefore(dom.html(divider.render()), toolsEl.firstChild);
         toolsEl.insertBefore(dom.html(button.render()), toolsEl.firstChild);
       } else {
         toolsEl.appendChild(dom.html(button.render()));
@@ -491,8 +512,10 @@ const Legend = function Legend(options = {}) {
     },
     onRender() {
       const layerControlCmps = [];
+      if (turnOnLayersControl) layerControlCmps.push(turnOnLayersButton);
       if (turnOffLayersControl) layerControlCmps.push(turnOffLayersButton);
       const layerControl = El({
+        cls: 'grow flex justify-end align-center no-shrink',
         components: layerControlCmps
       });
       mainContainerEl = document.getElementById(mainContainerCmp.getId());
@@ -503,9 +526,16 @@ const Legend = function Legend(options = {}) {
         toggleVisibility();
       });
       window.addEventListener('resize', updateMaxHeight);
-      if (turnOffLayersControl) this.addButtonToTools(turnOffLayersButton, false);
-      if (turnOnLayersControl) this.addButtonToTools(turnOnLayersButton, false);
+      if (layerControlCmps.length > 0) this.addButtonToTools(layerControl);
       if (searchLayersControl) this.addButtonToTools(layerSearchInput);
+      if (themesControl) {
+        this.addButtonToTools(themesDropdown);
+        themesDropdown.setButtonText(themesControl.buttonText);
+        themesDropdown.setItems(themesControl.items);
+        document.getElementById(themesDropdown.getId()).addEventListener('dropdown:select', (evt) => {
+          themesLayers(evt.target.textContent);
+        });
+      }
       initAutocomplete();
       bindUIActions();
       setTabIndex();
