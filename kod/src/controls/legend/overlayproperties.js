@@ -14,16 +14,7 @@ const OverlayProperties = function OverlayProperties(options = {}) {
   const abstract = layer.get('abstract') || '';
   const opacity = layer.getOpacity();
   const opacityControl = layer.get('opacityControl') !== false;
-  let style = viewer.getStyle(layer.get('styleName'));
-  if (layer.get('styleFromServer')) {
-    style = [[
-                {"icon": {
-                        "src":`${layer.get('source').urls[0]}?LAYER=${layer.get('id')}&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&FORMAT=image%2Fgif`
-                    },
-                    "extendedLegend": false
-                }
-            ]];
-  }
+  const style = viewer.getStyle(layer.get('styleName'));
   const legend = Legend(style, opacity);
   const stylePicker = viewer.getLayerStylePicker(layer);
 

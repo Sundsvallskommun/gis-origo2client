@@ -4,9 +4,6 @@ import PopupMenu from '../../ui/popupmenu';
 import exportToFile from '../../utils/exporttofile';
 
 const OverlayLayer = function OverlayLayer(options) {
-  let {
-    style,
-  } = options;
   const {
     headerIconCls = '',
     cls: clsSettings = '',
@@ -14,8 +11,8 @@ const OverlayLayer = function OverlayLayer(options) {
     iconCls = 'grey-lightest',
     layer,
     position = 'top',
-    viewer,
-    styleFromServer
+    style,
+    viewer
   } = options;
 
   const buttons = [];
@@ -42,16 +39,6 @@ const OverlayLayer = function OverlayLayer(options) {
   }
 
   const opacity = layer.getOpacity();
-  if (layer.get('styleFromServer')) {
-    console.log(layer);
-    console.log(layer.get('source').getUrls()[0]);
-    style = [[
-                {"icon": {
-                        "src":`${layer.get('source').getUrls()[0]}?LAYER=${layer.get('id')}&TRANSPARENT=TRUE&SERVICE=WMS&VERSION=${layer.get('source').params_.VERSION}&REQUEST=GetLegendGraphic&FORMAT=${layer.get('source').params_.FORMAT}`
-                    }
-                }
-            ]];
-  }
   let headerIcon = HeaderIcon(style, opacity);
   if (!headerIcon) {
     headerIcon = icon;
@@ -111,11 +98,6 @@ const OverlayLayer = function OverlayLayer(options) {
       if (hasExtendedLegend) {
         extendedLegendContent.toggle();
       }
-      if (!secure) {
-        // Special for Sundsvall toggle on name and show style on icon
-        document.getElementById(this.getId()).dispatchEvent(eventOverlayProps);
-        //toggleVisible(layer.getVisible());
-      }
     },
     style: {
       height: 'calc(1.5rem + 2px)',
@@ -152,10 +134,8 @@ const OverlayLayer = function OverlayLayer(options) {
     onRender() {
       const labelEl = document.getElementById(this.getId());
       labelEl.addEventListener('click', (e) => {
-        //layerIcon.dispatch('click');
-        //e.preventDefault();
-        // Special for Sundsvall toggle on name and show style on icon
-        toggleVisible(layer.getVisible());
+        toggleButton.dispatch('click');
+        e.preventDefault();
       });
     },
     render() {
