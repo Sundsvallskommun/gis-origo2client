@@ -20,8 +20,7 @@ const Overlays = function Overlays(options) {
     expanded = true,
     style: styleSettings = {},
     viewer,
-    labelOpacitySlider,
-    styleFromServer
+    labelOpacitySlider
   } = options;
 
   const cls = `${clsSettings} o-layerswitcher-overlays flex row overflow-hidden`.trim();
@@ -156,7 +155,7 @@ const Overlays = function Overlays(options) {
     const styleName = layer.get('styleName') || null;
     const layerStyle = styleName ? viewer.getStyle(styleName) : undefined;
     const overlay = Overlay({
-      layer, style: layerStyle, position, viewer, styleFromServer
+      layer, style: layerStyle, position, viewer
     });
     const groupName = layer.get('group');
     if (rootGroupNames.includes(groupName)) {
