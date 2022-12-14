@@ -37,8 +37,13 @@ const replacer = function replacer() {
               objectTemp = objectTemp[key];
             }
           } while (splitMatch.length > 1);
-          if (typeof objectTemp[splitMatch[0]] !== 'undefined') {
-            val = objectTemp[splitMatch[0]];
+          // Sundsvall special: koll om värdet är tomt
+          if (objectTemp !== null) {
+            if (typeof objectTemp[splitMatch[0]] !== 'undefined') {
+              val = objectTemp[splitMatch[0]];
+            } else {
+              val = '';
+            }
           } else {
             val = '';
           }
