@@ -14,7 +14,11 @@ export default function Icon(options = {}) {
 
   let iconType = typeOfIcon(icon);
   const style = createStyle(styleOptions);
-
+  // Sundsvall special: If more than one icon is representing style choose first
+  if (Array.isArray(icon)) {
+    iconType = 'img';
+    icon = icon[0];
+  }
   return Component({
     render() {
       if (iconType === 'image') {
