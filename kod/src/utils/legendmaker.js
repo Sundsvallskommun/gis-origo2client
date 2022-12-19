@@ -30,8 +30,17 @@ export const findCircleSize = function findCircleSize(styles) {
 
 export const findStyleType = function findStyleType(styles) {
   const styleTypes = styles.reduce((acc, style) => Object.assign({}, acc, style), {});
-  if (styleTypes.stroke && styleTypes.fill) {
+  // Sundsvall special: If style has both polygon/line and/or icon/image add multiple icons to response
+  if (styleTypes.stroke && styleTypes.fill && styleTypes.icon) {
+    return ['Polygon','Icon'];
+  } else if (styleTypes.stroke && styleTypes.fill && styleTypes.image) {
+    return ['Polygon','Image'];
+  } else if (styleTypes.stroke && styleTypes.fill) {
     return 'Polygon';
+  } else if (styleTypes.stroke && styleTypes.icon) {
+    return ['Line','Icon'];
+  } else if (styleTypes.stroke && styleTypes.image) {
+    return ['Line','Image'];
   } else if (styleTypes.stroke) {
     return 'Line';
   } else if (styleTypes.circle) {
@@ -71,55 +80,100 @@ export const renderSvgIcon = function renderSvgIcon(styleRule, {
   opacity
 } = {}) {
   const styleType = findStyleType(styleRule);
-  if (styleType in renderIcon) {
-    if (styleType === 'Polygon') {
-      const polygonOptions = styleRule.find(style => style.fill);
-      const icon = renderIcon.Circle({
-        fill: polygonOptions.fill,
-        stroke: polygonOptions.stroke
-      });
-      return `${renderSvg(icon, { opacity })}`;
-    } else if (styleType === 'Line') {
-      const icon = styleRule.reduce((prev, style) => {
-        if (style.stroke) {
-          return prev + renderIcon.Circle({
-            stroke: style.stroke
+  // Sundsvall special: If style has both polygon/line and/or icon/image add multiple icons to response
+  if (Array.isArray(styleType)) {
+    const arrSvgs = [];
+    styleType.forEach((sType) => {
+      if (sType in renderIcon) {
+        if (sType === 'Polygon') {
+          const polygonOptions = styleRule.find(style => style.fill);
+          const icon = renderIcon.Circle({
+            fill: polygonOptions.fill,
+            stroke: polygonOptions.stroke
           });
+          arrSvgs.push(`${renderSvg(icon, { opacity })}`);
+        } else if (sType === 'Line') {
+          const icon = styleRule.reduce((prev, style) => {
+            if (style.stroke) {
+              return prev + renderIcon.Circle({
+                stroke: style.stroke
+              });
+            }
+            return prev;
+          }, '');
+          arrSvgs.push(`${renderSvg(icon, { opacity })}`);
+        } else if (sType === 'Icon') {
+          const iconOption = styleRule.find(style => style.icon.src);
+          const icon = renderIcon.Icon(iconOption.icon);
+          arrSvgs.push(icon);
+        } else if (sType === 'Image') {
+          const iconOption = styleRule.find(style => style.image.src);
+          const icon = renderIcon.Icon(iconOption.image);
+          arrSvgs.push(icon);
         }
-        return prev;
-      }, '');
-      return `${renderSvg(icon, { opacity })}`;
-    } else if (styleType === 'Circle') {
-      const circleSize = findCircleSize(styleRule);
-      const icon = styleRule.reduce((prev, style) => {
-        if (style.circle) {
-          return prev + renderIcon.Circle(style.circle, circleSize);
+      }
+      });
+      return arrSvgs;
+    } else {
+      if (styleType in renderIcon) {
+        if (styleType === 'Polygon') {
+          const polygonOptions = styleRule.find(style => style.fill);
+          const icon = renderIcon.Circle({
+            fill: polygonOptions.fill,
+            stroke: polygonOptions.stroke
+          });
+          return `${renderSvg(icon, { opacity })}`;
+        } else if (styleType === 'Line') {
+          const icon = styleRule.reduce((prev, style) => {
+            if (style.stroke) {
+              return prev + renderIcon.Circle({
+                stroke: style.stroke
+              });
+            }
+            return prev;
+          }, '');
+          return `${renderSvg(icon, { opacity })}`;
+        } else if (styleType === 'Circle') {
+          const circleSize = findCircleSize(styleRule);
+          const icon = styleRule.reduce((prev, style) => {
+            if (style.circle) {
+              return prev + renderIcon.Circle(style.circle, circleSize);
+            }
+            return prev;
+          }, '');
+          return `${renderSvg(icon, { opacity, size: circleSize })}`;
+        } else if (styleType === 'Text') {
+          const textOptions = styleRule.find(style => style.text);
+          const icon = renderIcon.Text(textOptions.text);
+          return `${renderSvg(icon, { opacity })}`;
+        } else if (styleType === 'Icon') {
+          const iconOption = styleRule.find(style => style.icon.src);
+          const icon = renderIcon.Icon(iconOption.icon);
+          return icon;
+        } else if (styleType === 'Image') {
+          const iconOption = styleRule.find(style => style.image.src);
+          const icon = renderIcon.Icon(iconOption.image);
+          return icon;
         }
-        return prev;
-      }, '');
-      return `${renderSvg(icon, { opacity, size: circleSize })}`;
-    } else if (styleType === 'Text') {
-      const textOptions = styleRule.find(style => style.text);
-      const icon = renderIcon.Text(textOptions.text);
-      return `${renderSvg(icon, { opacity })}`;
-    } else if (styleType === 'Icon') {
-      const iconOption = styleRule.find(style => style.icon.src);
-      const icon = renderIcon.Icon(iconOption.icon);
-      return icon;
-    } else if (styleType === 'Image') {
-      const iconOption = styleRule.find(style => style.image.src);
-      const icon = renderIcon.Icon(iconOption.image);
-      return icon;
+        return '';
+      }
     }
-    return '';
-  }
   return '';
 };
 
 export const renderLegendItem = function renderLegendItem(svgIcon, label = '') {
   const style = `style="width: ${size}px; height: ${size}px;"`;
+  let icons = '';
+  // Sundsvall special: If more than one icon is representing style show all
+  if (Array.isArray(svgIcon)) {
+    svgIcon.forEach((icon) => {
+      icons = `${icons}<div ${style} class="icon-small round">${icon}</div>`;
+    });
+  } else {
+    icons = `<div ${style} class="icon-small round">${svgIcon}</div>`;
+  }
   return `<li class="flex row align-center padding-y-smallest">
-            <div ${style} class="icon-small round">${svgIcon}</div>
+            ${icons}
             <div class="text-smaller padding-left-small">${label}</div>
           </li>`;
 };
