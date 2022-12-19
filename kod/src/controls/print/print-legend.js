@@ -151,7 +151,11 @@ const LayerRow = function LayerRow(options) {
   };
 
   const getStyleIcon = (style) => {
-    const styleIcon = renderSvgIcon(style, { opacity: 100 });
+    let styleIcon = renderSvgIcon(style, { opacity: 100 });
+    // Sundsvall special: If more than one icon is representing style choose first
+    if (Array.isArray(styleIcon)) {
+      styleIcon = styleIcon[0];
+    }
     if (styleIcon.includes('<svg')) {
       return styleIcon.replaceAll('24px', '100%');
     }
