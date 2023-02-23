@@ -20,7 +20,8 @@ const Overlays = function Overlays(options) {
     expanded = true,
     style: styleSettings = {},
     viewer,
-    labelOpacitySlider
+    labelOpacitySlider,
+    metadataUrl
   } = options;
 
   const cls = `${clsSettings} o-layerswitcher-overlays flex row overflow-hidden`.trim();
@@ -155,7 +156,7 @@ const Overlays = function Overlays(options) {
     const styleName = layer.get('styleName') || null;
     const layerStyle = styleName ? viewer.getStyle(styleName) : undefined;
     const overlay = Overlay({
-      layer, style: layerStyle, position, viewer
+      layer, style: layerStyle, position, viewer, metadataUrl
     });
     const groupName = layer.get('group');
     if (rootGroupNames.includes(groupName)) {
@@ -282,6 +283,20 @@ const Overlays = function Overlays(options) {
           slidenav.on('slide', () => {
             el.classList.remove('width-100');
           });
+        }
+        evt.stopPropagation();
+      });
+      el.addEventListener('metadataclick', (evt) => {
+        if (evt.detail.layer) {
+          let layername = evt.detail.layer.get('name').toLowerCase();
+          let metadataUrlLayer = metadataUrl;
+          if (layername.lastIndexOf('__') > 0) {
+            layername = layername.substring(0, layername.lastIndexOf('__'));
+          }
+          if (metadataUrl.includes('{layername}')) {
+            metadataUrlLayer = metadataUrl.replace('{layername}', layername);
+          }
+          window.open(metadataUrlLayer);
         }
         evt.stopPropagation();
       });

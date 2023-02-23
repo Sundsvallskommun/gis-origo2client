@@ -14,6 +14,9 @@ const OverlayLayer = function OverlayLayer(options) {
     style,
     viewer
   } = options;
+  let {
+    metadataUrl
+  } = options;
 
   const buttons = [];
   let headerIconClass = headerIconCls;
@@ -47,6 +50,13 @@ const OverlayLayer = function OverlayLayer(options) {
   }
 
   const eventOverlayProps = new CustomEvent('overlayproperties', {
+    bubbles: true,
+    detail: {
+      layer
+    }
+  });
+
+  const eventMetadata = new CustomEvent('metadataclick', {
     bubbles: true,
     detail: {
       layer
@@ -116,7 +126,7 @@ const OverlayLayer = function OverlayLayer(options) {
       /* Make the padlock clickable which triggers a login dialog
       if (!secure) {
         toggleVisible(layer.getVisible());
-      }*/
+      } */
       toggleVisible(layer.getVisible());
     },
     style: {
@@ -159,6 +169,24 @@ const OverlayLayer = function OverlayLayer(options) {
     }
   });
   popupMenuItems.push(layerInfoMenuItem);
+
+  if (metadataUrl !== '') {
+    const metadataMenuItem = Component({
+      onRender() {
+        const labelEl = document.getElementById(this.getId());
+        labelEl.addEventListener('click', (e) => {
+          popupMenu.setVisibility(false);
+          document.getElementById(moreInfoButton.getId()).dispatchEvent(eventMetadata);
+          e.preventDefault();
+        });
+      },
+      render() {
+        const labelCls = 'text-smaller padding-x-small grow pointer no-select overflow-hidden';
+        return `<li id="${this.getId()}" class="${labelCls}">Visa metadata</li>`;
+      }
+    });
+    popupMenuItems.push(metadataMenuItem);
+  }
 
   if (layer.get('zoomToExtent')) {
     const zoomToExtentMenuItem = Component({
