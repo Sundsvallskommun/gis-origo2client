@@ -43,7 +43,7 @@ Your pull request should:
 
  * Be able to merge without conflicts.
 
- * The subject of the PR should start with one of these prefix:
+ * The subject of the PR has to start with one of these prefix:
    * dep: updated dependencies
    * docs: editing .md-files in this repo
    * feature: for new features
