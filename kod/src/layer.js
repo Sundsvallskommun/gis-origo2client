@@ -35,8 +35,7 @@ const Layer = function Layer(optOptions, viewer) {
     extent: undefined,
     attributes: undefined,
     tileSize: viewer.getTileSize(),
-    attachments: undefined,
-    styleFromServer: false
+    attachments: undefined
   };
   const projection = viewer.getProjection();
   const options = optOptions || {};
