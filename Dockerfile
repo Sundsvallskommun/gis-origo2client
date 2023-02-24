@@ -1,7 +1,7 @@
 FROM nginx:stable
 MAINTAINER Johnny Blaesta<johnny.blasta@sundsvall.se>
 RUN apt-get update --allow-releaseinfo-change && apt-get install -y apt-utils && apt-get install -y curl gnupg
-RUN curl -sL https://deb.nodesource.com/setup_18.x |bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x |bash -
 RUN apt-get update -y && apt-get install -y nodejs
 WORKDIR /usr/share/nginx/html
 RUN rm -rf *
