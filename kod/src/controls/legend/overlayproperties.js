@@ -58,7 +58,7 @@ const OverlayProperties = function OverlayProperties(options = {}) {
   }
 
   function renderStyleSelection() {
-    const html = `<div class="o-stylepicker-header text-small padding-small">Välj stil</div>${styleSelection.render()}`;
+    const html = `<div class="o-stylepicker-header text-small padding-small">VÃ¤lj stil</div>${styleSelection.render()}`;
     return hasStylePicker() ? html : '';
   }
 
@@ -127,7 +127,7 @@ const OverlayProperties = function OverlayProperties(options = {}) {
         buttonTextCls: 'text-smaller',
         text: getStyleDisplayName(layer.get('styleName')),
         buttonIconCls: 'black',
-        ariaLabel: 'Välj stil'
+        ariaLabel: 'VÃ¤lj stil'
       });
       const components = [transparencySlider];
       if (hasStylePicker()) {
