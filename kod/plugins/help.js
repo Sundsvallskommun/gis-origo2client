@@ -14,19 +14,23 @@ const Help = function Help(options = {}) {
     onAdd(evt) {
       viewer = evt.target;
       mapMenu = viewer.getControlByName('mapmenu');
-      menuItem = mapMenu.MenuItem({
-        click() {
-          visaInfo(url, target);
-          mapMenu.close();
-        },
-        icon,
-        title: buttonText
-      });
-      this.addComponent(menuItem);
+      if (mapMenu !== null) {
+        menuItem = mapMenu.MenuItem({
+          click() {
+            visaInfo(url, target);
+            mapMenu.close();
+          },
+          icon,
+          title: buttonText
+        });
+        this.addComponent(menuItem);
+      }
       this.render();
     },
     render() {
-      mapMenu.appendMenuItem(menuItem);
+      if (mapMenu !== null) {
+        mapMenu.appendMenuItem(menuItem);
+      }
       this.dispatch('render');
     }
   });
