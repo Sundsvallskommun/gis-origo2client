@@ -54,7 +54,7 @@ export const html2canvas = function html2canvas(el) {
     useCORS: true,
     allowTaint: true,
     backgroundColor: '#FFFFFF',
-    logging: false,
+    logging: true,
     height: el.offsetHeight,
     width: el.offsetWidth
   });
@@ -145,7 +145,7 @@ export const printToScalePDF = async function printToScalePDF({
     useCORS: true,
     allowTaint: true,
     backgroundColor: '#FFFFFF',
-    logging: false,
+    logging: true,
     height: heightImage,
     width: widthImage
   })
