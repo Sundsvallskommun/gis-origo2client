@@ -249,12 +249,14 @@ function checkOptions(options = {}) {
         });
         let filterMatch = true;
         let filterMatchOR = false;
+        let matchedIndex = 0;
         // Check for true/false depending on if it is AND, OR, RegExp or single filtering
-        exprArr.forEach((exp) => {
+        exprArr.forEach((exp, index) => {
           if (filtering === 'AND') {
             // eslint-disable-next-line no-eval
             if (eval(exp) && filterMatch) {
               filterMatch = true;
+              matchedIndex = index;
             } else {
               filterMatch = false;
             }
@@ -262,6 +264,7 @@ function checkOptions(options = {}) {
             // eslint-disable-next-line no-eval
             if ((eval(exp) || filterMatchOR)) {
               filterMatch = true;
+              matchedIndex = index;
             } else {
               filterMatch = false;
             }
@@ -270,12 +273,14 @@ function checkOptions(options = {}) {
             // eslint-disable-next-line no-eval
             if (regexExpr.test(featMatch)) {
               filterMatch = true;
+              matchedIndex = index;
             } else {
               filterMatch = false;
             }
           } else if (filtering === 'DATETIMEDIFFNOW') {
             if (Date.parse(exp.replaceAll('"', '')) > Date.now() - dateDiffNowFilter * 1000) {
               filterMatch = true;
+              matchedIndex = index;
             } else {
               filterMatch = false;
             }
@@ -283,6 +288,7 @@ function checkOptions(options = {}) {
             // eslint-disable-next-line no-eval
             if (eval(exp)) {
               filterMatch = true;
+              matchedIndex = index;
             } else {
               filterMatch = false;
             }
@@ -290,7 +296,7 @@ function checkOptions(options = {}) {
         });
         if (filterMatch) {
           styleL = styleList[j];
-          return styleL;
+            return styleL;
         }
       } else {
         styleL = styleList[j];
