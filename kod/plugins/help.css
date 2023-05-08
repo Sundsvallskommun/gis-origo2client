@@ -24,10 +24,10 @@
 /*---------------------------------------------------------------------------------*/
 /* Lagersymbolen i legenden läggs längst upp (syns vid långa lagernamn med radbrytning)*/
 /*---------------------------------------------------------------------------------*/
-.o-ui .flex .align-center {
-  /* align-items: center; */
+/*.o-ui .flex .align-center {
+  /* align-items: center; 
   align-items: unset;
-}
+}*/
 
 /*--------------------------------------------------------------------------------*/
 /* Visa och dölj info-framen -----------------------------------------------------*/
