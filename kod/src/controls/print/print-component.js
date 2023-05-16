@@ -669,10 +669,11 @@ const PrintComponent = function PrintComponent(options = {}) {
       if (draganddropControl) draganddropControl.addInteraction();
     },
     render() {
-      viewer.dispatch('toggleClickInteraction', {
+      // Sundsvalls special to not interfer with LMSearch
+      /* viewer.dispatch('toggleClickInteraction', {
         name: 'featureinfo',
         active: true
-      });
+      }); */
       if (deviceOnIos) {
         // If user is on iOS we have to make sure the canvas ain't too heavy and make the browser crash
         // eslint-disable-next-line no-underscore-dangle
