@@ -1,10 +1,6 @@
 import { renderIcon, renderSvg } from './legendrender';
-import { Button } from '../ui';
 
 const size = 24;
-
-const checkIcon = '#ic_check_circle_24px';
-let uncheckIcon = '#ic_radio_button_unchecked_24px';
 
 export const isHidden = function isHidden(arr) {
   const hiddenItem = arr.find(item => item.hidden);
@@ -15,16 +11,6 @@ export const isHidden = function isHidden(arr) {
     return false;
   }
   return false;
-};
-
-const toggleFeatures = function toggleFeatures(label) {
-  console.log(label);
-  return false;
-};
-
-const getCheckIcon = (visible) => {
-  const isVisible = visible ? checkIcon : uncheckIcon;
-  return isVisible;
 };
 
 export const findCircleSize = function findCircleSize(styles) {
@@ -179,20 +165,6 @@ export const renderLegendItem = function renderLegendItem(svgIcon, label = '') {
   const style = `style="width: ${size}px; height: ${size}px;"`;
   let icons = '';
 
-  const toggleButton = Button({
-    cls: 'round small icon-smaller no-shrink',
-    click() {
-      console.log('test');
-      toggleFeatures(label);
-    },
-    style: {
-      'align-self': 'right',
-      'padding-left': '.5rem'
-    },
-    icon: getCheckIcon(true),
-    ariaLabel: 'Växla synlighet',
-    tabIndex: -1
-  });
   // Sundsvall special: If more than one icon is representing style show all
   if (Array.isArray(svgIcon)) {
     svgIcon.forEach((icon) => {
@@ -203,11 +175,9 @@ export const renderLegendItem = function renderLegendItem(svgIcon, label = '') {
   }
   const strLegendItem = `<li class="flex row align-center padding-y-smallest">
             ${icons}
-            <div class="text-smaller padding-left-small grow basis-50">${label}</div>${toggleButton.render()}
+            <div class="text-smaller padding-left-small grow basis-50">${label}</div>
           </li>`;
 
-  toggleButton.onInit();
-  //toggleButton.onRender();
   return strLegendItem;
 };
 
@@ -229,7 +199,7 @@ export const Legend = function Legend(styleRules, opacity = 1) {
           if (extendedLegendItem && extendedLegendItem.icon) {
             return prevRule + renderExtendedLegendItem(extendedLegendItem);
           }
-//console.log(styleRule);
+
           const svgIcon = renderSvgIcon(styleRule, { opacity });
           return prevRule + renderLegendItem(svgIcon, label);
         }
