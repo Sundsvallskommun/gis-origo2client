@@ -1,6 +1,9 @@
 import { renderIcon, renderSvg } from './legendrender';
+import { Button, Element as El } from '../ui';
 
 const size = 24;
+const checkIcon = '#ic_check_circle_24px';
+const uncheckIcon = '#ic_radio_button_unchecked_24px';
 
 export const isHidden = function isHidden(arr) {
   const hiddenItem = arr.find(item => item.hidden);
@@ -123,49 +126,48 @@ export const renderSvgIcon = function renderSvgIcon(styleRule, {
       }
     });
     return arrSvgs;
-  } else {
-    if (styleType in renderIcon) {
-      if (styleType === 'Polygon') {
-        const polygonOptions = styleRule.find(style => style.fill);
-        const icon = renderIcon.Circle({
-          fill: polygonOptions.fill,
-          stroke: polygonOptions.stroke
-        });
-        return `${renderSvg(icon, { opacity })}`;
-      } else if (styleType === 'Line') {
-        const icon = styleRule.reduce((prev, style) => {
-          if (style.stroke) {
-            return prev + renderIcon.Circle({
-              stroke: style.stroke
-            });
-          }
-          return prev;
-        }, '');
-        return `${renderSvg(icon, { opacity })}`;
-      } else if (styleType === 'Circle') {
-        const circleSize = findCircleSize(styleRule);
-        const icon = styleRule.reduce((prev, style) => {
-          if (style.circle) {
-            return prev + renderIcon.Circle(style.circle, circleSize);
-          }
-          return prev;
-        }, '');
-        return `${renderSvg(icon, { opacity, size: circleSize })}`;
-      } else if (styleType === 'Text') {
-        const textOptions = styleRule.find(style => style.text);
-        const icon = renderIcon.Text(textOptions.text);
-        return `${renderSvg(icon, { opacity })}`;
-      } else if (styleType === 'Icon') {
-        const iconOption = styleRule.find(style => style.icon.src);
-        const icon = renderIcon.Icon(iconOption.icon);
-        return icon;
-      } else if (styleType === 'Image') {
-        const iconOption = styleRule.find(style => style.image.src);
-        const icon = renderIcon.Icon(iconOption.image);
-        return icon;
-      }
-      return '';
+  }
+  if (styleType in renderIcon) {
+    if (styleType === 'Polygon') {
+      const polygonOptions = styleRule.find(style => style.fill);
+      const icon = renderIcon.Circle({
+        fill: polygonOptions.fill,
+        stroke: polygonOptions.stroke
+      });
+      return `${renderSvg(icon, { opacity })}`;
+    } else if (styleType === 'Line') {
+      const icon = styleRule.reduce((prev, style) => {
+        if (style.stroke) {
+          return prev + renderIcon.Circle({
+            stroke: style.stroke
+          });
+        }
+        return prev;
+      }, '');
+      return `${renderSvg(icon, { opacity })}`;
+    } else if (styleType === 'Circle') {
+      const circleSize = findCircleSize(styleRule);
+      const icon = styleRule.reduce((prev, style) => {
+        if (style.circle) {
+          return prev + renderIcon.Circle(style.circle, circleSize);
+        }
+        return prev;
+      }, '');
+      return `${renderSvg(icon, { opacity, size: circleSize })}`;
+    } else if (styleType === 'Text') {
+      const textOptions = styleRule.find(style => style.text);
+      const icon = renderIcon.Text(textOptions.text);
+      return `${renderSvg(icon, { opacity })}`;
+    } else if (styleType === 'Icon') {
+      const iconOption = styleRule.find(style => style.icon.src);
+      const icon = renderIcon.Icon(iconOption.icon);
+      return icon;
+    } else if (styleType === 'Image') {
+      const iconOption = styleRule.find(style => style.image.src);
+      const icon = renderIcon.Icon(iconOption.image);
+      return icon;
     }
+    return '';
   }
   return '';
 };
@@ -182,42 +184,169 @@ export const renderLegendItem = function renderLegendItem(svgIcon, label = '') {
   } else {
     icons = `<div ${style} class="icon-small round">${svgIcon}</div>`;
   }
-  const strLegendItem = `<li class="flex row align-center padding-y-smallest">
-            ${icons}
-            <div class="text-smaller padding-left-small grow basis-50">${label}</div>
-          </li>`;
 
-  return strLegendItem;
+  const legendCmp = El({ cls: 'flex row align-center padding-y-smallest',
+    innerHTML: `${icons}<div class="text-smaller padding-left-small grow basis-50">${label}</div>` });
+  return legendCmp;
 };
+function updateLayer(layer, viewer) {
+  const styleName = layer.get('styleName');
+  const style = viewer.getStyle(styleName);
+  if (style[0] && style[0].thematic) {
+    const thematicArr = style[0].thematic;
+    // Check if any theme is not visible, otherwise remove filter
+    const checkArr = obj => obj.visible === false;
+    if (thematicArr.some(checkArr)) {
+      let filterStr = '';
+      thematicArr.forEach(theme => {
+        if (theme.visible) {
+          filterStr += filterStr === '' ? '' : ' OR ';
+          filterStr += theme.filter;
+        }
+      });
+      if (filterStr === '') {
+        filterStr = "IN ('')";
+      }
+      layer.getSource().updateParams({ CQL_FILTER: filterStr });
+    } else {
+      layer.getSource().updateParams({ CQL_FILTER: null });
+    }
+  }
+}
+
+async function setIcon(src, cmp, styleRules, layer, viewer, clickable) {
+  const styleName = layer.get('styleName');
+  const style = viewer.getStyle(styleName);
+  if (!style[0].thematic) {
+    style[0].thematic = [];
+    const paramsString = src.icon.json;
+    const searchParams = new URLSearchParams(paramsString);
+    const response = await fetch(src.icon.json);
+    const jsonData = await response.json();
+    jsonData.Legend[0].rules.forEach(row => {
+      searchParams.set('FORMAT', 'image/png');
+      searchParams.set('RULE', row.name);
+      const imgUrl = decodeURIComponent(searchParams.toString());
+      style[0].thematic.push({
+        image: { src: imgUrl },
+        filter: row.filter,
+        name: row.name,
+        label: row.title,
+        visible: row.visible !== false
+      });
+    });
+    viewer.setStyle(styleName, style);
+  }
+  const cmps = [];
+  for (let index = 0; index < style[0].thematic.length; index += 1) {
+    const rule = style[0].thematic[index];
+    let label = rule.label || '';
+    const svgIcon = renderSvgIcon([rule], { opacity: 1 });
+    const elCmps = [];
+    if (layer) {
+      const toggleButton = Button({
+        cls: `round small icon-smaller no-shrink${clickable ? '' : ' cursor-default'}`,
+        click() {
+          if (clickable) {
+            const visible = viewer.getStyles()[styleName][0].thematic[index].visible !== false;
+            this.setIcon(!visible ? checkIcon : uncheckIcon);
+            const thisStyle = viewer.getStyles()[styleName];
+            thisStyle[0].thematic[index].visible = !visible;
+            updateLayer(layer, viewer);
+          }
+        },
+        style: {
+          'align-self': 'center',
+          'padding-left': '0rem'
+        },
+        icon: viewer.getStyles()[styleName][0].thematic[index].visible === false ? uncheckIcon : checkIcon,
+        ariaLabel: 'V�xla synlighet',
+        tabIndex: -1
+      });
+      elCmps.push(toggleButton);
+      label = `${label}`;
+      elCmps.push(renderLegendItem(svgIcon, label, { styleName, index }));
+      cmps.push(El({ components: elCmps, tagName: 'li', cls: 'flex row align-center padding-y-smallest' }));
+    }
+  }
+  const newEl = El({ components: cmps, tagName: 'ul' });
+
+  const contentEl = document.getElementById(cmp.getId());
+  contentEl.innerHTML = newEl.render();
+  newEl.onRender();
+}
 
 export const renderExtendedLegendItem = function renderExtendedLegendItem(extendedLegendItem) {
-  return `<li class="flex row align-center padding-y-smallest">
-            <img class="extendedlegend pointer" src=${extendedLegendItem.icon.src} />
-          </li>`;
+  return El({ innerHTML: `<img class="extendedlegend pointer" src=${extendedLegendItem.icon.src} />` });
 };
 
-export const Legend = function Legend(styleRules, opacity = 1) {
+export const renderExtendedThematicLegendItem = function renderExtendedThematicLegendItem(extendedLegendItem, styleRules, layer, viewer, clickable) {
+  const returnCmp = El({
+    tagName: 'ul'
+  });
+  returnCmp.on('render', () => { setIcon(extendedLegendItem, returnCmp, styleRules, layer, viewer, clickable); });
+
+  return returnCmp;
+};
+
+export const Legend = function Legend({
+  styleRules, layer, viewer, clickable = true, opacity = 1
+} = {}) {
   const noLegend = 'Legend saknas';
   if (Array.isArray(styleRules)) {
-    const legend = styleRules.reduce((prevRule, styleRule) => {
-      if (Array.isArray(styleRule)) {
-        if (!isHidden(styleRule)) {
-          const labelItem = styleRule.find(style => style.label) || {};
-          const extendedLegendItem = styleRule.find(style => style.extendedLegend);
+    let styleName;
+    const layerType = layer.get('type');
+    if (layer) {
+      styleName = layer.get('styleName');
+    }
+    const thematicStyling = layer.get('thematicStyling');
+    let cmps = [];
+    styleRules.forEach((rule, index) => {
+      if (Array.isArray(rule)) {
+        if (!isHidden(rule)) {
+          const labelItem = rule.find(style => style.label) || {};
+          const extendedLegendItem = rule.find(style => style.extendedLegend);
           const label = labelItem.label || '';
-          if (extendedLegendItem && extendedLegendItem.icon) {
-            return prevRule + renderExtendedLegendItem(extendedLegendItem);
+          const elCmps = [];
+          if (extendedLegendItem && thematicStyling) {
+            elCmps.push(renderExtendedThematicLegendItem(extendedLegendItem, styleRules, layer, viewer, clickable));
+            cmps = elCmps;
+          } else if (extendedLegendItem && extendedLegendItem.icon) {
+            elCmps.push(renderExtendedLegendItem(extendedLegendItem));
+            cmps = elCmps;
+          } else {
+            if (thematicStyling && layerType !== 'WMS') {
+              const toggleButton = Button({
+                cls: `round small icon-smaller no-shrink${clickable ? '' : ' cursor-default'}`,
+                click() {
+                  if (clickable) {
+                    const thisStyle = viewer.getStyles()[styleName];
+                    const visible = thisStyle[index][0].visible !== false;
+                    this.setIcon(!visible ? checkIcon : uncheckIcon);
+                    thisStyle[index][0].visible = !visible;
+                    layer.changed();
+                  }
+                },
+                style: {
+                  'align-self': 'center',
+                  'padding-left': '0rem'
+                },
+                icon: viewer.getStyles()[styleName][index][0].visible === false ? uncheckIcon : checkIcon,
+                ariaLabel: 'V�xla synlighet',
+                tabIndex: -1
+              });
+              elCmps.push(toggleButton);
+            }
+            const svgIcon = renderSvgIcon(rule, { opacity });
+            elCmps.push(renderLegendItem(svgIcon, label, { styleName, index }));
+            cmps.push(El({ components: elCmps, tagName: 'li', cls: 'flex row align-center padding-y-smallest' }));
           }
-
-          const svgIcon = renderSvgIcon(styleRule, { opacity });
-          return prevRule + renderLegendItem(svgIcon, label);
         }
       }
-      return prevRule;
-    }, '');
-    return `<ul>${legend}</ul>`;
+    });
+    return El({ components: cmps, tagName: 'ul' });
   }
-  return `<ul><li class="padding-small">${noLegend}</li></ul>`;
+  return El({ innerHTML: noLegend });
 };
 
 export const HeaderIcon = function HeaderIcon(styleRules, opacity = 1) {
