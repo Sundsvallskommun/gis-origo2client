@@ -232,7 +232,7 @@ async function setIcon(src, cmp, styleRules, layer, viewer, clickable) {
           image: { src: imgUrl },
           filter: row.filter,
           name: row.name,
-          label: row.title,
+          label: row.title || row.name,
           visible: row.visible !== false
         });
       }
@@ -262,7 +262,7 @@ async function setIcon(src, cmp, styleRules, layer, viewer, clickable) {
           'padding-left': '0rem'
         },
         icon: viewer.getStyles()[styleName][0].thematic[index].visible === false ? uncheckIcon : checkIcon,
-        ariaLabel: 'V�xla synlighet',
+        ariaLabel: 'Växla synlighet',
         tabIndex: -1
       });
       elCmps.push(toggleButton);
@@ -334,7 +334,7 @@ export const Legend = function Legend({
                   'padding-left': '0rem'
                 },
                 icon: viewer.getStyles()[styleName][index][0].visible === false ? uncheckIcon : checkIcon,
-                ariaLabel: 'V�xla synlighet',
+                ariaLabel: 'Växla synlighet',
                 tabIndex: -1
               });
               elCmps.push(toggleButton);
