@@ -236,8 +236,15 @@ const Viewer = function Viewer(targetOption, options = {}) {
     return undefined;
   };
 
-  const getQueryableLayers = function getQueryableLayers() {
-    const queryableLayers = getLayers().filter(layer => layer.get('queryable') && layer.getVisible());
+  const getQueryableLayers = function getQueryableLayers(includeImageFeatureInfoMode = false) {
+    const queryableLayers = getLayers().filter(layer => {
+      if (layer.get('queryable') && layer.getVisible()) {
+        return true;
+      } else if (includeImageFeatureInfoMode && layer.get('queryable') && layer.get('imageFeatureInfoMode') === 'always') {
+        return true;
+      }
+      return false;
+    });
     return queryableLayers;
   };
 
@@ -420,6 +427,17 @@ const Viewer = function Viewer(targetOption, options = {}) {
     }
   };
 
+  const refreshLayer = function refreshLayer(layername) {
+    console.log(map.getLayers());
+    map.getLayers().forEach((layer) => {
+      if (layer.name === layername) {
+        if (layer.getVisible()) {
+          layer.getSource().refresh();
+        }
+      }
+    });
+  };
+
   const addLayer = function addLayer(thisProps, insertBefore) {
     let layerProps = thisProps;
     if (thisProps.layerParam && layerParams[thisProps.layerParam]) {
@@ -440,6 +458,9 @@ const Viewer = function Viewer(targetOption, options = {}) {
     this.dispatch('addlayer', {
       layerName: layerProps.name
     });
+    if (layerProps.refreshInterval) {
+      setInterval(refreshLayer(layerProps.name), layerProps.refreshInterval);
+    }
     return layer;
   };
 

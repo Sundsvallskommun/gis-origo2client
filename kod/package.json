@@ -1,6 +1,6 @@
 {
   "name": "origo",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/origo-map/origo.git"
@@ -35,7 +35,7 @@
   "dependencies": {
     "@glidejs/glide": "^3.5.2",
     "awesomplete": "^1.1.5",
-    "axios": "^0.24.0",
+    "axios": "^1.6.0",
     "cuid": "^2.1.8",
     "downloadjs": "^1.4.7",
     "drag-drop-touch": "^1.3.1",

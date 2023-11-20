@@ -73,6 +73,15 @@ const ShareMap = function ShareMap(options = {}) {
             content: createContent(),
             target
           });
+          const queryString = window.location.search;
+          const urlParams = new URLSearchParams(queryString);
+          if (urlParams.has('mapStateId')) {
+            const mapStateId = urlParams.get('mapStateId');
+            const person = prompt('Vill du ändra befintlig dela länk? Ange lösenordet!', '');
+            if (person != null) {
+              console.log(mapStateId);
+            }
+          }
           this.addComponent(modal);
           if (storeMethod === 'saveStateToServer') {
             permalink.saveStateToServer(viewer).then((data) => {
