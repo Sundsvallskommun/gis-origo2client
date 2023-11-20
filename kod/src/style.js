@@ -255,6 +255,7 @@ function checkOptions(options = {}) {
         });
         let filterMatch = true;
         let filterMatchOR = false;
+        // eslint-disable-next-line no-unused-vars
         let matchedIndex = 0;
         // Check for true/false depending on if it is AND, OR, RegExp or single filtering
         exprArr.forEach((exp, index) => {

@@ -145,7 +145,8 @@ const getContent = {
       if (featGet) {
         const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.img), attributes, null, map));
         const attribution = attribute.attribution ? `<div class="o-image-attribution">${attribute.attribution}</div>` : '';
-        val = `<div class="o-image-container"><img class="${attribute.class}" src="${url}">${attribution}</div>`;
+        const cssClass = attribute.class ? `class="${attribute.class}"` : '';
+        val = `<div class="o-image-container"><img ${cssClass} src="${url}">${attribution}</div>`;
       }
     }
     const newElement = document.createElement('li');
