@@ -173,7 +173,6 @@
 
 .o-identify-content {
   display: inline-block;
-  width: 100%;
 }
 
 .folded {
@@ -318,6 +317,9 @@
     margin-left:36px;
 }
 
+/**
+   * ============ Extra classes för Sundsvall ==============
+   */ 
 .rotate_image_90deg_scale75 {
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
