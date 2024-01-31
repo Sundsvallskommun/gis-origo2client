@@ -77,10 +77,10 @@ button {
   }
 }
 
-.button[class^='icon'],
-.button[class*='icon'],
-button[class^='icon'],
-button[class*='icon'] {
+.button[class^="icon"],
+.button[class*="icon"],
+button[class^="icon"],
+button[class*="icon"] {
   line-height: 0;
 }
 

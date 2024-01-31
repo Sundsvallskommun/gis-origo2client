@@ -578,6 +578,7 @@ const Legend = function Legend(options = {}) {
     },
     getuseGroupIndication() { return useGroupIndication; },
     getOverlaysCollapse() { return overlaysCmp.overlaysCollapse; },
+    getOverlays() { return overlaysCmp; },
     setVisibleLayersViewActive,
     addButtonToTools(button, buttonGroup) {
       if (buttonGroup === 'addLayerButton') {

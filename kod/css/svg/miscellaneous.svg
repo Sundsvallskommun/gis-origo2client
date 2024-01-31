@@ -35,4 +35,13 @@
     <path d="M0 0h24v24H0z" fill="none"/>
     <path d="M18 4H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H6V6h12v12z"/>
   </symbol>
+
+  <!--calcite-design-system-icons-->
+  <symbol id="calcite-legend" viewBox="-3 -3 24 24">
+  <path d="M1 6.5A1.5 1.5 0 1 1 2.5 8 1.502 1.502 0 0 1 1 6.5zM15 2H6v1h9zM6 7h9V6H6zm0 4h9v-1H6zm0 4h9v-1H6zm-3.51-2L.87 16h3.257zM4 4H1V1h3zM3 2H2v1h1zm1 10H1V9h3zm-1-2H2v1h1zm-.5-4a.5.5 0 1 0 .5.5.5.5 0 0 0-.5-.5z"/>
+  <path fill="none" d="M0 0h16v16H0z"/>
+  </symbol>
+  <symbol id="calcite-legend-plus" viewBox="-4 -4 24 24">
+  <path d="M4 0H1v3h3zM3 2H2V1h1zm12 0H6V1h9zm1 10v1h-3v3h-1v-3H9v-1h3V9h1v3zM2.49 6l1.638 3H.87zM15 8H6V7h9zM2.5 12A1.5 1.5 0 1 0 4 13.5 1.502 1.502 0 0 0 2.5 12zm0 2a.5.5 0 1 1 .5-.5.5.5 0 0 1-.5.5z"/>
+  <path fill="none" d="M0 0h16v16H0z"/></symbol>
 </svg>
