@@ -99,14 +99,26 @@ const Stylewindow = function Stylewindow(optOptions = {}) {
 
   function setBackgroundFillColor(color, opacity) {
     if (typeof opacity === 'undefined') {
-      swStyle.backgroundFillColor = rgbToRgba(color, swStyle.backgroundFillOpacity);
+      if (swStyle.backgroundFillOpacity === '0') {
+        swStyle.backgroundFillColor = rgbToRgba(color, 0.7);
+        swStyle.backgroundFillOpacity = 0.7;
+        document.getElementById('o-draw-style-backgroundFillOpacitySlider').value = 0.7;
+      } else {
+        swStyle.backgroundFillColor = rgbToRgba(color, swStyle.backgroundFillOpacity);
+      }
     } else {
       swStyle.backgroundFillColor = rgbToRgba(color, opacity);
     }
   }
 
   function setBackgroundStrokeColor(color) {
-    swStyle.backgroundStrokeColor = rgbToRgba(color, swStyle.backgroundStrokeOpacity);
+    if (swStyle.backgroundStrokeOpacity === 0) {
+      swStyle.backgroundStrokeColor = rgbToRgba(color, 0.7);
+      swStyle.backgroundStrokeOpacity = 0.7;
+      document.getElementById('o-draw-style-backgroundStrokeOpacitySlider').value = 0.7;
+    } else {
+      swStyle.backgroundStrokeColor = rgbToRgba(color, swStyle.backgroundStrokeOpacity);
+    }
   }
 
   function getStyleObject(feature, selected = false) {
@@ -287,8 +299,10 @@ const Stylewindow = function Stylewindow(optOptions = {}) {
     document.getElementById('o-draw-style-showMeasureSegments').checked = swStyle.showMeasureSegments;
 
     const bgFillEl = document.getElementById('o-draw-style-backgroundFillColor');
-    swStyle.backgroundFillOpacity = rgbaToOpacity(swStyle.backgroundFill);
-    swStyle.backgroundFillColor = rgbaToRgb(swStyle.backgroundFill);
+    if (typeof swStyle.backgroundFill !== 'undefined') {
+      swStyle.backgroundFillOpacity = rgbaToOpacity(swStyle.backgroundFill);
+      swStyle.backgroundFillColor = rgbaToRgb(swStyle.backgroundFill);
+    }
     const bgFillInputEl = bgFillEl.querySelector(`input[value = "${swStyle.backgroundFillColor}"]`);
     if (bgFillInputEl) {
       bgFillInputEl.checked = true;
