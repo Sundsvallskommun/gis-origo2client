@@ -1,8 +1,6 @@
 import { Component, Button, dom, Collapse } from '../../ui';
 import { HeaderIcon, Legend } from '../../utils/legendmaker';
 import createMoreInfoButton from './moreinfobutton';
-import PopupMenu from '../../ui/popupmenu';
-import exportToFile from '../../utils/exporttofile';
 
 const OverlayLayer = function OverlayLayer(options) {
   const {
@@ -22,15 +20,12 @@ const OverlayLayer = function OverlayLayer(options) {
   const buttons = [];
   let headerIconClass = headerIconCls;
 
-  const popupMenuItems = [];
-
   const hasStylePicker = viewer.getLayerStylePicker(layer).length > 0;
   const layerIconCls = `round compact icon-small relative no-shrink light ${hasStylePicker ? 'style-picker' : ''}`;
   const cls = `${clsSettings} flex row align-center padding-left padding-right-smaller item wrap`.trim();
   const title = layer.get('title') || 'Titel saknas';
   const name = layer.get('name');
   const secure = layer.get('secure');
-  let popupMenu;
   let hasExtendedLegend = false;
   let thisComponent;
 
@@ -49,13 +44,6 @@ const OverlayLayer = function OverlayLayer(options) {
     headerIconClass = iconCls;
     hasExtendedLegend = true;
   }
-
-  const eventOverlayProps = new CustomEvent('overlayproperties', {
-    bubbles: true,
-    detail: {
-      layer
-    }
-  });
 
   const eventMetadata = new CustomEvent('metadataclick', {
     bubbles: true,
@@ -163,13 +151,7 @@ const OverlayLayer = function OverlayLayer(options) {
   buttons.push(moreInfoButton);
   const ButtonsHtml = `${layerIcon.render()}${label.render()}${toggleButton.render()}${moreInfoButton.render()}`;
 
-  const removeOverlayMenuItem = function removeListeners() {
-    const popupMenuListEl = document.getElementById(popupMenuList.getId());
-    if (popupMenuListEl) { popupMenuListEl.remove(); }
-  };
-
   const onRemove = function onRemove() {
-    removeOverlayMenuItem();
     const el = document.getElementById(this.getId());
     el.remove();
   };
