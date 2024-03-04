@@ -29,10 +29,13 @@ export default function popup(options = {}) {
   function setVisibility(visible) {
     isVisible = visible;
     const el = getEl();
-    if (visible) {
-      el.classList.remove('hidden');
-    } else {
-      el.classList.add('hidden');
+    // Special för Sundsvall för att förhindra fel när lager tas bort från draganddrop control
+    if (el !== null) {
+      if (visible) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
     }
   }
 
