@@ -28,8 +28,4 @@ function getFromTemplate(template, featureAttributes, attributeAlias, layer) {
   return templates[template](renamedObj, layer);
 }
 
-function featureinfotemplates(template, attributes) {
-  return templates[template](attributes);
-}
-
-export default { getFromTemplate, addFeatureinfotemplate, templateHelpers, featureinfotemplates };
+export default { getFromTemplate, addFeatureinfotemplate, templateHelpers };

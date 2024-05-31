@@ -3,7 +3,6 @@ import Point from 'ol/geom/Point';
 import Awesomplete from 'awesomplete';
 import { Component, Element as El, Button, Collapse, CollapseHeader, dom } from '../ui';
 import generateUUID from '../utils/generateuuid';
-import getAttributes from '../getattributes';
 import getCenter from '../geometry/getcenter';
 import getFeature from '../getfeature';
 import mapUtils from '../maputils';
@@ -47,7 +46,8 @@ const Search = function Search(options = {}) {
     url,
     queryParameterName = 'q',
     autocompletePlacement,
-    searchlistOptions = {}
+    searchlistOptions = {},
+    queryType
   } = options;
 
   const searchlistPlacement = searchlistOptions.placement;
@@ -134,7 +134,8 @@ const Search = function Search(options = {}) {
           let featureWkt;
           let coordWkt;
           if (res.length > 0) {
-            showFeatureInfo(res, layer.get('title'), getAttributes(res[0], layer, map));
+            const featLayerName = layer.get('name');
+            featureInfo.showFeatureInfo({ feature: res, layerName: featLayerName }, { maxZoomLevel });
           } else if (geometryAttribute) {
             // Fallback if no geometry in response
             featureWkt = mapUtils.wktToFeature(data[geometryAttribute], projectionCode);
@@ -144,8 +145,7 @@ const Search = function Search(options = {}) {
         });
     } else if (geometryAttribute && layerName) {
       feature = mapUtils.wktToFeature(data[geometryAttribute], projectionCode);
-      layer = viewer.getLayer(data[layerName]);
-      showFeatureInfo([feature], layer.get('title'), getAttributes(feature, layer, map));
+      featureInfo.showFeatureInfo({ feature: [feature], layerName }, { maxZoomLevel });
     } else if (titleAttribute && contentAttribute && geometryAttribute) {
       feature = mapUtils.wktToFeature(data[geometryAttribute], projectionCode);
 
@@ -364,7 +364,7 @@ const Search = function Search(options = {}) {
                     .then((res) => {
                       if (res.length > 0) {
                         const featLayerName = layer.get('name');
-                        featureInfo.showFeatureInfo({ feature: res, layerName: featLayerName });
+                        featureInfo.showFeatureInfo({ feature: res, layerName: featLayerName }, { maxZoomLevel });
                       }
                     });
                 });
@@ -392,7 +392,7 @@ const Search = function Search(options = {}) {
                     .then((res) => {
                       if (res.length > 0) {
                         const featureLayerName = layer.get('name');
-                        featureInfo.showFeatureInfo({ feature: res, layerName: featureLayerName });
+                        featureInfo.showFeatureInfo({ feature: res, layerName: featureLayerName }, { maxZoomLevel });
                       }
                     });
                 });
@@ -508,11 +508,24 @@ const Search = function Search(options = {}) {
       infowindow.changeContent(listcomponent, `${searchlistTitle.replace('{{value}}', searchVal)}`);
     };
 
-    function makeRequest(reqHandler, obj, opt, ignoreGroup = false) {
+    function makeRequest(params) {
+      const {
+        reqHandler,
+        obj,
+        opt = {},
+        ignoreGroup = false,
+        complete = false
+      } = params;
       const searchVal = obj.value;
       let queryUrl = `${url}${url.indexOf('?') !== -1 ? '&' : '?'}${queryParameterName}=${encodeURI(obj.value)}`;
       if (includeSearchableLayers) {
         queryUrl += `&l=${viewer.getSearchableLayers(searchableDefault)}`;
+      }
+      if (complete) {
+        queryUrl += '&c=true';
+      }
+      if (queryType) {
+        queryUrl += `&t=${queryType}`;
       }
       fetch(queryUrl)
         .then(response => response.json())
@@ -538,11 +551,11 @@ const Search = function Search(options = {}) {
           switch (searchlistPlacement) {
             case 'floating':
             case 'left':
-              makeRequest(infowindowHandler, input, {}, true);
+              makeRequest({ reqHandler: infowindowHandler, obj: input, ignoreGroup: true, complete: true });
               clearAll();
               break;
             default:
-              makeRequest(handler, input);
+              makeRequest({ reqHandler: handler, obj: input, complete: true });
           }
         } else if (keyCode in keyCodes) {
           // empty
@@ -550,10 +563,10 @@ const Search = function Search(options = {}) {
           switch (autocompletePlacement) {
             case 'floating':
             case 'left':
-              makeRequest(infowindowHandler, input);
+              makeRequest({ reqHandler: infowindowHandler, obj: input });
               break;
             default:
-              makeRequest(handler, input);
+              makeRequest({ reqHandler: handler, obj: input });
           }
         }
       } else {

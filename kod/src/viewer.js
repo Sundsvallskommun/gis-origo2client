@@ -18,6 +18,7 @@ import flattenGroups from './utils/flattengroups';
 import getcenter from './geometry/getcenter';
 import isEmbedded from './utils/isembedded';
 import generateUUID from './utils/generateuuid';
+import Logger from './components/logger';
 import permalink from './permalink/permalink';
 import Stylewindow from './style/stylewindow';
 
@@ -54,6 +55,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
     source = {},
     clusterOptions = {},
     tileGridOptions = {},
+    loggerOptions = {},
     url,
     palette
   } = options;
@@ -105,6 +107,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
   const footer = Footer({
     data: footerData
   });
+  const logger = Logger(loggerOptions);
   const centerMarker = CenterMarker();
   let mapSize;
 
@@ -427,17 +430,6 @@ const Viewer = function Viewer(targetOption, options = {}) {
     }
   };
 
-  const refreshLayer = function refreshLayer(layername) {
-    console.log(map.getLayers());
-    map.getLayers().forEach((layer) => {
-      if (layer.name === layername) {
-        if (layer.getVisible()) {
-          layer.getSource().refresh();
-        }
-      }
-    });
-  };
-
   const addLayer = function addLayer(thisProps, insertBefore) {
     let layerProps = thisProps;
     if (thisProps.layerParam && layerParams[thisProps.layerParam]) {
@@ -458,9 +450,6 @@ const Viewer = function Viewer(targetOption, options = {}) {
     this.dispatch('addlayer', {
       layerName: layerProps.name
     });
-    if (layerProps.refreshInterval) {
-      setInterval(refreshLayer(layerProps.name), layerProps.refreshInterval);
-    }
     return layer;
   };
 
@@ -541,6 +530,10 @@ const Viewer = function Viewer(targetOption, options = {}) {
     return urlParams;
   };
 
+  const getLogger = function getLogger() {
+    return logger;
+  };
+
   /**
    * Internal helper used when urlParams.feature is set and the popup should be displayed.
    * @param {any} feature
@@ -602,6 +595,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
           this.addComponent(selectionmanager);
           this.addComponent(featureinfo);
           this.addComponent(centerMarker);
+          this.addComponent(logger);
 
           this.addControls();
 
@@ -732,7 +726,8 @@ const Viewer = function Viewer(targetOption, options = {}) {
     getEmbedded,
     permalink,
     generateUUID,
-    centerMarker
+    centerMarker,
+    getLogger
   });
 };
 

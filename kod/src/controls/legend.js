@@ -208,8 +208,8 @@ const Legend = function Legend(options = {}) {
       viewer.dispatch('active:togglevisibleLayers');
     },
     style: {
-      'align-self': 'right',
-      'padding-right': '6px'
+      'vertical-align': 'bottom',
+      margin: '0.45rem 0.5rem'
     },
     icon: '#ic_close_fullscreen_24px',
     iconStyle: {
@@ -224,8 +224,8 @@ const Legend = function Legend(options = {}) {
       viewer.dispatch('active:togglevisibleLayers');
     },
     style: {
-      'align-self': 'right',
-      'padding-right': '6px'
+      'vertical-align': 'bottom',
+      margin: '0.45rem 0.5rem'
     },
     icon: '#ic_open_in_full_24px',
     iconStyle: {
@@ -719,7 +719,12 @@ const Legend = function Legend(options = {}) {
       legendControlCmps.push(closeButton);
 
       const legendControlCmp = El({
-        cls: 'grow flex justify-end align-center no-shrink',
+        cls: 'grow flex no-shrink',
+        style: {
+          display: 'inline',
+          'text-align': 'right',
+          'margin-right': '0.1rem'
+        },
         components: legendControlCmps
       });
 
@@ -729,9 +734,9 @@ const Legend = function Legend(options = {}) {
         cls: 'flex padding-small no-shrink',
         style: {
           'background-color': '#fff',
-          height: '50px',
           'border-top': '1px solid #dbdbdb',
-          'border-radius': '0.5rem'
+          'border-radius': '0.5rem',
+          'line-height': '0'
         },
         components: baselayerCmps
       });
@@ -739,10 +744,11 @@ const Legend = function Legend(options = {}) {
       const mainContainerComponents = [overlaysCmp, visibleOverlaysCmp, toolsCmp, baselayersCmp];
 
       mainContainerCmp = El({
-        cls: 'flex column relative width-100',
+        cls: 'flex column relative',
         components: mainContainerComponents,
         style: {
-          'max-height': `${maxHeight}px`
+          'max-height': `${maxHeight}px`,
+          width: 'min-content'
         }
       });
 
