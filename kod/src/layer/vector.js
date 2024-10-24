@@ -30,6 +30,7 @@ export default function vector(opt, src, viewer) {
       }
 
       options.source = source;
+      options.altitudeMode = 'clampToGround';
       vectorLayer = new VectorLayer(options);
       break;
     }

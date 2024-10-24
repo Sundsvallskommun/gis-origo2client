@@ -117,6 +117,11 @@ const DragAndDrop = function DragAndDrop(options = {}) {
           }
         }]
       };
+      const alternateColors = typeof options.alternateColors !== 'undefined' ? options.alternateColors : true;
+      const alternateStrokeColors = typeof options.alternateStrokeColors !== 'undefined' ? options.alternateStrokeColors : [[166, 206, 227, 1], [31, 120, 180, 1], [178, 223, 138, 1], [51, 160, 44, 1], [251, 154, 153, 1], [227, 26, 28, 1], [253, 191, 111, 1]];
+      const alternateFillColors = typeof options.alternateFillColors !== 'undefined' ? options.alternateFillColors : [[166, 206, 227, 0.3], [31, 120, 180, 0.3], [178, 223, 138, 0.3], [51, 160, 44, 0.3], [251, 154, 153, 0.3], [227, 26, 28, 0.3], [253, 191, 111, 0.3]];
+      let alternateIdx = 0;
+
       dragAndDrop = new olDragAndDrop({
         formatConstructors: [
           GPXFormat,
@@ -130,6 +135,7 @@ const DragAndDrop = function DragAndDrop(options = {}) {
       this.addInteraction();
 
       dragAndDrop.on('addfeatures', (event) => {
+        const fileExtension = event.file.name.split('.').pop();
         let layerName = event.file.name.split('.')[0].replace(/\W/g, '');
         let layerTitle = event.file.name.split('.')[0];
         if (viewer.getLayer(layerName)) {
@@ -162,7 +168,48 @@ const DragAndDrop = function DragAndDrop(options = {}) {
           features: event.features
         };
         if (!styleByAttribute) {
-          layerOptions.styleDef = featureStyles[event.features[0].getGeometry().getType()];
+          let styles = [];
+          const types = [];
+          event.features.forEach((feature) => {
+            if (!types.includes(feature.getGeometry().getType())) {
+              const dadLayers = viewer.getLayersByProperty('group', groupName);
+              if (dadLayers.length > 0 && alternateColors) {
+                const tempStyle = featureStyles[feature.getGeometry().getType().replace('Multi', '').replace('GeometryCollection', 'Polygon')];
+                if (alternateStrokeColors.length === alternateIdx) {
+                  alternateIdx = 0;
+                }
+                if (typeof tempStyle !== 'undefined') {
+                  if (tempStyle.length > 1) {
+                    tempStyle.forEach((style, idx) => {
+                      if ('stroke' in style) {
+                        if (JSON.stringify(style.stroke.color) !== JSON.stringify([255, 255, 255, 1])) {
+                          tempStyle[idx].stroke.color = alternateStrokeColors[alternateIdx];
+                        }
+                      }
+                      if ('fill' in style) {
+                        tempStyle[idx].fill.color = alternateFillColors[alternateIdx];
+                      }
+                    });
+                  } else {
+                    if ('stroke' in tempStyle) {
+                      if (JSON.stringify(tempStyle.stroke.color) !== JSON.stringify([255, 255, 255, 1])) {
+                        tempStyle.stroke.color = alternateStrokeColors[alternateIdx];
+                      }
+                    }
+                    if ('fill' in tempStyle) {
+                      tempStyle.fill.color = alternateFillColors[alternateIdx];
+                    }
+                  }
+                }
+                styles = styles.concat(tempStyle);
+                alternateIdx += 1;
+              } else {
+                styles = styles.concat(featureStyles[feature.getGeometry().getType().replace('Multi', '').replace('GeometryCollection', 'Polygon')]);
+              }
+            }
+            types.push(feature.getGeometry().getType());
+          });
+          layerOptions.styleDef = styles;
         }
         const layer = viewer.addLayer(layerOptions);
         if (zoomToExtentOnLoad) {

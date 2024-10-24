@@ -18,11 +18,31 @@ const styleTypes = {
     return stylefunctions(name, params);
   }
 };
+/**
+ * Add a new style type
+ * 
+ * @function
+ * @name addStyleType
+ * @kind variable
+ * @param {any} styleType
+ * @param {any) => { stylefunction({ name, params }: { name: any params: any }} fn
+ * @returns {any; }}
+ */
 const addStyleType = function addStyleType(styleType, fn) {
   styleTypes[styleType] = fn;
   return styleTypes;
 };
 
+/**
+ * Get custom style
+ * 
+ * @function
+ * @name getCustomStyle
+ * @kind function
+ * @param {any} type
+ * @param {object} options?
+ * @returns {any}
+ */
 function getCustomStyle(type, options = {}) {
   if (styleTypes[type]) {
     return styleTypes[type](options);
@@ -73,10 +93,31 @@ const editStyleOptions = {
 };
 
 // Will become an issue if 150 dpi is no longer the "standard" dpi setting
+/**
+ * Description
+ * OBS! Will become an issue if 150 dpi is no longer the "standard" dpi setting
+ * 
+ * @function
+ * @name multiplyByFactor
+ * @kind function
+ * @param {any} value
+ * @param {number} scaleToDpi?
+ * @returns {number}
+  */
 function multiplyByFactor(value, scaleToDpi = 150) {
   return value * (scaleToDpi / 150);
 }
 
+/**
+ * CreateStyleOptions
+ * 
+ * @function
+ * @name createStyleOptions
+ * @kind function
+ * @param {any} orgStyleParams
+ * @param {any): { geometry(feature: any} scaleToDpi
+ * @returns {any; zIndex: any; fill: any; stroke: any; text: any; image: any; }}
+ */
 function createStyleOptions(orgStyleParams, scaleToDpi) {
   const styleParams = JSON.parse(JSON.stringify(orgStyleParams));
   const styleScale = scaleToDpi ? multiplyByFactor(1.5, scaleToDpi) : undefined;

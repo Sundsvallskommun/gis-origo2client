@@ -693,6 +693,10 @@ const Legend = function Legend(options = {}) {
       const closeButtonState = isExpanded ? 'initial' : 'hidden';
       closeButton = Button({
         cls: 'icon-smaller small round grey-lightest',
+        style: {
+          'vertical-align': 'bottom',
+          margin: '0.2rem 0'
+        },
         icon: '#ic_close_24px',
         state: closeButtonState,
         validStates: ['initial', 'hidden'],
