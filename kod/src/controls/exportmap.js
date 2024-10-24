@@ -123,7 +123,6 @@ const Exportmap = function Exportmap(options = {}) {
     map.renderSync();
   }
 
-
   /**
  * Using canvas.msToBlob() is much easier but it always turns a blob to a png.
  * This polyfill is needed if we want to choose format other than png.
@@ -134,9 +133,9 @@ const Exportmap = function Exportmap(options = {}) {
         value(callback, type, quality) {
           const dataURL = this.toDataURL(type, quality).split(',')[1];
           setTimeout(() => {
-            let binStr = atob(dataURL),
-              len = binStr.length,
-              arr = new Uint8Array(len);
+            const binStr = atob(dataURL);
+            const len = binStr.length;
+            const arr = new Uint8Array(len);
 
             for (let i = 0; i < len; i++) {
               arr[i] = binStr.charCodeAt(i);
@@ -198,6 +197,7 @@ const Exportmap = function Exportmap(options = {}) {
       <div id="${opts.id}" class="folded-export-element">
         <span id="o-export-format-png" class="o-export-format"> PNG </span>
         <span id="o-export-format-jpg" class="o-export-format"> JPG </span>
+        <span id="o-export-format-pdf" class="o-export-format"> PDF </span>
       </div>`;
     return el;
   }
@@ -245,6 +245,7 @@ const Exportmap = function Exportmap(options = {}) {
 
     const pngButton = document.getElementById('o-export-format-png');
     const jpgButton = document.getElementById('o-export-format-jpg');
+    const pdfButton = document.getElementById('o-export-format-pdf');
 
     pngButton.addEventListener('click', (e) => {
       download('image/png');
@@ -254,6 +255,12 @@ const Exportmap = function Exportmap(options = {}) {
     });
     jpgButton.addEventListener('click', (e) => {
       download('image/jpg');
+      menuItem.close();
+      toggleFormatContainter();
+      e.stopPropagation();
+    });
+    pdfButton.addEventListener('click', (e) => {
+      download('application/pdf');
       menuItem.close();
       toggleFormatContainter();
       e.stopPropagation();

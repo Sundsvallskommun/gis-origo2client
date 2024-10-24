@@ -12,6 +12,13 @@ module.exports = merge(common, {
     }
   },
   devServer: {
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+        runtimeErrors: true
+      }
+    },
     static: {
       directory: './'
     },

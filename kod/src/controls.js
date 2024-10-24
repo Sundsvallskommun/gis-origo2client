@@ -24,3 +24,4 @@ export { default as Zoom } from './controls/zoom';
 export { default as Exportmap } from './controls/exportmap';
 export { default as Externalurl } from './controls/externalurl';
 export { default as Scalepicker } from './controls/scalepicker';
+export { default as Localization } from './controls/localization';
