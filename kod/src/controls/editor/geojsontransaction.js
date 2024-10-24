@@ -1,4 +1,4 @@
-import GEOJSONFormat from 'ol/format/GEOJSON';
+import GEOJSONFormat from 'ol/format/GeoJSON';
 import dispatcher from './editdispatcher';
 
 const format = new GEOJSONFormat();
