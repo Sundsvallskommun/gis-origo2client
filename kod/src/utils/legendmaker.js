@@ -115,7 +115,6 @@ export const renderSvgIcon = function renderSvgIcon(styleRule, {
           }, '');
           arrSvgs.push(`${renderSvg(icon, { opacity })}`);
         } else if (sType === 'Icon') {
-          console.log(styleRule);
           const iconOption = styleRule.find(style => style.icon.src);
           const icon = renderIcon.Icon(iconOption.icon);
           arrSvgs.push(icon);
