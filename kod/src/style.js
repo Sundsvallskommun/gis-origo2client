@@ -1,5 +1,6 @@
 import Point from 'ol/geom/Point';
 import Circle from 'ol/style/Circle';
+import RegularShape from 'ol/style/RegularShape';
 import Fill from 'ol/style/Fill';
 import Icon from 'ol/style/Icon';
 import Stroke from 'ol/style/Stroke';
@@ -20,7 +21,7 @@ const styleTypes = {
 };
 /**
  * Add a new style type
- * 
+ *
  * @function
  * @name addStyleType
  * @kind variable
@@ -35,7 +36,7 @@ const addStyleType = function addStyleType(styleType, fn) {
 
 /**
  * Get custom style
- * 
+ *
  * @function
  * @name getCustomStyle
  * @kind function
@@ -96,7 +97,7 @@ const editStyleOptions = {
 /**
  * Description
  * OBS! Will become an issue if 150 dpi is no longer the "standard" dpi setting
- * 
+ *
  * @function
  * @name multiplyByFactor
  * @kind function
@@ -110,7 +111,7 @@ function multiplyByFactor(value, scaleToDpi = 150) {
 
 /**
  * CreateStyleOptions
- * 
+ *
  * @function
  * @name createStyleOptions
  * @kind function
@@ -199,6 +200,80 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
     });
     if (scaleToDpi) {
       const imageScale = styleParams.circle.scale ? multiplyByFactor(styleParams.circle.scale, scaleToDpi) : styleScale;
+      styleOptions.image.setScale(imageScale);
+    }
+  }
+  if ('square' in styleParams) {
+    styleOptions.image = new RegularShape({
+      radius: styleParams.square.radius,
+      scale: styleParams.square.scale || undefined,
+      fill: new Fill(styleParams.square.fill) || undefined,
+      stroke: new Stroke(styleParams.square.stroke) || undefined,
+      points: 4,
+      angle: Math.PI / 4
+    });
+    if (scaleToDpi) {
+      const imageScale = styleParams.square.scale ? multiplyByFactor(styleParams.square.scale, scaleToDpi) : styleScale;
+      styleOptions.image.setScale(imageScale);
+    }
+  }
+  if ('triangle' in styleParams) {
+    styleOptions.image = new RegularShape({
+      radius: styleParams.triangle.radius,
+      scale: styleParams.triangle.scale || undefined,
+      fill: new Fill(styleParams.triangle.fill) || undefined,
+      stroke: new Stroke(styleParams.triangle.stroke) || undefined,
+      points: 3,
+      rotation: Math.PI / 4,
+      angle: 0
+    });
+    if (scaleToDpi) {
+      const imageScale = styleParams.triangle.scale ? multiplyByFactor(styleParams.triangle.scale, scaleToDpi) : styleScale;
+      styleOptions.image.setScale(imageScale);
+    }
+  }
+  if ('star' in styleParams) {
+    styleOptions.image = new RegularShape({
+      radius: styleParams.star.radius,
+      scale: styleParams.star.scale || undefined,
+      fill: new Fill(styleParams.star.fill) || undefined,
+      stroke: new Stroke(styleParams.star.stroke) || undefined,
+      points: 5,
+      radius2: styleParams.star.radius / 2,
+      angle: 0
+    });
+    if (scaleToDpi) {
+      const imageScale = styleParams.star.scale ? multiplyByFactor(styleParams.star.scale, scaleToDpi) : styleScale;
+      styleOptions.image.setScale(imageScale);
+    }
+  }
+  if ('cross' in styleParams) {
+    styleOptions.image = new RegularShape({
+      radius: styleParams.cross.radius,
+      scale: styleParams.cross.scale || undefined,
+      fill: new Fill(styleParams.cross.fill) || undefined,
+      stroke: new Stroke(styleParams.cross.stroke) || undefined,
+      points: 4,
+      radius2: 0,
+      angle: 0
+    });
+    if (scaleToDpi) {
+      const imageScale = styleParams.cross.scale ? multiplyByFactor(styleParams.cross.scale, scaleToDpi) : styleScale;
+      styleOptions.image.setScale(imageScale);
+    }
+  }
+  if ('x' in styleParams) {
+    styleOptions.image = new RegularShape({
+      radius: styleParams.x.radius,
+      scale: styleParams.x.scale || undefined,
+      fill: new Fill(styleParams.x.fill) || undefined,
+      stroke: new Stroke(styleParams.x.stroke) || undefined,
+      points: 4,
+      radius2: 0,
+      angle: Math.PI / 4
+    });
+    if (scaleToDpi) {
+      const imageScale = styleParams.x.scale ? multiplyByFactor(styleParams.x.scale, scaleToDpi) : styleScale;
       styleOptions.image.setScale(imageScale);
     }
   }
