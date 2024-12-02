@@ -225,7 +225,7 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
       stroke: new Stroke(styleParams.triangle.stroke) || undefined,
       points: 3,
       rotation: Math.PI / 4,
-      angle: 0
+      angle: styleParams.triangle.angle || 0
     });
     if (scaleToDpi) {
       const imageScale = styleParams.triangle.scale ? multiplyByFactor(styleParams.triangle.scale, scaleToDpi) : styleScale;
