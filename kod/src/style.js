@@ -224,7 +224,7 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
       fill: new Fill(styleParams.triangle.fill) || undefined,
       stroke: new Stroke(styleParams.triangle.stroke) || undefined,
       points: 3,
-      rotation: Math.PI / 4,
+      rotation: 0,
       angle: styleParams.triangle.angle || 0
     });
     if (scaleToDpi) {
