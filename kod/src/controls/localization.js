@@ -1,5 +1,8 @@
 import enLocale from '../loc/en_US.json';
 import svLocale from '../loc/sv_SE.json';
+import nlLocale from '../loc/nl_NL.json';
+import fiLocale from '../loc/fi_FI.json';
+import smaLocale from '../loc/sma.json';
 import { Component, Button, Element, Collapse } from '../ui';
 
 const Localization = function Localization(options = {}) {
@@ -17,7 +20,10 @@ const Localization = function Localization(options = {}) {
 
   const locales = {
     'en-US': enLocale,
-    'sv-SE': svLocale
+    'sv-SE': svLocale,
+    'fi-FI': fiLocale,
+    sma: smaLocale,
+    'nl-NL': nlLocale
   };
 
   function getLocaleExists(locId) {
