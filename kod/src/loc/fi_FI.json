@@ -105,6 +105,34 @@
             "drawSquare": "Neliö",
             "drawCircle": "Ympyrä",
             "drawFreehand": "Vapaalla kädellä"
+        },
+	    "draganddrop": {
+	        "addFromFile": "Lisää tiedostosta",
+	        "yourLayersName": "sinun-kerroksesi",
+	        "yourLayersTitle": "Sinun kerroksesi"
+	    },
+	    "externalurl": {
+	        "tooltipText": "Näytä kartta ulkoisessa karttapalvelussa",
+	        "noUrl": "Määrityksissä ei ole määritetty URL-osoitetta",
+	        "linkTooltipText": "Avaa linkki"
+	    },
+	    "bookmarks": {
+	        "title": "Kirjanmerkit",
+	        "close": "Lähellä",
+	        "bookmarkLabel": "Kirjanmerkki kohteelle"
+	    },
+        "zoom": {
+            "zoomInButtonTooltip": "Lähennä karttaa",
+            "zoomOutButtonTooltip": "Loitonna karttaa"
+        },
+        "home": {
+            "zoomHomeButtonTooltip": "Zoomaa koko karttaan"
+        },
+        "geoposition": {
+            "positionButtonTooltip": "Näytä nykyinen sijaintisi kartalla"
+        },
+        "about": {
+            "title": "Tietoja kartasta"
         }
     },
     "style": {

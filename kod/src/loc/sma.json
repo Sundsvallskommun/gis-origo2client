@@ -96,8 +96,8 @@
             "downloadButtonTooltip": "Tjïerementieh",
             "deleteButtonTooltip": "Vaajkoe",
             "closeButtonTooltip": "Luhkedh",
-            "drawLayerTitleDefault": "Draw layer",
-            "drawGroupTitleDefault": "Draw layers",
+            "drawLayerTitleDefault": "Daarkastelaajroe",
+            "drawGroupTitleDefault": "Daarkastelaajresth",
             "drawPolygon": "Polygon",
             "drawPoint": "Nöörje",
             "drawLine": "Lijnje",
@@ -105,6 +105,21 @@
             "drawSquare": "Vuertja",
             "drawCircle": "Gåetie",
             "drawFreehand": "Vrije"
+        },
+        "draganddrop": {
+            "addFromFile": "Lisse faajsen bïjre",
+            "yourLayersName": "dåtnoe-laajresth",
+            "yourLayersTitle": "Dåtnoe laajresth"
+        },
+        "externalurl": {
+            "tooltipText": "Åådtjedh maanagisnie almetjh maanagisnie-tjïeltebe",
+            "noUrl": "Gåårvede jïhke åvteste jïjnjemesne gietskesne",
+            "linkTooltipText": "Ovnese gåårven"
+        },
+        "bookmarks": {
+            "title": "Goerresetnie",
+            "close": "Luhkedh",
+            "bookmarkLabel": "Goerresetnie bïjre"
         },
         "zoom": {
             "zoomInButtonTooltip": "Nobrie maahtahtidh maanagisnie",

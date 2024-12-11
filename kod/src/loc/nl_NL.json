@@ -106,7 +106,22 @@
             "drawCircle": "Cirkel",
             "drawFreehand": "Vrije hand"
         },
-        "zoom": {
+        "draganddrop": {
+	        "addFromFile": "Toevoegen vanuit bestand",
+	        "yourLayersName": "jouw-lagen",
+	        "yourLayersTitle": "Jouw lagen"
+	    },
+	    "externalurl": {
+	        "tooltipText": "Toon de kaart in een externe kaartservice",
+	        "noUrl": "Er is geen URL opgegeven in de configuratie",
+	        "linkTooltipText": "Link openen"
+	    },
+	    "bookmarks": {
+	        "title": "Bladwijzers",
+	        "close": "Dichtbij",
+	        "bookmarkLabel": "Bladwijzer voor"
+	    },
+       "zoom": {
             "zoomInButtonTooltip": "Zoom in op de kaart",
             "zoomOutButtonTooltip": "Zoom uit op de kaart"
         },
