@@ -19,6 +19,7 @@ const styleTypes = {
     return stylefunctions(name, params);
   }
 };
+
 /**
  * Add a new style type
  *
@@ -93,9 +94,8 @@ const editStyleOptions = {
   ]
 };
 
-// Will become an issue if 150 dpi is no longer the "standard" dpi setting
 /**
- * Description
+ * Take a value and multiple by a factor
  * OBS! Will become an issue if 150 dpi is no longer the "standard" dpi setting
  *
  * @function
