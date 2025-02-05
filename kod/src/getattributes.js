@@ -157,6 +157,30 @@ const getContent = {
     newElement.innerHTML = val;
     return newElement;
   },
+  audio(feature, attribute, attributes, map) {
+    let val = '';
+    if (attribute.splitter) {
+      const audioArr = feature.get(attribute.audio).split(attribute.splitter);
+      audioArr.forEach((audio) => {
+        const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(audio, attributes, null, map));
+        const attribution = attribute.attribution ? `<div class="o-audio-attribution">${attribute.attribution}</div>` : '';
+        val += `<div class="o-audio-container"><audio controls><source src="${url}" type="audio/m4a" />Your browser does not support the audio tag.</audio>${attribution}</div>`;
+      });
+    } else {
+      const featGet = attribute.audio ? feature.get(attribute.audio) : feature.get(attribute.name);
+      if (featGet) {
+        const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.audio), attributes, null, map));
+        const attribution = attribute.attribution ? `<div class="o-audio-attribution">${attribute.attribution}</div>` : '';
+        val = `<div class="o-audio-container"><audio src="${url}" controls>Your browser does not support the audio tag.</audio>${attribution}</div>`;
+      }
+    }
+    const newElement = document.createElement('li');
+    if (typeof (attribute.cls) !== 'undefined') {
+      newElement.classList.add(attribute.cls);
+    }
+    newElement.innerHTML = val;
+    return newElement;
+  },
   carousel(feature, attribute, attributes, map) {
     let val = '';
     let slides = '';
