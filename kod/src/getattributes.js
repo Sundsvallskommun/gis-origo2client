@@ -147,7 +147,7 @@ const getContent = {
       if (featGet) {
         const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.img), attributes, null, map));
         const attribution = attribute.attribution ? `<div class="o-image-attribution">${attribute.attribution}</div>` : '';
-        val = `<div class="o-image-container"><img src="${url}">${attribution}</div>`;
+        val = `<div class="o-image-container"><a class="o-identify-link-modal" href="${url}" target="modal-full" title="Bild" onclickmodal="true"><img src="${url}"></a>${attribution}</div>`;
       }
     }
     const newElement = document.createElement('li');
@@ -164,7 +164,7 @@ const getContent = {
       audioArr.forEach((audio) => {
         const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(audio, attributes, null, map));
         const attribution = attribute.attribution ? `<div class="o-audio-attribution">${attribute.attribution}</div>` : '';
-        val += `<div class="o-audio-container"><audio controls><source src="${url}" type="audio/m4a" />Your browser does not support the audio tag.</audio>${attribution}</div>`;
+        val += `<div class="o-audio-container"><audio src="${url}" controls>Your browser does not support the audio tag.</audio>${attribution}</div>`;
       });
     } else {
       const featGet = attribute.audio ? feature.get(attribute.audio) : feature.get(attribute.name);
@@ -172,6 +172,32 @@ const getContent = {
         const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.audio), attributes, null, map));
         const attribution = attribute.attribution ? `<div class="o-audio-attribution">${attribute.attribution}</div>` : '';
         val = `<div class="o-audio-container"><audio src="${url}" controls>Your browser does not support the audio tag.</audio>${attribution}</div>`;
+      }
+    }
+    const newElement = document.createElement('li');
+    if (typeof (attribute.cls) !== 'undefined') {
+      newElement.classList.add(attribute.cls);
+    }
+    newElement.innerHTML = val;
+    return newElement;
+  },
+  video(feature, attribute, attributes, map) {
+    let val = '';
+    if (typeof (feature.get(attribute.video)) !== 'undefined') {
+      if (attribute.splitter) {
+        const videoArr = feature.get(attribute.video).split(attribute.splitter);
+        videoArr.forEach((video) => {
+          const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(video, attributes, null, map));
+          const attribution = attribute.attribution ? `<div class="o-video-attribution">${attribute.attribution}</div>` : '';
+          val += `<div class="o-video-container"><video src="${url}" controls>Your browser does not support the video tag.</video>${attribution}</div>`;
+        });
+      } else {
+        const featGet = attribute.video ? feature.get(attribute.video) : feature.get(attribute.name);
+        if (featGet) {
+          const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.video), attributes, null, map));
+          const attribution = attribute.attribution ? `<div class="o-video-attribution">${attribute.attribution}</div>` : '';
+          val = `<div class="o-video-container"><video src="${url}" controls>Your browser does not support the video tag.</video>${attribution}</div>`;
+        }
       }
     }
     const newElement = document.createElement('li');
@@ -212,14 +238,17 @@ const getContent = {
   html(feature, attribute, attributes, map) {
     const val = replacer.replace(attribute.html, attributes, {
       helper: geom,
-      helperArg: feature.getGeometry()
+      helperArg: feature.getGeometry(),
+      localization: attribute.localization
     }, map);
-    const newElement = document.createElement('li');
-    if (typeof (attribute.cls) !== 'undefined') {
-      newElement.classList.add(attribute.cls);
-    }
-    newElement.innerHTML = val;
-    return newElement;
+    if (val) {
+      const newElement = document.createElement('li');
+      if (typeof (attribute.cls) !== 'undefined') {
+        newElement.classList.add(attribute.cls);
+      }
+      newElement.innerHTML = val;
+      return newElement;
+    } return null;
   }
 };
 
