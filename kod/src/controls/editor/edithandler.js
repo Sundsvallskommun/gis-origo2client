@@ -1363,6 +1363,15 @@ function addImageListener() {
   return fn;
 }
 
+/**
+ * Returns a function that adds an event handler to read an audio file when user selects a file.
+ *
+ * @function
+ * @name addAudioListener
+ * @kind function
+ * @param {any} ): (obj
+ * @returns {void}
+ */
 function addAudioListener() {
   const fn = (obj) => {
     const fileReader = new FileReader();
@@ -1940,6 +1949,7 @@ export default function editHandler(options, v) {
 
       // Set up a layer for displaying trace possibilities. Do it up front as it may become possible to turn it on later
       traceHighligtLayer = new VectorLayer({
+        group: 'none',
         source: new VectorSource(),
         style: {
           'stroke-color': 'rgba(100, 255, 0, 1)',
