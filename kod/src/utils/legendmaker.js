@@ -54,6 +54,8 @@ export const findStyleType = function findStyleType(styles) {
     return 'Triangle';
   } else if (styleTypes.star) {
     return 'Star';
+  } else if (styleTypes.pentagon) {
+    return 'Pentagon';
   } else if (styleTypes.cross) {
     return 'Cross';
   } else if (styleTypes.x) {
@@ -140,7 +142,7 @@ export const renderSvgIcon = function renderSvgIcon(styleRule, {
   if (styleType in renderIcon) {
     if (styleType === 'Polygon') {
       const polygonOptions = styleRule.find(style => style.fill);
-      const icon = renderIcon.Circle({
+      const icon = renderIcon.Polygon({
         fill: polygonOptions.fill,
         stroke: polygonOptions.stroke
       });
@@ -148,7 +150,7 @@ export const renderSvgIcon = function renderSvgIcon(styleRule, {
     } else if (styleType === 'Line') {
       const icon = styleRule.reduce((prev, style) => {
         if (style.stroke) {
-          return prev + renderIcon.Circle({
+          return prev + renderIcon.Line({
             stroke: style.stroke
           });
         }
@@ -184,6 +186,14 @@ export const renderSvgIcon = function renderSvgIcon(styleRule, {
       const icon = styleRule.reduce((prev, style) => {
         if (style.star) {
           return prev + renderIcon.Star(style.star);
+        }
+        return prev;
+      }, '');
+      return `${renderSvg(icon, { opacity })}`;
+    } else if (styleType === 'Pentagon') {
+      const icon = styleRule.reduce((prev, style) => {
+        if (style.pentagon) {
+          return prev + renderIcon.Pentagon(style.pentagon);
         }
         return prev;
       }, '');

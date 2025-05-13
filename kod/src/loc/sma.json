@@ -133,6 +133,19 @@
         },
         "about": {
             "title": "Maanagisnie bïjre"
+        },
+        "scale": {
+            "scaleText": "Skaal 1:"
+        },
+        "scalepicker": {
+            "selectScaleAriaLabel": "Válje skaala"
+        },
+        "position": {
+            "characterError": "Válddåhkkášoččin koordinahttit, prøv åvteste.",
+            "extentError": "Koordinahttit, som du váldde, lea ii dakkis njuvvot, prøv åvteste.",
+            "configError": "Váldde muhtumæle eller projeksjon åvstavne position kontrolla",
+            "centerButtonLabel": "Position ikona",
+            "projButtonLabel": "Projektsjon"
         }
     },
     "style": {

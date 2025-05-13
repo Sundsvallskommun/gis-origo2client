@@ -133,6 +133,19 @@
         },
         "about": {
             "title": "Over de kaart"
+        },
+        "scale": {
+            "scaleText": "Schaal 1:"
+        },
+        "scalepicker": {
+            "selectScaleAriaLabel": "Kies schaal"
+        },
+        "position": {
+            "characterError": "Ongeldig teken voor coördinaat, probeer het opnieuw.",
+            "extentError": "De opgegeven coördinaten liggen niet binnen het bereik van de kaart, probeer het opnieuw.",
+            "configError": "Er is geen titel of projectie ingesteld voor de positiecontrole",
+            "centerButtonLabel": "Positie-icoon",
+            "projButtonLabel": "Projectie"
         }
     },
     "style": {

@@ -1,6 +1,10 @@
 build-dev
 dist
 css/style.css
+css/style.css.map
 node_modules
 npm-debug-log
 temp_files
+cesiumassets
+out
+build
