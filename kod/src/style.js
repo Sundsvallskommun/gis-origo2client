@@ -110,7 +110,7 @@ function multiplyByFactor(value, scaleToDpi = 150) {
 }
 
 /**
- * CreateStyleOptions
+ * Create vector style from config options
  *
  * @function
  * @name createStyleOptions
@@ -193,7 +193,7 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
   }
   if ('circle' in styleParams) {
     styleOptions.image = new Circle({
-      radius: styleParams.circle.radius,
+      radius: styleParams.circle.radius ? styleParams.circle.radius : 7,
       scale: styleParams.circle.scale || undefined,
       fill: new Fill(styleParams.circle.fill) || undefined,
       stroke: new Stroke(styleParams.circle.stroke) || undefined
@@ -205,11 +205,12 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
   }
   if ('square' in styleParams) {
     styleOptions.image = new RegularShape({
-      radius: styleParams.square.radius,
+      radius: styleParams.square.radius ? styleParams.square.radius : 7,
       scale: styleParams.square.scale || undefined,
       fill: new Fill(styleParams.square.fill) || undefined,
       stroke: new Stroke(styleParams.square.stroke) || undefined,
       points: 4,
+      rotation: styleParams.square.rotation || 0,
       angle: Math.PI / 4
     });
     if (scaleToDpi) {
@@ -219,13 +220,13 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
   }
   if ('triangle' in styleParams) {
     styleOptions.image = new RegularShape({
-      radius: styleParams.triangle.radius,
+      radius: styleParams.triangle.radius ? styleParams.triangle.radius : 7,
       scale: styleParams.triangle.scale || undefined,
       fill: new Fill(styleParams.triangle.fill) || undefined,
       stroke: new Stroke(styleParams.triangle.stroke) || undefined,
       points: 3,
-      rotation: 0,
-      angle: styleParams.triangle.angle || 0
+      rotation: styleParams.triangle.rotation || 0,
+      angle: 0
     });
     if (scaleToDpi) {
       const imageScale = styleParams.triangle.scale ? multiplyByFactor(styleParams.triangle.scale, scaleToDpi) : styleScale;
@@ -233,13 +234,14 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
     }
   }
   if ('star' in styleParams) {
+    const radius = styleParams.star.radius ? styleParams.star.radius : 7;
     styleOptions.image = new RegularShape({
-      radius: styleParams.star.radius,
+      radius,
       scale: styleParams.star.scale || undefined,
       fill: new Fill(styleParams.star.fill) || undefined,
       stroke: new Stroke(styleParams.star.stroke) || undefined,
       points: 5,
-      radius2: styleParams.star.radius / 2,
+      radius2: radius / 2,
       angle: 0
     });
     if (scaleToDpi) {
@@ -247,12 +249,26 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
       styleOptions.image.setScale(imageScale);
     }
   }
+  if ('pentagon' in styleParams) {
+    styleOptions.image = new RegularShape({
+      radius: styleParams.pentagon.radius ? styleParams.pentagon.radius : 7,
+      scale: styleParams.pentagon.scale || undefined,
+      fill: new Fill(styleParams.pentagon.fill) || undefined,
+      stroke: new Stroke(styleParams.pentagon.stroke) || undefined,
+      points: 5,
+      rotation: styleParams.pentagon.rotation || 0,
+      angle: 0
+    });
+    if (scaleToDpi) {
+      const imageScale = styleParams.pentagon.scale ? multiplyByFactor(styleParams.pentagon.scale, scaleToDpi) : styleScale;
+      styleOptions.image.setScale(imageScale);
+    }
+  }
   if ('cross' in styleParams) {
     styleOptions.image = new RegularShape({
-      radius: styleParams.cross.radius,
+      radius: styleParams.cross.radius ? styleParams.cross.radius : 7,
       scale: styleParams.cross.scale || undefined,
-      fill: new Fill(styleParams.cross.fill) || undefined,
-      stroke: new Stroke(styleParams.cross.stroke) || undefined,
+      stroke: styleParams.cross.stroke ? new Stroke(styleParams.cross.stroke) : new Stroke({ color: 'rgba(0,0,0,1)', width: 2 }),
       points: 4,
       radius2: 0,
       angle: 0
@@ -264,10 +280,9 @@ function createStyleOptions(orgStyleParams, scaleToDpi) {
   }
   if ('x' in styleParams) {
     styleOptions.image = new RegularShape({
-      radius: styleParams.x.radius,
+      radius: styleParams.x.radius ? styleParams.x.radius : 7,
       scale: styleParams.x.scale || undefined,
-      fill: new Fill(styleParams.x.fill) || undefined,
-      stroke: new Stroke(styleParams.x.stroke) || undefined,
+      stroke: styleParams.x.stroke ? new Stroke(styleParams.x.stroke) : new Stroke({ color: 'rgba(0,0,0,1)', width: 2 }),
       points: 4,
       radius2: 0,
       angle: Math.PI / 4

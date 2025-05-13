@@ -1,15 +1,10 @@
 import { dom } from './ui';
 
-/**
+/*
  * Will be imported as sort of "static" as it does not contain any creatish function
  * There can be only one sidebar in an entire page (or iframe)
- * 
- * @function
- * @name setVisibility
- * @kind function
- * @param {any} visible
- * @returns {void}
  */
+
 function setVisibility(visible) {
   const sideEl = document.getElementById('o-sidebar');
   if (visible && sideEl) {
@@ -21,12 +16,7 @@ function setVisibility(visible) {
 
 /**
  * Closes the sidebar and optionally calls a callback.
- * 
- * @function
- * @name closeSidebar
- * @kind function
- * @param {any} cb
- * @returns {void}
+ * @param {any} viewer
  */
 function closeSidebar(cb) {
   setVisibility(false);
@@ -35,15 +25,6 @@ function closeSidebar(cb) {
   }
 }
 
-/**
- * Bind the close sidebar button to a event
- * 
- * @function
- * @name bindUIActions
- * @kind function
- * @param {any} closeCb
- * @returns {void}
- */
 function bindUIActions(closeCb) {
   document.querySelector('#o-sidebar .o-sidebar #o-close-button').addEventListener('click', (evt) => {
     closeSidebar(closeCb);
@@ -51,43 +32,16 @@ function bindUIActions(closeCb) {
   });
 }
 
-/**
- * Sets the title of the sidebar
- * 
- * @function
- * @name setTitle
- * @kind function
- * @param {any} title
- * @returns {void}
- */
 function setTitle(title) {
   const sideti = document.querySelector('#o-sidebar #o-card-title');
   sideti.innerHTML = title;
 }
 
-/**
- * Insert the content to the sidebar
- * 
- * @function
- * @name insertContent
- * @kind function
- * @param {any} content
- * @returns {void}
- */
 function insertContent(content) {
   const el = document.querySelector('#o-sidebar .o-sidebar .o-card-content');
   el.innerHTML = content;
 }
 
-/**
- * Set the content to the sidebar
- * 
- * @function
- * @name setContent
- * @kind function
- * @param {any} config
- * @returns {void}
- */
 function setContent(config) {
   const { title, content } = config;
   if (title) {

@@ -79,19 +79,19 @@ const Stylewindow = function Stylewindow(optOptions = {}) {
     return colorArray[3];
   }
 
-  function stringToRgba(colorString, opacity) {
+  function stringToRgba(colorString, opacity = 1) {
     if (typeof colorString === 'string') {
       if (colorString.toLowerCase().startsWith('rgba(')) { return colorString; }
       if (colorString.startsWith('#')) {
-        return hexToRgba(colorString, opacity || 1);
+        return hexToRgba(colorString, opacity);
       } else if (colorString.toLowerCase().startsWith('rgb(')) {
-        return rgbToRgba(colorString, opacity || 1);
+        return rgbToRgba(colorString, opacity);
       }
     }
     return rgbToRgba(swDefaults.fillColor, swDefaults.fillOpacity);
   }
 
-  function paddingToArray(padding) {
+  function paddingToArray(padding = swDefaults.paddingText) {
     return [padding, padding, padding, padding];
   }
 
@@ -335,9 +335,9 @@ const Stylewindow = function Stylewindow(optOptions = {}) {
     newStyleObj.strokeWidth *= styleScale;
     newStyleObj.textSize *= styleScale;
     newStyleObj.pointSize *= styleScale;
-    newStyleObj.backgroundStrokeOpacity = featureStyle.backgroundStrokeOpacity ? featureStyle.backgroundStrokeOpacity : 0;
     newStyleObj.backgroundStrokeColor = stringToRgba(newStyleObj.backgroundStrokeColor, newStyleObj.backgroundStrokeOpacity);
     newStyleObj.backgroundStrokeWidth *= styleScale;
+    newStyleObj.backgroundFill = stringToRgba(newStyleObj.backgroundFillColor, newStyleObj.backgroundFillOpacity);
     newStyleObj.paddingText = paddingToArray(newStyleObj.paddingText);
     const geom = feature.getGeometry();
     let geometryType = feature.getGeometry().getType();

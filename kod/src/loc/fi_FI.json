@@ -133,6 +133,19 @@
         },
         "about": {
             "title": "Tietoja kartasta"
+        },
+        "scale": {
+            "scaleText": "Mittakaava 1:"
+        },
+        "scalepicker": {
+            "selectScaleAriaLabel": "Valitse mittakaava"
+        },
+        "position": {
+            "characterError": "Virheellinen merkki koordinaatissa, yritä uudelleen.",
+            "extentError": "Annetut koordinaatit eivät ole kartan ulottuvissa, yritä uudelleen.",
+            "configError": "Tittelitä tai projektiota ei ole asetettu sijaintiohjainta varten",
+            "centerButtonLabel": "Sijaintikuvake",
+            "projButtonLabel": "Projektio"
         }
     },
     "style": {

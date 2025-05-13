@@ -214,7 +214,9 @@ const DragAndDrop = function DragAndDrop(options = {}) {
             }
             types.push(feature.getGeometry().getType());
           });
-          layerOptions.styleDef = styles;
+          if (styles.length && (!['kml', 'kmz'].includes(fileExtension.toLowerCase()))) {
+            layerOptions.styleDef = styles;
+          }
         }
         const layer = viewer.addLayer(layerOptions);
         if (zoomToExtentOnLoad) {

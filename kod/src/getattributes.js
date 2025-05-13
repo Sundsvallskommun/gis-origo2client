@@ -147,7 +147,8 @@ const getContent = {
       if (featGet) {
         const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.img), attributes, null, map));
         const attribution = attribute.attribution ? `<div class="o-image-attribution">${attribute.attribution}</div>` : '';
-        val = `<div class="o-image-container"><a class="o-identify-link-modal" href="${url}" target="modal-full" title="Bild" onclickmodal="true"><img src="${url}"></a>${attribution}</div>`;
+        // Special för Sundsvall för att kunna visa bild i större storlek
+		val = `<div class="o-image-container"><a class="o-identify-link-modal" href="${url}" target="modal-full" title="Bild" onclickmodal="true"><img src="${url}"></a>${attribution}</div>`;
       }
     }
     const newElement = document.createElement('li');
@@ -159,42 +160,68 @@ const getContent = {
   },
   audio(feature, attribute, attributes, map) {
     let val = '';
-    if (attribute.splitter) {
-      const audioArr = feature.get(attribute.audio).split(attribute.splitter);
-      audioArr.forEach((audio) => {
-        const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(audio, attributes, null, map));
-        const attribution = attribute.attribution ? `<div class="o-audio-attribution">${attribute.attribution}</div>` : '';
-        val += `<div class="o-audio-container"><audio src="${url}" controls>Your browser does not support the audio tag.</audio>${attribution}</div>`;
-      });
-    } else {
-      const featGet = attribute.audio ? feature.get(attribute.audio) : feature.get(attribute.name);
-      if (featGet) {
-        const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.audio), attributes, null, map));
-        const attribution = attribute.attribution ? `<div class="o-audio-attribution">${attribute.attribution}</div>` : '';
-        val = `<div class="o-audio-container"><audio src="${url}" controls>Your browser does not support the audio tag.</audio>${attribution}</div>`;
+    let title = '';
+    const audioAttr = feature.get(attribute.audio);
+    if (typeof audioAttr !== 'undefined') {
+      if (attribute.splitter) {
+        // Splitting characters that doesn't work with data/base64
+        const splitterSet = new Set([';', ':', '/', ',', '+']);
+        if (!(audioAttr.startsWith('data:') && splitterSet.has(attribute.splitter))) {
+          const audioArr = audioAttr.split(attribute.splitter);
+          if (attribute.title) {
+            title = `<b>${attribute.title}</b>`;
+          }
+          audioArr.forEach((audio) => {
+            const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(audio, attributes, null, map));
+            const attribution = attribute.attribution ? `<div class="o-audio-attribution">${attribute.attribution}</div>` : '';
+            val += `<div class="o-audio-container"><audio src="${url}" controls>Your browser does not support the audio tag.</audio>${attribution}</div>`;
+          });
+        }
+      } else {
+        const featGet = attribute.audio ? audioAttr : feature.get(attribute.name);
+        if (featGet) {
+          if (attribute.title) {
+            title = `<b>${attribute.title}</b>`;
+          }
+          const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(audioAttr, attributes, null, map));
+          const attribution = attribute.attribution ? `<div class="o-audio-attribution">${attribute.attribution}</div>` : '';
+          val = `<div class="o-audio-container"><audio src="${url}" controls>Your browser does not support the audio tag.</audio>${attribution}</div>`;
+        }
       }
     }
     const newElement = document.createElement('li');
     if (typeof (attribute.cls) !== 'undefined') {
       newElement.classList.add(attribute.cls);
     }
-    newElement.innerHTML = val;
+    newElement.innerHTML = `${title}${val}`;
     return newElement;
   },
   video(feature, attribute, attributes, map) {
     let val = '';
-    if (typeof (feature.get(attribute.video)) !== 'undefined') {
+    let title = '';
+    const videoAttr = feature.get(attribute.video);
+    if (typeof videoAttr !== 'undefined') {
       if (attribute.splitter) {
-        const videoArr = feature.get(attribute.video).split(attribute.splitter);
-        videoArr.forEach((video) => {
-          const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(video, attributes, null, map));
-          const attribution = attribute.attribution ? `<div class="o-video-attribution">${attribute.attribution}</div>` : '';
-          val += `<div class="o-video-container"><video src="${url}" controls>Your browser does not support the video tag.</video>${attribution}</div>`;
-        });
+        // Splitting characters that doesn't work with data/base64
+        const splitterSet = new Set([';', ':', '/', ',', '+']);
+        if (!(videoAttr.startsWith('data:') && splitterSet.has(attribute.splitter))) {
+          const videoArr = videoAttr.split(attribute.splitter);
+          if (attribute.title) {
+            title = `<b>${attribute.title}</b>`;
+          }
+          videoArr.forEach((video) => {
+            const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(video, attributes, null, map));
+            const attribution = attribute.attribution ? `<div class="o-video-attribution">${attribute.attribution}</div>` : '';
+            val += `<div class="o-video-container"><video src="${url}" controls>Your browser does not support the video tag.</video>${attribution}</div>`;
+          });
+        }
       } else {
-        const featGet = attribute.video ? feature.get(attribute.video) : feature.get(attribute.name);
+        const featGet = attribute.video ? videoAttr : feature.get(attribute.name);
         if (featGet) {
-          const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.video), attributes, null, map));
+          if (attribute.title) {
+            title = `<b>${attribute.title}</b>`;
+          }
+          const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(videoAttr, attributes, null, map));
           const attribution = attribute.attribution ? `<div class="o-video-attribution">${attribute.attribution}</div>` : '';
           val = `<div class="o-video-container"><video src="${url}" controls>Your browser does not support the video tag.</video>${attribution}</div>`;
         }
@@ -204,7 +231,7 @@ const getContent = {
     if (typeof (attribute.cls) !== 'undefined') {
       newElement.classList.add(attribute.cls);
     }
-    newElement.innerHTML = val;
+    newElement.innerHTML = `${title}${val}`;
     return newElement;
   },
   carousel(feature, attribute, attributes, map) {
@@ -313,6 +340,14 @@ function getAttributesHelper(feature, layer, map) {
             ulList.classList.add('o-carousel-list');
           } else if (attribute.name) {
             val = getContent.name(feature, attribute, attributes, map);
+          } else if (attribute.audio) {
+            if (attributes[attribute.audio] !== '') {
+              val = getContent.audio(feature, attribute, attributes, map);
+            }
+          } else if (attribute.video) {
+            if (attributes[attribute.video] !== '') {
+              val = getContent.video(feature, attribute, attributes, map);
+            }
           } else {
             val = customAttribute(feature, attribute, attributes, map);
           }
