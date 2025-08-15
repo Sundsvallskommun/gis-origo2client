@@ -149,7 +149,7 @@
             "removeLayer": "Ta bort lager",
             "moreInfoButtonLabel": "Visa lagerinfo",
             "renderStyleSelect": "Välj stil",
-            "groupDataitem": "Group"
+            "legendSearchGroupSuffix": "(Grupp)"
         },
         "zoom": {
             "zoomInButtonTooltip": "Zooma in i kartan",

@@ -553,7 +553,7 @@ const Legend = function Legend(options = {}) {
         if (found) {
           const dataItem = {};
           dataItem.label = label;
-          dataItem.value = `${value} (${localize('groupDataitem')})`;
+          dataItem.value = `${value} ${localize('legendSearchGroupSuffix')}`;
           hitArr.push(dataItem);
         }
       });
