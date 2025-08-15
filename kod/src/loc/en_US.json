@@ -149,7 +149,7 @@
             "removeLayer": "Remove layer",
             "moreInfoButtonLabel": "Show layer info",
             "renderStyleSelect": "Select style",
-            "groupDataitem": "Group"
+            "legendSearchGroupSuffix": "(Group)"
         },
         "zoom": {
             "zoomInButtonTooltip": "Zoom into the map",
