@@ -428,7 +428,17 @@ const Legend = function Legend(options = {}) {
       }
       if (isGroup) {
         const layers = viewer.getLayersByProperty('group', label);
-        layers.forEach(l => l.setVisible(true));
+        if (layerGroup.exclusive) { // If group is exclusive only make the first layer visible.
+          for (let i = 0; i < layers.length; i += 1) {
+            if (i === 0) {
+              layers[i].setVisible(true);
+            } else {
+              layers[i].setVisible(false);
+            }
+          }
+        } else {
+          layers.forEach(l => l.setVisible(true));
+        }
       } else {
         layer.setVisible(true);
       }
