@@ -148,8 +148,7 @@
             "removeLayerQuestion": "Do you want to remove the layer?",
             "removeLayer": "Remove layer",
             "moreInfoButtonLabel": "Show layer info",
-            "renderStyleSelect": "Select style",
-            "legendSearchGroupSuffix": "(Group)"
+            "renderStyleSelect": "Select style"
         },
         "zoom": {
             "zoomInButtonTooltip": "Zoom into the map",
@@ -175,7 +174,14 @@
             "scaleText": "Scale 1:"
         },
         "scalepicker": {
-            "selectScaleAriaLabel": "Pick scale"
+            "selectScaleAriaLabel": "Pick scale",
+            "buttonPrefix": "",
+            "listItemPrefix": ""
+        },
+        "splash": {
+            "defaultTitle": "About the map",
+            "hideText": "Don't show again",
+            "confirmText": "Are you sure you don't want to see the information again?"
         },
         "position": {
             "characterError": "Invalid character for coordinate, please try again.",

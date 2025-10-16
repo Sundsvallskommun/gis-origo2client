@@ -4,6 +4,7 @@ import isUrl from './utils/isurl';
 import geom from './geom';
 import attachmentclient from './utils/attachmentclient';
 import relatedtables from './utils/relatedtables';
+import getNestedValue from './utils/getnestedvalue';
 
 function createUrl(prefix, suffix, url) {
   const p = prefix || '';
@@ -78,13 +79,32 @@ function replaceValue(featureValue, replace) {
   return featureValue;
 }
 
+/**
+ * Get the values of attributes and format them according to the different various types there is.
+ *
+ * @constant
+ * @name getContent
+ * @kind variable
+ * @type {{ name(feature: any, attribute: any, attributes: any, map: any): HTMLLIElement; url(feature: any, attribute: any, attributes: any, map: any): HTMLLIElement; img(feature: any, attribute: any, attributes: any, map: any): HTMLLIElement; audio(feature: any, attribute: any, attributes: any, map: any): HTMLLIElement; video(feature: any, attribute: any, attributes: any, map: any): HTMLLIElement; carousel(feature: any, attribute: any, attributes: any, map: any): HTMLLIElement; html(feature: any, attribute: any, attributes: any, map: any): HTMLLIElement; }}
+ */
 const getContent = {
   name(feature, attribute, attributes, map) {
     let val = '';
     let title = '';
     let prefix = '';
     let suffix = '';
-    const featureValue = feature.get(attribute.name) === 0 ? feature.get(attribute.name).toString() : feature.get(attribute.name);
+    let featureValue = feature.get(attribute.name);
+
+    // Convert featureValue to string if it's exactly 0
+    if (featureValue === 0) {
+      featureValue = featureValue.toString();
+    }
+
+    // If featureValue is undefined and attribute.name contains a dot
+    if (typeof featureValue === 'undefined' && attribute.name.indexOf('.') > 0) {
+      featureValue = getNestedValue(feature, attribute.name);
+    }
+
     if (featureValue) {
       val = featureValue;
       if (attribute.title) {
@@ -147,8 +167,8 @@ const getContent = {
       if (featGet) {
         const url = createUrl(attribute.urlPrefix, attribute.urlSuffix, replacer.replace(feature.get(attribute.img), attributes, null, map));
         const attribution = attribute.attribution ? `<div class="o-image-attribution">${attribute.attribution}</div>` : '';
-        // Special för Sundsvall för att kunna visa bild i större storlek
-		val = `<div class="o-image-container"><a class="o-identify-link-modal" href="${url}" target="modal-full" title="Bild" onclickmodal="true"><img src="${url}"></a>${attribution}</div>`;
+        // Special fï¿½r Sundsvall fï¿½r att kunna visa bild i stï¿½rre storlek
+        val = `<div class="o-image-container"><a class="o-identify-link-modal" href="${url}" target="modal-full" title="Bild" onclickmodal="true"><img src="${url}"></a>${attribution}</div>`;
       }
     }
     const newElement = document.createElement('li');
@@ -292,7 +312,7 @@ function customAttribute(feature, attribute, attributes, map) {
  * @param {any} map
  * @returns
  */
-function getAttributesHelper(feature, layer, map) {
+function getAttributesHelper(feature, layer, map, localization) {
   const featureinfoElement = document.createElement('div');
   featureinfoElement.classList.add('o-identify-content');
   const ulList = document.createElement('ul');
@@ -334,6 +354,7 @@ function getAttributesHelper(feature, layer, map) {
           } else if (attribute.url) {
             val = getContent.url(feature, attribute, attributes, map);
           } else if (attribute.html) {
+            attribute.localization = localization;
             val = getContent.html(feature, attribute, attributes, map);
           } else if (attribute.carousel) {
             val = getContent.carousel(feature, attribute, attributes, map);
@@ -377,7 +398,7 @@ function getAttributesHelper(feature, layer, map) {
  * @param {any} map
  * @returns
  */
-function getAttributes(feature, layer, map) {
+function getAttributes(feature, layer, map, localization) {
   // Add all hoisting attributes as actual properties on feature beacuse attributes configuration may try to use them
   // Should only happen if user calls from api and has configured async content but are using sync function to create content
   // Properties are removed when content is created because if we leave them they will exist permanently on the feature,
@@ -407,7 +428,7 @@ function getAttributes(feature, layer, map) {
       }
     });
   }
-  const content = getAttributesHelper(feature, layer, map);
+  const content = getAttributesHelper(feature, layer, map, localization);
   // remove the temporary attributes now that we're done with them
   attributesToRemove.forEach(currAttrToRemove => feature.unset(currAttrToRemove, true));
   return content;
@@ -509,12 +530,12 @@ async function hoistRelatedAttributes(parentLayer, parentFeature, hoistedAttribu
  * @param {any} layer
  * @param {any} map
  */
-async function getAttributesAsync(feature, layer, map) {
+async function getAttributesAsync(feature, layer, map, localization) {
   const hoistedAttributes = [];
   const layers = map.getLayers().getArray();
   // Add the temporary attributes with their values
   await hoistRelatedAttributes(layer, feature, hoistedAttributes, layers);
-  const content = getAttributesHelper(feature, layer, map);
+  const content = getAttributesHelper(feature, layer, map, localization);
 
   // Remove all temporary added attributes. They mess up saving edits as there are no such fields in db.
   hoistedAttributes.forEach(hoist => {
