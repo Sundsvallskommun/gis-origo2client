@@ -190,7 +190,6 @@
             "centerButtonLabel": "Position icon",
             "projButtonLabel": "Projection"
         }
-        
     },
     "style": {
         "drawStyles": {
@@ -198,7 +197,6 @@
         },
         "styleWindow": {
             "title": "Configure style"
-
         },
         "styleTemplate": {
             "fillColor": "Fill",

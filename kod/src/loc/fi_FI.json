@@ -4,6 +4,7 @@
     "menuTitle": "Kieli",
     "controls": {
         "measure": {
+            "layerTitle": "Mittaa tulos",
             "mainButtonTooltip": "Mittaa",
             "startMeasureTooltip": "Aloita mittaus napsauttamalla",
             "lengthTooltip": "Pituus",
@@ -106,24 +107,55 @@
             "drawCircle": "Ympyrä",
             "drawFreehand": "Vapaalla kädellä"
         },
+        "bookmarks": {
+            "title": "Kirjanmerkit",
+            "close": "Lähellä",
+            "bookmarkLabel": "Kirjanmerkki"
+        },
+        "externalurl": {
+            "tooltipText": "Näytä kartta ulkoisessa karttapalvelussa",
+            "noUrl": "Kokoonpanossa ei ole määritetty URL-osoitetta",
+            "linkTooltipText": "Avaa linkki"
+        },
 	    "draganddrop": {
 	        "addFromFile": "Lisää tiedostosta",
 	        "yourLayersName": "sinun-kerroksesi",
 	        "yourLayersTitle": "Sinun kerroksesi"
 	    },
-	    "externalurl": {
-	        "tooltipText": "Näytä kartta ulkoisessa karttapalvelussa",
-	        "noUrl": "Määrityksissä ei ole määritetty URL-osoitetta",
-	        "linkTooltipText": "Avaa linkki"
-	    },
-	    "bookmarks": {
-	        "title": "Kirjanmerkit",
-	        "close": "Lähellä",
-	        "bookmarkLabel": "Kirjanmerkki kohteelle"
-	    },
+        "legend": {
+            "placeholderText": "Hae tasoa",
+            "turnOffLayersTitle": "Poista kaikki tasot käytöstä",
+            "showVisibleTitle": "Näytä vain näkyvät tasot",
+            "showAllVisibleTitle": "Näytä kaikki tasot",
+            "turnOnLayersTitle": "Ota kaikki tasot käyttöön",
+            "addLayerTitle": "Lisää kerros",
+            "selectHandlerError": "Hakuvaihtoehdot puuttuvat",
+            "titleMissing": "Otsikko puuttuu",
+            "layerSwitcher": "Kerrosvaihtaja",
+            "close": "Lähellä",
+            "layer": "Kerros",
+            "addLayerWarningGroup": "Ryhmä",
+            "addLayerWarningDNE": "ei ole olemassa",
+            "layerTitleMissing": "Otsikko puuttuu",
+            "layerIcon": "Tasokuvake",
+            "toggleLayer": "Tasojen näkyvyyden vaihtaminen/piilottaminen",
+            "showInfoMenuItem": "näyttää",
+            "layerInfoMenuItem": "kerroksen tiedot",
+            "groupInfoMenuItem": "ryhmän tiedot",
+            "zoomToExtentMenuItem": "Zoomaa",
+            "exportLayerTitle": "viedä",
+            "exportLayerSave": "Tallenna kerros",
+            "removeLayerQuestion": "Haluatko poistaa kerroksen?",
+            "removeLayer": "Poista kerros",
+            "moreInfoButtonLabel": "Näytä kerros tiedot",
+            "renderStyleSelect": "Valitse tyyli"
+        },
         "zoom": {
             "zoomInButtonTooltip": "Lähennä karttaa",
             "zoomOutButtonTooltip": "Loitonna karttaa"
+        },
+        "fullscreen": {
+            "fullscreenButtonTooltip": "Näytä suuri kartta"
         },
         "home": {
             "zoomHomeButtonTooltip": "Zoomaa koko karttaan"
@@ -134,11 +166,22 @@
         "about": {
             "title": "Tietoja kartasta"
         },
+        "mapmenu": {
+            "menuButtonTooltip": "Valikko",
+            "closeButtonLabel": "Lähellä"
+        },
         "scale": {
             "scaleText": "Mittakaava 1:"
         },
         "scalepicker": {
-            "selectScaleAriaLabel": "Valitse mittakaava"
+            "selectScaleAriaLabel": "Valitse mittakaava",
+            "buttonPrefix": "",
+            "listItemPrefix": ""
+        },
+        "splash": {
+            "defaultTitle": "Tietoja kartasta",
+            "hideText": "Älä näytä uudelleen",
+            "confirmText": "Oletko varma, ettet halua nähdä tietoja uudelleen?"
         },
         "position": {
             "characterError": "Virheellinen merkki koordinaatissa, yritä uudelleen.",
@@ -146,7 +189,17 @@
             "configError": "Tittelitä tai projektiota ei ole asetettu sijaintiohjainta varten",
             "centerButtonLabel": "Sijaintikuvake",
             "projButtonLabel": "Projektio"
-        }
+        },
+	    "externalurl": {
+	        "tooltipText": "Näytä kartta ulkoisessa karttapalvelussa",
+	        "noUrl": "Määrityksissä ei ole määritetty URL-osoitetta",
+	        "linkTooltipText": "Avaa linkki"
+	    },
+	    "bookmarks": {
+	        "title": "Kirjanmerkit",
+	        "close": "Lähellä",
+	        "bookmarkLabel": "Kirjanmerkki kohteelle"
+	    }
     },
     "style": {
         "drawStyles": {
