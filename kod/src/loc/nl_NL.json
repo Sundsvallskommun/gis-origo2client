@@ -4,6 +4,7 @@
     "menuTitle": "Taal",
     "controls": {
         "measure": {
+            "layerTitle": "Meetresultaat",
             "mainButtonTooltip": "Meten",
             "startMeasureTooltip": "Klik om te beginnen met meten",
             "lengthTooltip": "Lengte",
@@ -106,24 +107,55 @@
             "drawCircle": "Cirkel",
             "drawFreehand": "Vrije hand"
         },
-        "draganddrop": {
-	        "addFromFile": "Toevoegen vanuit bestand",
-	        "yourLayersName": "jouw-lagen",
-	        "yourLayersTitle": "Jouw lagen"
+	    "bookmarks": {
+	        "title": "Bladwijzers",
+	        "close": "Dichtbij",
+	        "bookmarkLabel": "Bladwijzer voor"
 	    },
 	    "externalurl": {
 	        "tooltipText": "Toon de kaart in een externe kaartservice",
 	        "noUrl": "Er is geen URL opgegeven in de configuratie",
 	        "linkTooltipText": "Link openen"
 	    },
-	    "bookmarks": {
-	        "title": "Bladwijzers",
-	        "close": "Dichtbij",
-	        "bookmarkLabel": "Bladwijzer voor"
+        "draganddrop": {
+	        "addFromFile": "Toevoegen vanuit bestand",
+	        "yourLayersName": "jouw-lagen",
+	        "yourLayersTitle": "Jouw lagen"
 	    },
+        "legend": {
+		    "placeholderText": "Zoek naar laag",
+		    "turnOffLayersTitle": "Schakel alle lagen uit",
+		    "showVisibleTitle": "Toon alleen zichtbare lagen",
+		    "showAllVisibleTitle": "Toon alle lagen",
+		    "turnOnLayersTitle": "Schakel alle lagen in",
+		    "addLayerTitle": "Laag toevoegen",
+		    "selectHandlerError": "Zoekopties ontbreken",
+		    "titleMissing": "Titel ontbreekt",
+		    "layerSwitcher": "Laagschakelaar",
+		    "close": "Sluiten",
+		    "layer": "Laag",
+		    "addLayerWarningGroup": "Groep",
+		    "addLayerWarningDNE": "bestaat niet",
+		    "layerTitleMissing": "Titel ontbreekt",
+		    "layerIcon": "Laagpictogram",
+		    "toggleLayer": "Schakel laagzichtbaarheid",
+		    "showInfoMenuItem": "Toon",
+		    "layerInfoMenuItem": "laaginformatie",
+		    "groupInfoMenuItem": "groepinformatie",
+		    "zoomToExtentMenuItem": "Zoom naar",
+		    "exportLayerTitle": "exporteren",
+		    "exportLayerSave": "Laag opslaan",
+		    "removeLayerQuestion": "Wil je de laag verwijderen?",
+		    "removeLayer": "Laag verwijderen",
+		    "moreInfoButtonLabel": "Toon laaginformatie",
+		    "renderStyleSelect": "Selecteer stijl"
+		},
        "zoom": {
             "zoomInButtonTooltip": "Zoom in op de kaart",
             "zoomOutButtonTooltip": "Zoom uit op de kaart"
+        },
+        "fullscreen": {
+            "fullscreenButtonTooltip": "Grote kaart weergeven"
         },
         "home": {
             "zoomHomeButtonTooltip": "Zoom naar de hele kaart"
@@ -134,11 +166,22 @@
         "about": {
             "title": "Over de kaart"
         },
+        "mapmenu": {
+            "menuButtonTooltip": "Menu",
+            "closeButtonLabel": "Dichtbij"
+        },
         "scale": {
             "scaleText": "Schaal 1:"
         },
         "scalepicker": {
-            "selectScaleAriaLabel": "Kies schaal"
+            "selectScaleAriaLabel": "Kies schaal",
+            "buttonPrefix": "",
+            "listItemPrefix": ""
+        },
+        "splash": {
+            "defaultTitle": "Over de kaart",
+            "hideText": "Niet meer tonen",
+            "confirmText": "Weet u zeker dat u deze informatie niet meer wilt zien?"
         },
         "position": {
             "characterError": "Ongeldig teken voor coördinaat, probeer het opnieuw.",
@@ -146,7 +189,7 @@
             "configError": "Er is geen titel of projectie ingesteld voor de positiecontrole",
             "centerButtonLabel": "Positie-icoon",
             "projButtonLabel": "Projectie"
-        }
+        }        
     },
     "style": {
         "drawStyles": {

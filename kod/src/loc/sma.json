@@ -4,6 +4,7 @@
     "menuTitle": "Gïele",
     "controls": {
         "measure": {
+            "layerTitle": "Mierie buoridit",
             "mainButtonTooltip": "Mïerhkesne",
             "startMeasureTooltip": "Klikke maahtahtidh mïerhkemesne",
             "lengthTooltip": "Giehkie",
@@ -106,24 +107,55 @@
             "drawCircle": "Gåetie",
             "drawFreehand": "Vrije"
         },
-        "draganddrop": {
-            "addFromFile": "Lisse faajsen bïjre",
-            "yourLayersName": "dåtnoe-laajresth",
-            "yourLayersTitle": "Dåtnoe laajresth"
+        "bookmarks": {
+            "title": "Goerresetnie",
+            "close": "Luhkedh",
+            "bookmarkLabel": "Goerresetnie bïjre"
         },
         "externalurl": {
             "tooltipText": "Åådtjedh maanagisnie almetjh maanagisnie-tjïeltebe",
             "noUrl": "Gåårvede jïhke åvteste jïjnjemesne gietskesne",
             "linkTooltipText": "Ovnese gåårven"
         },
-        "bookmarks": {
-            "title": "Goerresetnie",
-            "close": "Luhkedh",
-            "bookmarkLabel": "Goerresetnie bïjre"
+        "draganddrop": {
+            "addFromFile": "Lisse faajsen bïjre",
+            "yourLayersName": "dåtnoe-laajresth",
+            "yourLayersTitle": "Dåtnoe laajresth"
         },
+        "legend": {
+	        "placeholderText": "Searrát lager",
+	        "turnOffLayersTitle": "Dáhpáhus álggah lager",
+	        "showVisibleTitle": "Visot beallje vuođđo lager",
+	        "showAllVisibleTitle": "Visot álggah lager",
+	        "turnOnLayersTitle": "Skiŋit álggah lager",
+	        "addLayerTitle": "Lædjen lager",
+	        "selectHandlerError": "Searrálin sáhtah jeđđehke",
+	        "titleMissing": "Náttje tjohta",
+	        "layerSwitcher": "Lagerbyttare",
+	        "close": "Lávga",
+	        "layer": "Lager",
+	        "addLayerWarningGroup": "Gruovva",
+	        "addLayerWarningDNE": "nego dáhttolágan",
+	        "layerTitleMissing": "Tjohta máttelit",
+	        "layerIcon": "Lagerikon",
+	        "toggleLayer": "Válggah lager vuođđo",
+	        "showInfoMenuItem": "Visot",
+	        "layerInfoMenuItem": "lagerinfomasjon",
+	        "groupInfoMenuItem": "gruovva infomasjon",
+	        "zoomToExtentMenuItem": "Zoomma",
+	        "exportLayerTitle": "exporter",
+	        "exportLayerSave": "Sáhtah lager",
+	        "removeLayerQuestion": "Vállje dán lager?",
+	        "removeLayer": "Fádden lager",
+	        "moreInfoButtonLabel": "Visot lagerin fomom",
+	        "renderStyleSelect": "Válggah stil"
+	    },
         "zoom": {
             "zoomInButtonTooltip": "Nobrie maahtahtidh maanagisnie",
             "zoomOutButtonTooltip": "Vuertjemesne maanagisnie maahtahtidh"
+        },
+        "fullscreen": {
+            "fullscreenButtonTooltip": "Atjïe stoerh kaarta"
         },
         "home": {
             "zoomHomeButtonTooltip": "Gahtjedh maanagisnie"
@@ -134,11 +166,22 @@
         "about": {
             "title": "Maanagisnie bïjre"
         },
+        "mapmenu": {
+            "menuButtonTooltip": "Menü",
+            "closeButtonLabel": "Luhkedh"
+        },
         "scale": {
             "scaleText": "Skaal 1:"
         },
         "scalepicker": {
-            "selectScaleAriaLabel": "Válje skaala"
+            "selectScaleAriaLabel": "Válje skaala",
+            "buttonPrefix": "",
+            "listItemPrefix": ""
+        },
+        "splash": {
+            "defaultTitle": "Gænnah kaarta bïjre",
+            "hideText": "Ij bïjre åvteste vielie",
+            "confirmText": "Aajkoe buekieh ij bïjre vielie åvteste sjædta?"
         },
         "position": {
             "characterError": "Válddåhkkášoččin koordinahttit, prøv åvteste.",
