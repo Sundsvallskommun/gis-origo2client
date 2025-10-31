@@ -148,7 +148,8 @@
 	        "removeLayerQuestion": "Vállje dán lager?",
 	        "removeLayer": "Fádden lager",
 	        "moreInfoButtonLabel": "Visot lagerin fomom",
-	        "renderStyleSelect": "Válggah stil"
+	        "renderStyleSelect": "Válggah stil",
+            "legendSearchGroupSuffix": "(Gruovva)"
 	    },
         "zoom": {
             "zoomInButtonTooltip": "Nobrie maahtahtidh maanagisnie",
