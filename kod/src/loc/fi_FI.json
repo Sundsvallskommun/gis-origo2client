@@ -148,7 +148,8 @@
             "removeLayerQuestion": "Haluatko poistaa kerroksen?",
             "removeLayer": "Poista kerros",
             "moreInfoButtonLabel": "Näytä kerros tiedot",
-            "renderStyleSelect": "Valitse tyyli"
+            "renderStyleSelect": "Valitse tyyli",
+            "legendSearchGroupSuffix": "(Ryhmä)"
         },
         "zoom": {
             "zoomInButtonTooltip": "Lähennä karttaa",

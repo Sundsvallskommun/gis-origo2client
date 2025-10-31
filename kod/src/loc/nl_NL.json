@@ -148,7 +148,8 @@
 		    "removeLayerQuestion": "Wil je de laag verwijderen?",
 		    "removeLayer": "Laag verwijderen",
 		    "moreInfoButtonLabel": "Toon laaginformatie",
-		    "renderStyleSelect": "Selecteer stijl"
+		    "renderStyleSelect": "Selecteer stijl",
+            "legendSearchGroupSuffix": "(Groep)"
 		},
        "zoom": {
             "zoomInButtonTooltip": "Zoom in op de kaart",
