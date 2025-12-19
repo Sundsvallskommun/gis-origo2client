@@ -7,8 +7,9 @@ import * as olLayer from 'ol/layer';
 import * as olSource from 'ol/source';
 import * as olStyle from 'ol/style';
 import * as olFormat from 'ol/format';
-import {within,and,equalTo} from 'ol/format/filter';
+import { within, and, equalTo } from 'ol/format/filter';
 import Geolocation from 'ol/Geolocation.js';
+import OLCesium from 'olcs/OLCesium';
 import * as ui from './src/ui';
 import Viewer from './src/viewer';
 import loadResources from './src/loadresources';
@@ -31,11 +32,11 @@ import 'drag-drop-touch';
 import permalink from './src/permalink/permalink';
 import * as Loader from './src/loading';
 import Spinner from './src/utils/spinner';
-import OLCesium from 'olcs/OLCesium';
 import layerType from './src/layer/layertype';
 
 const Origo = function Origo(configPath, options = {}) {
   /** Reference to the returned Component */
+  window.OLCesium = OLCesium;
   let origo;
   let viewer;
   const origoConfig = {
@@ -146,7 +147,6 @@ const Origo = function Origo(configPath, options = {}) {
         const target = viewerOptions.target;
         viewer = Viewer(target, viewerOptions);
         viewer.on('loaded', () => {
-          window.OLCesium = OLCesium;
           // Inform listeners that there is a new Viewer in town
           origo.dispatch('load', viewer);
         });
