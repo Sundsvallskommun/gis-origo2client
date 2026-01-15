@@ -7,6 +7,7 @@ import * as olLayer from 'ol/layer';
 import * as olSource from 'ol/source';
 import * as olStyle from 'ol/style';
 import * as olFormat from 'ol/format';
+import * as olProj from 'ol/proj';
 import { within, and, equalTo } from 'ol/format/filter';
 import Geolocation from 'ol/Geolocation.js';
 import OLCesium from 'olcs/OLCesium';
@@ -33,6 +34,7 @@ import permalink from './src/permalink/permalink';
 import * as Loader from './src/loading';
 import Spinner from './src/utils/spinner';
 import layerType from './src/layer/layertype';
+import mapUtils from './src/maputils';
 
 const Origo = function Origo(configPath, options = {}) {
   /** Reference to the returned Component */
@@ -201,6 +203,7 @@ Origo.ol.Geolocation = Geolocation;
 Origo.ol.within = within;
 Origo.ol.and = and;
 Origo.ol.equalTo = equalTo;
+Origo.ol.proj = olProj;
 Origo.Utils = Utils;
 Origo.dropdown = dropdown;
 Origo.renderSvgIcon = renderSvgIcon;
@@ -211,5 +214,6 @@ Origo.Loader.hide = Loader.hideLoading;
 Origo.Loader.withLoading = Loader.withLoading;
 Origo.Loader.getInlineSpinner = Spinner;
 Origo.layerType = layerType;
+Origo.mapUtils = mapUtils;
 
 export default Origo;
