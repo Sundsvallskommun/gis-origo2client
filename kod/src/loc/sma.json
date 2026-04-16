@@ -1,233 +1,240 @@
 {
-    "id": "sma",
-    "title": "Åarjelsaemien gïele",
-    "menuTitle": "Gïele",
-    "controls": {
-        "measure": {
-            "layerTitle": "Mierie buoridit",
-            "mainButtonTooltip": "Mïerhkesne",
-            "startMeasureTooltip": "Klikke maahtahtidh mïerhkemesne",
-            "lengthTooltip": "Giehkie",
-            "areaTooltip": "Vïelle",
-            "clearTooltip": "Rengkele",
-            "bufferTooltip": "Buffer",
-            "bufferModalTitle": "Fïerhten bufferem vïerhkie meteren åvteste (dæj. 1000):",
-            "bufferModalOkButton": "OK",
-            "snapTooltip": "Snïepte",
-            "showSectionsTooltip": "Åådtjedh gaavhtan",
-            "addNodeTooltip": "Lisse noadte",
-            "elevationTooltip": "Nåejtie",
-            "fetchingElevation": "Nåejtie tjïerementieh...",
-            "undoTooltip": "Vuertiemisnie"
-        },
-        "sharemap": {
-            "title": "Maanagisnie dueljeme",
-            "linkToMap": "Gåårvedh maanagisnie",
-            "shareMapInstruction": "Kopeeredh jïh tseegkedh gåårven guktie maanagisnie dueljah"
-        },
-        "print": {
-            "title": "Prentedh",
-            "headerPlaceholderText": "Bïjre vaerienammine",
-            "descriptionPlaceholderText": "Bïjre gaavhtenmasse",
-            "resolutionLabelLow": "Åarjeles",
-            "resolutionLabelHigh": "Åvtehkes",
-            "resolutionLabelMedium": "Gïelhkes",
-            "pdfButtonTitle": "Maakth pdf",
-            "pngButtonTitle": "Maakth png",
-            "settingsButtonTooltip": "Åådtjedh suehpeden",
-            "closeButtonAriaLabel": "Luhkedh",
-            "mapInteractionButtonTooltip": "Maana dijven toggledh",
-            "titleTitle": "Vaerienamme",
-            "titleAdjustment": "Suehpieda vaerienamme",
-            "titleSize": "Vaerienamme maadta",
-            "titleSizeAriaLabel": "Vaerienamme maadta",
-            "titleAlignLeft": "Gaalti",
-            "titleAlignCenter": "Tjïeremesnie",
-            "titleAlignRight": "Giehpesne",
-            "descriptionAlignLeft": "Gaalti",
-            "descriptionAlignCenter": "Tjïeremesnie",
-            "descriptionAlignRight": "Giehpesne",
-            "description": "Gaavhtemasse",
-            "descriptionSize": "Gaavhtemasse maadta",
-            "descriptionAlignment": "Suehpieda gaavhtemasse",
-            "descriptionSizeAriaLabel": "Gaavhtemasse maadta",
-            "paperSize": "Maadta",
-            "orientation": "Raajroe",
-            "resolution": "Ravnhkiehke",
-            "useMargins": "Guktie magineh",
-            "showCreatedDate": "Gaavhtemasse daate",
-            "showScale": "Åådtjedh skaalen",
-            "showLegend": "Åådtjedh legenden",
-            "showNorthArrow": "Åådtjedh nuhtjestæjreme",
-            "selectScale": "Væljedh skaalen",
-            "selectPrintScale": "Væljedh prente skaalen",
-            "rotateMap": "Roejledh maanagisnie",
-            "configureSize": "Suehpieda",
-            "configureSizeAriaLabel": "Suehpieda maadta",
-            "height": "Gïelkemesne",
-            "width": "Vïernede",
-            "portrait": "Portrait",
-            "portraitAriaLabel": "Portrait",
-            "landscape": "Landscap",
-            "landscapeAriaLabel": "Landscap"
-        },
-        "draw": {
-            "title": "Daarkastidh",
-            "popupSaveButton": "Sïjhtedh",
-            "popupCancelButton": "Vuertiemisnie",
-            "popupPlaceholderText": "Bïjre popup gaavhtemasse",
-            "popupTextModalTitle": "Popup tekshten",
-            "layerDialogLayerNamePlaceholder": "Bïjre layerem nomme",
-            "layerDialogActivateLayerTooltip": "Aktivera layerem",
-            "layerDialogDeleteLayerConfirm": "Layerem vaajkoe?",
-            "layerDialogDeleteLayerTooltip": "Layerem vaajkoe",
-            "layerDialogDownloadLayerTooltip": "Layerem tjïerementieh",
-            "layerDialogAddLayerButton": "Åarjels",
-            "layerDialogImportLayerButton": "Tjuetiedidh",
-            "layerDialogOkButton": "OK",
-            "layerDialogTitle": "Draw layers",
-            "pointButtonTooltip": "Nöörje",
-            "lineButtonTooltip": "Lijnje",
-            "polygonButtonTooltip": "Polygon",
-            "textButtonTooltip": "Teksht",
-            "attributeButtonTooltip": "Egenskapeh",
-            "styleButtonTooltip": "Stijle",
-            "layerButtonTooltip": "Layers",
-            "saveButtonTooltip": "Sïjhtedh",
-            "downloadButtonTooltip": "Tjïerementieh",
-            "deleteButtonTooltip": "Vaajkoe",
-            "closeButtonTooltip": "Luhkedh",
-            "drawLayerTitleDefault": "Daarkastelaajroe",
-            "drawGroupTitleDefault": "Daarkastelaajresth",
-            "drawPolygon": "Polygon",
-            "drawPoint": "Nöörje",
-            "drawLine": "Lijnje",
-            "drawBox": "Fïernedahke",
-            "drawSquare": "Vuertja",
-            "drawCircle": "Gåetie",
-            "drawFreehand": "Vrije"
-        },
-        "bookmarks": {
-            "title": "Goerresetnie",
-            "close": "Luhkedh",
-            "bookmarkLabel": "Goerresetnie bïjre"
-        },
-        "externalurl": {
-            "tooltipText": "Åådtjedh maanagisnie almetjh maanagisnie-tjïeltebe",
-            "noUrl": "Gåårvede jïhke åvteste jïjnjemesne gietskesne",
-            "linkTooltipText": "Ovnese gåårven"
-        },
-        "draganddrop": {
-            "addFromFile": "Lisse faajsen bïjre",
-            "yourLayersName": "dåtnoe-laajresth",
-            "yourLayersTitle": "Dåtnoe laajresth"
-        },
-        "legend": {
-	        "placeholderText": "Searrát lager",
-	        "turnOffLayersTitle": "Dáhpáhus álggah lager",
-	        "showVisibleTitle": "Visot beallje vuođđo lager",
-	        "showAllVisibleTitle": "Visot álggah lager",
-	        "turnOnLayersTitle": "Skiŋit álggah lager",
-	        "addLayerTitle": "Lædjen lager",
-	        "selectHandlerError": "Searrálin sáhtah jeđđehke",
-	        "titleMissing": "Náttje tjohta",
-	        "layerSwitcher": "Lagerbyttare",
-	        "close": "Lávga",
-	        "layer": "Lager",
-	        "addLayerWarningGroup": "Gruovva",
-	        "addLayerWarningDNE": "nego dáhttolágan",
-	        "layerTitleMissing": "Tjohta máttelit",
-	        "layerIcon": "Lagerikon",
-	        "toggleLayer": "Válggah lager vuođđo",
-	        "showInfoMenuItem": "Visot",
-	        "layerInfoMenuItem": "lagerinfomasjon",
-	        "groupInfoMenuItem": "gruovva infomasjon",
-	        "zoomToExtentMenuItem": "Zoomma",
-	        "exportLayerTitle": "exporter",
-	        "exportLayerSave": "Sáhtah lager",
-	        "removeLayerQuestion": "Vállje dán lager?",
-	        "removeLayer": "Fádden lager",
-	        "moreInfoButtonLabel": "Visot lagerin fomom",
-	        "renderStyleSelect": "Válggah stil",
-            "legendSearchGroupSuffix": "(Gruovva)"
-	    },
-        "zoom": {
-            "zoomInButtonTooltip": "Nobrie maahtahtidh maanagisnie",
-            "zoomOutButtonTooltip": "Vuertjemesne maanagisnie maahtahtidh"
-        },
-        "fullscreen": {
-            "fullscreenButtonTooltip": "Atjïe stoerh kaarta"
-        },
-        "home": {
-            "zoomHomeButtonTooltip": "Gahtjedh maanagisnie"
-        },
-        "geoposition": {
-            "positionButtonTooltip": "Åvteste sijje maanagisnie"
-        },
-        "about": {
-            "title": "Maanagisnie bïjre"
-        },
-        "mapmenu": {
-            "menuButtonTooltip": "Menü",
-            "closeButtonLabel": "Luhkedh"
-        },
-        "scale": {
-            "scaleText": "Skaal 1:"
-        },
-        "scalepicker": {
-            "selectScaleAriaLabel": "Válje skaala",
-            "buttonPrefix": "",
-            "listItemPrefix": ""
-        },
-        "splash": {
-            "defaultTitle": "Gænnah kaarta bïjre",
-            "hideText": "Ij bïjre åvteste vielie",
-            "confirmText": "Aajkoe buekieh ij bïjre vielie åvteste sjædta?"
-        },
-        "position": {
-            "characterError": "Válddåhkkášoččin koordinahttit, prøv åvteste.",
-            "extentError": "Koordinahttit, som du váldde, lea ii dakkis njuvvot, prøv åvteste.",
-            "configError": "Váldde muhtumæle eller projeksjon åvstavne position kontrolla",
-            "centerButtonLabel": "Position ikona",
-            "projButtonLabel": "Projektsjon"
-        }
+  "id": "sma",
+  "title": "Åarjelsaemien gïele",
+  "menuTitle": "Gïele",
+  "controls": {
+    "measure": {
+      "layerTitle": "Mierie buoridit",
+      "mainButtonTooltip": "Mïerhkesne",
+      "startMeasureTooltip": "Klikke maahtahtidh mïerhkemesne",
+      "lengthTooltip": "Giehkie",
+      "areaTooltip": "Vïelle",
+      "clearTooltip": "Rengkele",
+      "bufferTooltip": "Buffer",
+      "bufferModalTitle": "Fïerhten bufferem vïerhkie meteren åvteste (dæj. 1000):",
+      "bufferModalOkButton": "OK",
+      "snapTooltip": "Snïepte",
+      "showSectionsTooltip": "Åådtjedh gaavhtan",
+      "addNodeTooltip": "Lisse noadte",
+      "elevationTooltip": "Nåejtie",
+      "fetchingElevation": "Nåejtie tjïerementieh...",
+      "undoTooltip": "Vuertiemisnie"
     },
-    "style": {
-        "drawStyles": {
-            "modifyTooltip": "Raeknedidh"
-        },
-        "styleWindow": {
-            "title": "Suehpieda stijlen"
-        },
-        "styleTemplate": {
-            "fillColor": "Tjålkesne",
-            "backgroundFillColor": "Baktjålkesne",
-            "opacity": "Gjælloe",
-            "strokeWidth": "Stïegkesne vïernede",
-            "textSize": "Teksht maadta",
-            "pointSize": "Nöörje maadta",
-            "showLengthArea": "Åådtjedh giehkien/vïellien",
-            "showSegments": "Åådtjedh segmenten",
-            "stroke": "Stïegkesne",
-            "strokeTypeSolid": "Solidh stïegkesne",
-            "strokeTypeDotted": "Dotten stïegkesne",
-            "strokeTypeDashed": "Dash-stïegkesne",
-            "strokeTypeDashedDotted": "Dash-dotten stïegkesne",
-            "dimensions": "Dimensjovne",
-            "margins": "Magineh",
-            "rotation": "Roeledh",
-            "degreesRotation": "Gradah",
-            "marginForText": "Magin",
-            "frame": "Raame",
-            "point": "Nöörje",
-            "pointTypePoint": "Nöörje",
-            "pointTypeCircle": "Gåetie",
-            "pointTypeX": "X",
-            "pointTypePlus": "Plus",
-            "pointTypeStar": "Nååle",
-            "pointTypeTriangle": "Trijangle",
-            "pointTypeSquare": "Vuertja",
-            "pointTypeMarker": "Marker"
-        }
+    "sharemap": {
+      "title": "Maanagisnie dueljeme",
+      "linkToMap": "Gåårvedh maanagisnie",
+      "shareMapInstruction": "Kopeeredh jïh tseegkedh gåårven guktie maanagisnie dueljah"
+    },
+    "print": {
+      "title": "Prentedh",
+      "headerPlaceholderText": "Bïjre vaerienammine",
+      "descriptionPlaceholderText": "Bïjre gaavhtenmasse",
+      "resolutionLabelLow": "Åarjeles",
+      "resolutionLabelHigh": "Åvtehkes",
+      "resolutionLabelMedium": "Gïelhkes",
+      "pdfButtonTitle": "Maakth pdf",
+      "pngButtonTitle": "Maakth png",
+      "settingsButtonTooltip": "Åådtjedh suehpeden",
+      "closeButtonAriaLabel": "Luhkedh",
+      "mapInteractionButtonTooltip": "Maana dijven toggledh",
+      "titleTitle": "Vaerienamme",
+      "titleAdjustment": "Suehpieda vaerienamme",
+      "titleSize": "Vaerienamme maadta",
+      "titleSizeAriaLabel": "Vaerienamme maadta",
+      "titleAlignLeft": "Gaalti",
+      "titleAlignCenter": "Tjïeremesnie",
+      "titleAlignRight": "Giehpesne",
+      "descriptionAlignLeft": "Gaalti",
+      "descriptionAlignCenter": "Tjïeremesnie",
+      "descriptionAlignRight": "Giehpesne",
+      "description": "Gaavhtemasse",
+      "descriptionSize": "Gaavhtemasse maadta",
+      "descriptionAlignment": "Suehpieda gaavhtemasse",
+      "descriptionSizeAriaLabel": "Gaavhtemasse maadta",
+      "paperSize": "Maadta",
+      "orientation": "Raajroe",
+      "resolution": "Ravnhkiehke",
+      "useMargins": "Guktie magineh",
+      "showCreatedDate": "Gaavhtemasse daate",
+      "showScale": "Åådtjedh skaalen",
+      "showLegend": "Åådtjedh legenden",
+      "showNorthArrow": "Åådtjedh nuhtjestæjreme",
+      "selectScale": "Væljedh skaalen",
+      "selectPrintScale": "Væljedh prente skaalen",
+      "rotateMap": "Roejledh maanagisnie",
+      "configureSize": "Suehpieda",
+      "configureSizeAriaLabel": "Suehpieda maadta",
+      "height": "Gïelkemesne",
+      "width": "Vïernede",
+      "portrait": "Pårtreete",
+      "portraitAriaLabel": "Pårtreete",
+      "landscape": "Laandskape",
+      "landscapeAriaLabel": "Laandskape",
+      "userDefinedScale": "Bïjrehtidh geavahtaejjien määritelty mittakaava"
+    },
+    "draw": {
+      "title": "Daarkastidh",
+      "popupSaveButton": "Sïjhtedh",
+      "popupCancelButton": "Vuertiemisnie",
+      "popupPlaceholderText": "Bïjre popup gaavhtemasse",
+      "popupTextModalTitle": "Popup tekshten",
+      "layerDialogLayerNamePlaceholder": "Bïjre layerem nomme",
+      "layerDialogActivateLayerTooltip": "Aktivera layerem",
+      "layerDialogDeleteLayerConfirm": "Layerem vaajkoe?",
+      "layerDialogDeleteLayerTooltip": "Layerem vaajkoe",
+      "layerDialogDownloadLayerTooltip": "Layerem tjïerementieh",
+      "layerDialogAddLayerButton": "Åarjels",
+      "layerDialogImportLayerButton": "Tjuetiedidh",
+      "layerDialogOkButton": "OK",
+      "layerDialogTitle": "Daarkastelaajrh",
+      "pointButtonTooltip": "Nöörje",
+      "lineButtonTooltip": "Lijnje",
+      "polygonButtonTooltip": "Polygon",
+      "textButtonTooltip": "Teksht",
+      "attributeButtonTooltip": "Egenskapeh",
+      "styleButtonTooltip": "Stijle",
+      "layerButtonTooltip": "Laajrh",
+      "saveButtonTooltip": "Sïjhtedh",
+      "downloadButtonTooltip": "Tjïerementieh",
+      "deleteButtonTooltip": "Vaajkoe",
+      "closeButtonTooltip": "Luhkedh",
+      "drawLayerTitleDefault": "Daarkastelaajroe",
+      "drawGroupTitleDefault": "Daarkastelaajresth",
+      "drawPolygon": "Polygon",
+      "drawPoint": "Nöörje",
+      "drawLine": "Lijnje",
+      "drawBox": "Fïernedahke",
+      "drawSquare": "Vuertja",
+      "drawCircle": "Gåetie",
+      "drawFreehand": "Friija"
+    },
+    "bookmarks": {
+      "title": "Goerresetnie",
+      "close": "Luhkedh",
+      "bookmarkLabel": "Goerresetnie bïjre"
+    },
+    "externalurl": {
+      "tooltipText": "Åådtjedh maanagisnie almetjh maanagisnie-tjïeltebe",
+      "noUrl": "Gåårvede jïhke åvteste jïjnjemesne gietskesne",
+      "linkTooltipText": "Ovnese gåårven"
+    },
+    "draganddrop": {
+      "addFromFile": "Lisse faajsen bïjre",
+      "yourLayersName": "dåtnoe-laajresth",
+      "yourLayersTitle": "Dåtnoe laajresth"
+    },
+    "legend": {
+      "placeholderText": "Ohtse laajrem",
+      "turnOffLayersTitle": "Jorkedh gaajhkesh laajrh",
+      "showVisibleTitle": "Åådtjedh duarsta laajrh",
+      "showAllVisibleTitle": "Åådtjedh gaajhkesh laajrh",
+      "turnOnLayersTitle": "Bïjrehtidh gaajhkesh laajrh",
+      "addLayerTitle": "Lisse laajrem",
+      "selectHandlerError": "Ohtsemisviehkieh eah gïehtel",
+      "titleMissing": "Nomme eah gïehtel",
+      "layerSwitcher": "Laajrebyöörije",
+      "close": "Luhkedh",
+      "layer": "Laajre",
+      "addLayerWarningGroup": "Gruhpe",
+      "addLayerWarningDNE": "ij leah",
+      "layerTitleMissing": "Nomme eah gïehtel",
+      "layerIcon": "Laajre-ikon",
+      "toggleLayer": "Vååjneme laajrem jorkedh",
+      "showInfoMenuItem": "Åådtjedh",
+      "layerInfoMenuItem": "laajre-infosjovne",
+      "groupInfoMenuItem": "gruhpe-infosjovne",
+      "zoomToExtentMenuItem": "Zoome",
+      "exportLayerTitle": "Eksportere",
+      "exportLayerSave": "Sïjhtedh laajrem",
+      "removeLayerQuestion": "Sïjhtedh laajrem vaajkoe?",
+      "removeLayer": "Vaajkoe laajrem",
+      "moreInfoButtonLabel": "Åådtjedh laajre-infosjovne",
+      "renderStyleSelect": "Væljedh stijlem",
+      "legendSearchGroupSuffix": "(Gruhpe)"
+    },
+    "zoom": {
+      "zoomInButtonTooltip": "Nobrie maahtahtidh maanagisnie",
+      "zoomOutButtonTooltip": "Vuertjemesne maanagisnie maahtahtidh"
+    },
+    "fullscreen": {
+      "fullscreenButtonTooltip": "Atjïe stoerh kaarta"
+    },
+    "home": {
+      "zoomHomeButtonTooltip": "Gahtjedh maanagisnie"
+    },
+    "geoposition": {
+      "positionButtonTooltip": "Åvteste sijje maanagisnie"
+    },
+    "about": {
+      "title": "Maanagisnie bïjre"
+    },
+    "mapmenu": {
+      "menuButtonTooltip": "Menü",
+      "closeButtonLabel": "Luhkedh"
+    },
+    "scale": {
+      "scaleText": "Skaal 1:"
+    },
+    "scalepicker": {
+      "selectScaleAriaLabel": "Válje skaala",
+      "buttonPrefix": "",
+      "listItemPrefix": ""
+    },
+    "splash": {
+      "defaultTitle": "Gænnah kaarta bïjre",
+      "hideText": "Ij bïjre åvteste vielie",
+      "confirmText": "Aajkoe buekieh ij bïjre vielie åvteste sjædta?"
+    },
+    "position": {
+      "characterError": "Válddåhkkášoččin koordinahttit, prøv åvteste.",
+      "extentError": "Koordinaath, mah datne åtne, eah leah kaartan vïedtjesne. Pryövih åvteste.",
+      "configError": "Ij nomme jallh projeksjovne lea bïjrehtidh position-kontrollese.",
+      "centerButtonLabel": "Position ikona",
+      "projButtonLabel": "Projektsjon"
+    },
+    "search": {
+      "searchlistExportButtonText": "Eksportere",
+      "searchlistMakeSelectionButtonText": "Vååjelesjh vaalhtem kaartanis",
+      "searchlistTitle": "Ohtsedh boelhkieh",
+      "hintText": "Ohtse..."
     }
+  },
+  "style": {
+    "drawStyles": {
+      "modifyTooltip": "Raeknedidh"
+    },
+    "styleWindow": {
+      "title": "Suehpieda stijlen"
+    },
+    "styleTemplate": {
+      "fillColor": "Tjålkesne",
+      "backgroundFillColor": "Baktjålkesne",
+      "opacity": "Gjælloe",
+      "strokeWidth": "Stïegkesne vïernede",
+      "textSize": "Teksht maadta",
+      "pointSize": "Nöörje maadta",
+      "showLengthArea": "Åådtjedh giehkien/vïellien",
+      "showSegments": "Åådtjedh segmenten",
+      "stroke": "Stïegkesne",
+      "strokeTypeSolid": "Solidh stïegkesne",
+      "strokeTypeDotted": "Dotten stïegkesne",
+      "strokeTypeDashed": "Dash-stïegkesne",
+      "strokeTypeDashedDotted": "Dash-dotten stïegkesne",
+      "dimensions": "Dimensjovne",
+      "margins": "Magineh",
+      "rotation": "Roeledh",
+      "degreesRotation": "Gradah",
+      "marginForText": "Magin",
+      "frame": "Raame",
+      "point": "Nöörje",
+      "pointTypePoint": "Nöörje",
+      "pointTypeCircle": "Gåetie",
+      "pointTypeX": "X",
+      "pointTypePlus": "Plus",
+      "pointTypeStar": "Nååle",
+      "pointTypeTriangle": "Trijangle",
+      "pointTypeSquare": "Vuertja",
+      "pointTypeMarker": "Markööre"
+    }
+  }
 }
