@@ -69,7 +69,8 @@
             "portrait": "Staand",
             "portraitAriaLabel": "Staand",
             "landscape": "Liggend",
-            "landscapeAriaLabel": "Liggend"
+            "landscapeAriaLabel": "Liggend",
+            "userDefinedScale": "Voer een door de gebruiker gedefinieerde schaal in"
         },
         "draw": {
             "title": "Tekenen",
@@ -190,7 +191,13 @@
             "configError": "Er is geen titel of projectie ingesteld voor de positiecontrole",
             "centerButtonLabel": "Positie-icoon",
             "projButtonLabel": "Projectie"
-        }        
+        },
+        "search": {
+            "searchlistExportButtonText": "Exporteren",
+            "searchlistMakeSelectionButtonText": "Maak een selectie op de kaart",
+            "searchlistTitle": "Zoekresultaten voor",
+            "hintText": "Zoeken..."
+        }
     },
     "style": {
         "drawStyles": {
