@@ -69,7 +69,8 @@
             "portrait": "Portrait",
             "portraitAriaLabel": "Portrait",
             "landscape": "Landscape",
-            "landscapeAriaLabel": "Landscape"
+            "landscapeAriaLabel": "Landscape",
+            "userDefinedScale": "Input user-defined scale"
         },
         "draw": {
             "title": "Draw",
@@ -190,7 +191,14 @@
             "configError": "No title or projection was set for the position control",
             "centerButtonLabel": "Position icon",
             "projButtonLabel": "Projection"
+        },
+        "search": {
+          "searchlistExportButtonText": "Export",
+          "searchlistMakeSelectionButtonText": "Make a selection in the map",
+          "searchlistTitle": "Search results for",
+          "hintText": "Search..."
         }
+        
     },
     "style": {
         "drawStyles": {
@@ -198,6 +206,7 @@
         },
         "styleWindow": {
             "title": "Configure style"
+
         },
         "styleTemplate": {
             "fillColor": "Fill",

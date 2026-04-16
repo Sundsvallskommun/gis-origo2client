@@ -39,6 +39,9 @@ const OverlayLayer = function OverlayLayer(options) {
 
   if (secure) {
     uncheckIcon = '#ic_lock_outline_24px';
+    // If layer is secure, set it to not visible and not queryable to avoid unnecessary network traffic
+    layer.setVisible(false);
+    layer.set('queryable', false);
   }
 
   const opacity = layer.getOpacity();
@@ -59,6 +62,10 @@ const OverlayLayer = function OverlayLayer(options) {
 
   const getCheckIcon = (visible) => {
     const isVisible = visible ? checkIcon : uncheckIcon;
+    // If layer is secure, use padlock icon instead
+    if (secure) {
+      return '#ic_lock_outline_24px';
+    }
     return isVisible;
   };
 

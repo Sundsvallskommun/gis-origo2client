@@ -69,7 +69,8 @@
             "portrait": "Pysty",
             "portraitAriaLabel": "Pysty",
             "landscape": "Vaaka",
-            "landscapeAriaLabel": "Vaaka"
+            "landscapeAriaLabel": "Vaaka",
+            "userDefinedScale": "Syötä käyttäjän määrittämä mittakaava"
         },
         "draw": {
             "title": "Piirrä",
@@ -191,16 +192,12 @@
             "centerButtonLabel": "Sijaintikuvake",
             "projButtonLabel": "Projektio"
         },
-	    "externalurl": {
-	        "tooltipText": "Näytä kartta ulkoisessa karttapalvelussa",
-	        "noUrl": "Määrityksissä ei ole määritetty URL-osoitetta",
-	        "linkTooltipText": "Avaa linkki"
-	    },
-	    "bookmarks": {
-	        "title": "Kirjanmerkit",
-	        "close": "Lähellä",
-	        "bookmarkLabel": "Kirjanmerkki kohteelle"
-	    }
+        "search": {
+            "searchlistExportButtonText": "Vie",
+            "searchlistMakeSelectionButtonText": "Tee valinta kartalla",
+            "searchlistTitle": "Hakutulokset haulle",
+            "hintText": "Hae..."
+        }
     },
     "style": {
         "drawStyles": {

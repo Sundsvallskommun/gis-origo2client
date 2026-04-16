@@ -69,7 +69,8 @@
             "portrait": "Stående",
             "portraitAriaLabel": "Stående",
             "landscape": "Liggande",
-            "landscapeAriaLabel": "Liggande"
+            "landscapeAriaLabel": "Liggande",
+            "userDefinedScale": "Ange din egen skala:"
         },
         "draw": {
             "title": "Rita",
@@ -190,6 +191,12 @@
             "configError": "Ingen titel eller projektion har angetts för positionskontrollen",
             "centerButtonLabel": "Position ikon",
             "projButtonLabel": "Projektion"
+        },
+        "search": {
+          "searchlistExportButtonText": "Exportera",
+          "searchlistMakeSelectionButtonText": "Gör ett urval i kartan",
+          "searchlistTitle": "Sökresultat för",
+          "hintText": "Sök..."
         }
     },
     "style": {
