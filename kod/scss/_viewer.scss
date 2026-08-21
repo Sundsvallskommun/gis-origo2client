@@ -7,6 +7,31 @@
         display: flex;
         flex-flow: column;
     }
+    
+    // Make the tools reachable when they don't fit the height of the map, e.g. in
+    // a short browser window or on a phone in landscape mode.
+    #o-tools-left {
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        // Hide the scrollbar to keep the map clean. Scrolling is done with the
+        // mouse wheel, by touch or by tabbing through the buttons.
+        scrollbar-width: none;
+        // A scroll container clips its content, so the container is stretched to
+        // leave room for the button tooltips. It does not catch any pointer
+        // events, only its buttons do, see .transparent in ui/helpers.
+        width: 100%;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        // Keep the toolbars at their own size in the stretched container.
+        >* {
+            align-self: flex-start;
+            flex: 0 0 auto;
+        }
+    }
 
     .o-tools-left {
         left: 0;
