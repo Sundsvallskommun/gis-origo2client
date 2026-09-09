@@ -4,6 +4,17 @@ import tile from './tile';
 import maputils from '../maputils';
 import image from './image';
 
+function applyMetadataFromCapabilities(layer, wmsOptions, viewer, sourceKey) {
+  const mapSource = viewer.getMapSource?.()?.[sourceKey];
+  const layerName = wmsOptions.id; // det du stoppar i LAYERS
+
+  const urls = mapSource?.metadataByLayer?.[layerName];
+  if (urls?.length) {
+    layer.set('metadataUrls', urls);
+    layer.set('metadataUrl', urls[0]); // convenience
+  }
+}
+
 function createTileSource(options) {
   const sourceOptions = {
     attributions: options.attribution,
@@ -218,12 +229,18 @@ const wms = function wms(layerOptions, viewer) {
   if (renderMode === 'image') {
     const source = createImageSource(sourceOptions);
     createWmsLayer(wmsOptions, source, viewer);
-    return image(wmsOptions, source);
+    const layer = image(wmsOptions, source);
+
+    applyMetadataFromCapabilities(layer, wmsOptions, viewer, layerOptions.source);
+    return layer;
   }
 
   const source = createTileSource(sourceOptions);
   createWmsLayer(wmsOptions, source, viewer);
-  return tile(wmsOptions, source);
+  const layer = tile(wmsOptions, source);
+
+  applyMetadataFromCapabilities(layer, wmsOptions, viewer, layerOptions.source);
+  return layer;
 };
 
 export default wms;
