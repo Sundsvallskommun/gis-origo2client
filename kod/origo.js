@@ -10,7 +10,7 @@ import * as olFormat from 'ol/format';
 import * as olProj from 'ol/proj';
 import { within, and, equalTo } from 'ol/format/filter';
 import Geolocation from 'ol/Geolocation.js';
-import OLCesium from 'olcs/OLCesium';
+import OLCesium from 'olcs';
 import * as ui from './src/ui';
 import Viewer from './src/viewer';
 import loadResources from './src/loadresources';
