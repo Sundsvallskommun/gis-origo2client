@@ -3,7 +3,7 @@ const common = require('./webpack.common');
 
 module.exports = merge(common, {
   output: {
-    publicPath: '/js',
+    publicPath: '/js/',
     filename: 'origo.js',
     library: {
       type: 'var',
@@ -11,11 +11,26 @@ module.exports = merge(common, {
       name: 'Origo'
     }
   },
+  watchOptions: {
+    ignored: [
+      '**/node_modules',
+      '**/dist',
+      '**/build',
+      '**/.git',
+      '**/.cache',
+      '**/tmp'
+    ]
+  },
   devServer: {
     static: {
       directory: './'
     },
-    port: 9966
+    port: 9966,
+    liveReload: false,
+    hot: false,
+    client: {
+      webSocketURL: 'ws://localhost:9966/ws'
+    }
   },
   devtool: 'eval-cheap-source-map'
 });

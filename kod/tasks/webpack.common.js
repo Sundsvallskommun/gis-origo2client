@@ -12,5 +12,15 @@ module.exports = {
     new webpack.ProvidePlugin({
       proj4: 'proj4'
     })
-  ]
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false
+        }
+      }
+    ]
+  }
 };
