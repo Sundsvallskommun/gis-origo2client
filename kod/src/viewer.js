@@ -71,32 +71,6 @@ const Viewer = function Viewer(targetOption, options = {}) {
   const groups = flattenGroups(groupOptions);
   const layerStylePicker = {};
 
-  function collectWmsMetadataUrls(capabilitiesDoc) {
-    // Return: { 'ws:layerName': ['https://...','https://...'], ... }
-    const out = {};
-
-    const root = capabilitiesDoc?.Capability?.Layer;
-    if (!root) return out;
-
-    const visit = (layer, inherited = []) => {
-      // GeoServer/WMSCapabilities-format: layer.MetadataURL kan vara array med { OnlineResource, Format, Type }
-      const own = (layer?.MetadataURL || [])
-        .map(m => m?.OnlineResource)
-        .filter(Boolean);
-
-      const merged = [...inherited, ...own];
-
-      if (layer?.Name) {
-        out[layer.Name] = merged; // kan vara tom array
-      }
-
-      (layer?.Layer || []).forEach(child => visit(child, merged));
-    };
-
-    visit(root, []);
-    return out;
-  }
-
   const getCapabilitiesLayers = () => {
     const capabilitiesPromises = [];
     (Object.keys(source)).forEach(sourceName => {
@@ -112,8 +86,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
         if (source[result.name]?.saveCapabilitiesDoc !== false) {
           source[result.name].capabilitiesDoc = result.capabilitesDoc;
         }
-        const metadataByLayer = collectWmsMetadataUrls(result.capabilitesDoc);
-        source[result.name].metadataByLayer = metadataByLayer;
+        source[result.name].metadataByLayer = result.metadataByLayer || {};
       });
       return layers;
     }).catch(error => console.log(error));

@@ -149,6 +149,7 @@
             "removeLayerQuestion": "Vill du ta bort lagret?",
             "removeLayer": "Ta bort lager",
             "moreInfoButtonLabel": "Visa lagerinfo",
+            "metadataMenuItem": "Visa metadata",
             "renderStyleSelect": "Välj stil",
             "legendSearchGroupSuffix": "(Grupp)"
         },
