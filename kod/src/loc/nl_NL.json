@@ -149,6 +149,7 @@
 		    "removeLayerQuestion": "Wil je de laag verwijderen?",
 		    "removeLayer": "Laag verwijderen",
 		    "moreInfoButtonLabel": "Toon laaginformatie",
+		    "metadataMenuItem": "Toon metadata",
 		    "renderStyleSelect": "Selecteer stijl",
             "legendSearchGroupSuffix": "(Groep)"
 		},

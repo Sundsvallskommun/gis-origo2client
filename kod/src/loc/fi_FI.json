@@ -149,6 +149,7 @@
             "removeLayerQuestion": "Haluatko poistaa kerroksen?",
             "removeLayer": "Poista kerros",
             "moreInfoButtonLabel": "Näytä kerros tiedot",
+            "metadataMenuItem": "Näytä metatiedot",
             "renderStyleSelect": "Valitse tyyli",
             "legendSearchGroupSuffix": "(Ryhmä)"
         },

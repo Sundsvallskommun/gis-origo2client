@@ -46,6 +46,26 @@ export default function createMoreInfoButton(params) {
     popupMenuItems.push(layerInfoMenuItem);
   }
 
+  // Show a link to external metadata when the layer's GetCapabilities document declared a MetadataURL
+  if (layer && layer.get('metadataUrl')) {
+    const metadataMenuItem = Component({
+      onRender() {
+        const labelEl = document.getElementById(this.getId());
+        labelEl.addEventListener('click', (e) => {
+          window.open(layer.get('metadataUrl'), '_blank', 'noopener');
+          e.preventDefault();
+          e.stopPropagation();
+          popupMenu.setVisibility(false);
+        });
+      },
+      render() {
+        const labelCls = 'text-smaller padding-x-small grow pointer no-select overflow-hidden';
+        return `<li id="${this.getId()}" class="${labelCls}">${localize('metadataMenuItem')}</li>`;
+      }
+    });
+    popupMenuItems.push(metadataMenuItem);
+  }
+
   if ((layer && layer.get('zoomToExtent')) || (group.zoomToExtent && group.extent)) {
     const zoomToExtentMenuItem = Component({
       onRender() {

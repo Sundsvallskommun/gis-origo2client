@@ -149,6 +149,7 @@
             "removeLayerQuestion": "Do you want to remove the layer?",
             "removeLayer": "Remove layer",
             "moreInfoButtonLabel": "Show layer info",
+            "metadataMenuItem": "Show metadata",
             "renderStyleSelect": "Select style",
             "legendSearchGroupSuffix": "(Group)"
         },
