@@ -30,6 +30,12 @@
   margin: 0;
   padding: 0;
 }
+.o-lmsearch-estate-report.o-lmsearch-estate-report em {
+  color: #d93025;
+  font-size: 0.9em;
+  font-style: italic;
+  margin: 0.5em 0 0;
+}
 .o-lmsearch-estate-report.o-lmsearch-estate-report ul li.o-lmsearch-partowner-item {
   font: inherit;
   line-height: 1.35;
