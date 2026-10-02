@@ -6029,10 +6029,10 @@ var Lmsearch = (function(Origo2) {
       };
     }
   }
-  const extractNames = async function extractNames2(urlFastighet, localization) {
+  const extractNames = async function extractNames2(urlFastighet, localization, signal) {
     if (!urlFastighet) return [];
     try {
-      const response = await fetch(urlFastighet);
+      const response = await fetch(urlFastighet, { signal });
       if (!response.ok) {
         console.log("Något gick fel, kunde inte hämta Fastigheter.");
         return [];
@@ -6051,14 +6051,15 @@ var Lmsearch = (function(Origo2) {
         return [];
       }
     } catch (error) {
+      if (error.name === "AbortError") return [];
       console.log("Något gick fel:", error);
       return [];
     }
   };
-  const extractAddresses = async function extractAddresses2(urlAdress, q, limit, localization) {
+  const extractAddresses = async function extractAddresses2(urlAdress, q, limit, localization, signal) {
     if (urlAdress) {
       try {
-        const response = await fetch(urlAdress);
+        const response = await fetch(urlAdress, { signal });
         if (!response.ok) {
           console.log("Något gick fel, kunde inte hämta Adresser.");
           return [];
@@ -6100,16 +6101,17 @@ var Lmsearch = (function(Origo2) {
         matches.sort(compareAddress);
         return matches;
       } catch (err) {
+        if (err.name === "AbortError") return [];
         console.log(`Något gick fel, kunde inte hämta Adresser. Error: ${err}`);
         return [];
       }
     }
     return [];
   };
-  const extractOrter = async function extractOrter2(urlOrt, q, limit, localization) {
+  const extractOrter = async function extractOrter2(urlOrt, q, limit, localization, signal) {
     if (urlOrt) {
       try {
-        const response = await fetch(urlOrt);
+        const response = await fetch(urlOrt, { signal });
         if (!response.ok) {
           console.log("Något gick fel, kunde inte hämta Orter.");
           return [];
@@ -6149,13 +6151,14 @@ var Lmsearch = (function(Origo2) {
         const duplicateFreeMatches = _.uniqBy(matches, (obj) => obj.id);
         return duplicateFreeMatches;
       } catch (err) {
+        if (err.name === "AbortError") return [];
         console.log("Något gick fel, kunde inte hämta Orter.");
         return [];
       }
     }
     return [];
   };
-  const extractES = async function extractES2(elasticSearch, q, limit, viewer) {
+  const extractES = async function extractES2(elasticSearch, q, limit, viewer, signal) {
     if (elasticSearch) {
       let url = elasticSearch.url;
       url += `&q=%22${encodeURI(q)}%22*`;
@@ -6163,6 +6166,7 @@ var Lmsearch = (function(Origo2) {
       try {
         const response = await fetch(urlWithoutBA.url, {
           method: "GET",
+          signal,
           headers: { "Authorization": "Basic " + btoa(urlWithoutBA.username + ":" + urlWithoutBA.password) }
         });
         if (!response.ok) {
@@ -6213,13 +6217,14 @@ var Lmsearch = (function(Origo2) {
         const duplicateFreeMatches = _.uniqBy(matches, (obj) => obj.id);
         return duplicateFreeMatches;
       } catch (err) {
+        if (err.name === "AbortError") return [];
         console.log(`Något gick fel, kunde inte hämta ${elasticSearch.name}! ${err.statusText}`);
         return [];
       }
     }
     return [];
   };
-  const makeRequest = function makeRequest2(prepOptions, q, viewer, localization) {
+  const makeRequest = function makeRequest2(prepOptions, q, viewer, localization, signal) {
     const municipalities = prepMunicipalities(prepOptions.municipalities);
     const limit = prepOptions.limit;
     let urlFastighet = "";
@@ -6244,10 +6249,10 @@ var Lmsearch = (function(Origo2) {
       urlOrt += `&kommunkod=${codes}&q=${encodeURI(q)}`;
     }
     return Promise.all([
-      extractNames(urlFastighet, localization),
-      extractAddresses(urlAdress, q, limit, localization),
-      extractOrter(urlOrt, q, limit, localization),
-      extractES(prepOptions.elasticSearch, q, limit, viewer)
+      extractNames(urlFastighet, localization, signal),
+      extractAddresses(urlAdress, q, limit, localization, signal),
+      extractOrter(urlOrt, q, limit, localization, signal),
+      extractES(prepOptions.elasticSearch, q, limit, viewer, signal)
     ]).then((data) => data).catch((err) => {
       throw new Error(`Något gick fel, kunde inte hämta data: ${err}`);
     });
@@ -6280,7 +6285,8 @@ var Lmsearch = (function(Origo2) {
       contentAttribute,
       title,
       minLength,
-      limit,
+      limit = 99,
+      searchDelay = 500,
       showFeature = "geometryOnly",
       featureStyles = {
         stroke: {
@@ -6331,6 +6337,8 @@ var Lmsearch = (function(Origo2) {
       40: "down"
     };
     let searchDb = {};
+    let lastQuery;
+    let abortController;
     let map;
     let name;
     let northing;
@@ -6425,14 +6433,13 @@ var Lmsearch = (function(Origo2) {
       const designationLabel = localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationDesignation" });
       const shareLabel = localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationShare" });
       const showEstateLabel = localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "tooltipText" });
-      let pageEstateReport = `<div class="o-lmsearch-estate-report"><h1>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociation" })}</h1><p><b>${designationLabel}:</b> ${beteckning.slice(0, beteckning.indexOf("Enhetsområde"))}</p>
+      let pageEstateReport = `<div class="o-lmsearch-estate-report"><h1>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociation" })}</h1><p><b>${designationLabel}:</b> ${beteckning.slice(0, beteckning.indexOf("Enhetesområde"))}</p>
     ${typeof samfallighetsattribut.totalLandarea !== "undefined" ? `<p><b>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationLandArea" })}:</b> ${samfallighetsattribut.totalLandarea}</p>` : ""}
     ${typeof samfallighetsattribut.totalVattenarea !== "undefined" ? `<p><b>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationWaterArea" })}:</b> ${samfallighetsattribut.totalVattenarea}</p>` : ""}
     ${typeof samfallighetsattribut.totalareal !== "undefined" ? `<p><b>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationRegisteredArea" })}:</b> ${samfallighetsattribut.totalareal}</p>` : ""}
     ${typeof samfallighetsattribut.senasteAndringAllmannaDelen !== "undefined" ? `<p><b>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationLastChanged" })}:</b> ${samfallighetsattribut.senasteAndringAllmannaDelen}</p>` : ""}
     ${typeof samfallighetsattribut.status !== "undefined" ? `<p><b>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationStatus" })}:</b> ${samfallighetsattribut.status}</p>` : ""}
-    ${typeof samfallighetsattribut.samfallighetsandamal !== "undefined" ? `<p><b>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationPurpose" })}:</b> ${samfallighetsattribut.samfallighetsandamal}</p>` : ""}
-    ${samfallighetsattribut.delagareOfullstandigtRedovisade === true ? `<p><em>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationPartownerNotComplete" })}</em></p>` : ""}`;
+    ${typeof samfallighetsattribut.samfallighetsandamal !== "undefined" ? `<p><b>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationPurpose" })}:</b> ${samfallighetsattribut.samfallighetsandamal}</p>` : ""}`;
       if (delagare && delagare.length > 0) {
         pageEstateReport += `<h2>${localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "communityAssociationMembers" })}</h2><ul>`;
         delagare.forEach((delagareItem) => {
@@ -6566,7 +6573,7 @@ var Lmsearch = (function(Origo2) {
         Object.prototype.hasOwnProperty.call(options, "includeSearchableLayers") ? options.includeSearchableLayers : false;
         Object.prototype.hasOwnProperty.call(options, "searchableDefault") ? options.searchableDefault : false;
         maxZoomLevel = options.maxZoomLevel || viewer.getResolutions().length - 2 || viewer.getResolutions();
-        this.limit = options.limit || 9;
+        this.limit = options.limit || 99;
         this.hintText = options.hintText || localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "hintText" });
         this.searchLabelText = options.searchLabelText || localization.getStringByKeys({ targetParentKey: "lmsearch", targetKey: "searchLabelText" });
         this.minLength = options.minLength || 4;
@@ -6632,6 +6639,10 @@ var Lmsearch = (function(Origo2) {
         if (searchEnabled) {
           awesomplete2.list = [];
           this.setSearchDb([]);
+          if (abortController) {
+            abortController.abort();
+          }
+          lastQuery = void 0;
         }
         this.clearFeatures();
       },
@@ -6717,6 +6728,17 @@ var Lmsearch = (function(Origo2) {
           filter(suggestion) {
             return suggestion.value;
           }
+        });
+        function setListMaxHeight() {
+          const mapEl = viewer.getMap().getTargetElement();
+          const mapBottom = mapEl.getBoundingClientRect().bottom;
+          const listTop = awesomplete2.container.getBoundingClientRect().top + awesomplete2.ul.offsetTop;
+          const margin = 16;
+          awesomplete2.ul.style.maxHeight = `${Math.max(mapBottom - listTop - margin, 100)}px`;
+        }
+        input.addEventListener("awesomplete-open", setListMaxHeight);
+        window.addEventListener("resize", () => {
+          if (awesomplete2.opened) setListMaxHeight();
         });
         function groupDb(data) {
           const group = {};
@@ -6813,12 +6835,19 @@ var Lmsearch = (function(Origo2) {
         }
         function makeRequest2(handler, obj) {
           let data = [];
-          console.log("making new request");
+          if (abortController) {
+            abortController.abort();
+          }
+          abortController = new AbortController();
+          const { signal } = abortController;
+          lastQuery = obj.value;
           clearSearchResults();
-          prepSuggestions.makeRequest(prepOptions, obj.value, viewer, localization).then((response) => {
+          prepSuggestions.makeRequest(prepOptions, obj.value, viewer, localization, signal).then((response) => {
+            if (signal.aborted) return;
             data = flattenData(response);
             handler(data);
           }).catch((err) => {
+            if (signal.aborted) return;
             console.log(err.message);
             data = [{ label: "Error", value: "" }];
             document.getElementById("o-lmsearch-info").innerHTML = err.message;
@@ -6840,9 +6869,15 @@ var Lmsearch = (function(Origo2) {
             if (keyCode in keyCodes) ;
             else {
               delay(() => {
-                makeRequest2(responseHandler, that);
-              }, 500);
+                if (that.value !== lastQuery) {
+                  makeRequest2(responseHandler, that);
+                }
+              }, searchDelay);
             }
+          } else {
+            delay(() => {
+            }, 0);
+            lastQuery = void 0;
           }
         });
       },
@@ -7125,23 +7160,23 @@ var Lmsearch = (function(Origo2) {
       }
     });
   };
-  const lmsearch$4 = { "title": "Sökresultat", "hintText": "Adress, fastighet...", "searchLabelText": "Sök:", "tooltipText": "Visa fastighet", "ariaLabelSearch": "Sök", "ariaLabelClear": "Rensa", "responseNoHit": "Ingen träff", "communityAssociation": "Samfällighet", "communityAssociationDesignation": "Beteckning", "communityAssociationLandArea": "Land area", "communityAssociationWaterArea": "Vatten area", "communityAssociationRegisteredArea": "Register area", "communityAssociationLastChanged": "Senaste ändring", "communityAssociationStatus": "Status", "communityAssociationPurpose": "Samfällighetsändamål", "communityAssociationTitle": "Fastighetsinformation", "communityAssociationShare": "Andel", "communityAssociationMembers": "Samfällighetens delägare", "communityAssociationOtherPartOwner": "Annan delägare", "communityAssociationPartownerNotComplete": "OBS! Delägande fastigheter är ofullständigt redovisade.", "showFeatureInfoTitle": "Fastighet", "layerNameEstates": "Fastighet", "layerNameAddresses": "Adress", "layerNamePlaces": "Ort", "objectidentity": "Objektidentitet", "type": "Typ" };
+  const lmsearch$4 = { "title": "Sökresultat", "hintText": "Adress, fastighet...", "searchLabelText": "Sök:", "tooltipText": "Visa fastighet", "ariaLabelSearch": "Sök", "ariaLabelClear": "Rensa", "responseNoHit": "Ingen träff", "communityAssociation": "Samfällighet", "communityAssociationDesignation": "Beteckning", "communityAssociationLandArea": "Land area", "communityAssociationWaterArea": "Vatten area", "communityAssociationRegisteredArea": "Register area", "communityAssociationLastChanged": "Senaste ändring", "communityAssociationStatus": "Status", "communityAssociationPurpose": "Samfällighetsändamål", "communityAssociationTitle": "Fastighetsinformation", "communityAssociationShare": "Andel", "communityAssociationMembers": "Samfällighetens delägare", "communityAssociationOtherPartOwner": "Annan delägare", "showFeatureInfoTitle": "Fastighet", "layerNameEstates": "Fastighet", "layerNameAddresses": "Adress", "layerNamePlaces": "Ort", "objectidentity": "Objektidentitet", "type": "Typ" };
   const svLocale = {
     lmsearch: lmsearch$4
   };
-  const lmsearch$3 = { "title": "Search result", "hintText": "Address, estate...", "searchLabelText": "Search:", "tooltipText": "Show estate", "ariaLabelSearch": "Search", "ariaLabelClear": "Clear", "responseNoHit": "No hit", "communityAssociation": "Community Association", "communityAssociationDesignation": "Designation", "communityAssociationLandArea": "Land area", "communityAssociationWaterArea": "Water area", "communityAssociationRegisteredArea": "Registered area", "communityAssociationLastChanged": "Last changed", "communityAssociationStatus": "Status", "communityAssociationPurpose": "Purpose", "communityAssociationTitle": "Estate information", "communityAssociationShare": "Share", "communityAssociationMembers": "Part Owners", "communityAssociationOtherPartOwner": "Other Part Owner", "communityAssociationPartownerNotComplete": "Warning! Co-owned properties are incompletely reported.", "showFeatureInfoTitle": "Estate", "layerNameEstates": "Estate", "layerNameAddresses": "Address", "layerNamePlaces": "Place", "objectidentity": "Object Identity", "type": "Type" };
+  const lmsearch$3 = { "title": "Search result", "hintText": "Address, estate...", "searchLabelText": "Search:", "tooltipText": "Show estate", "ariaLabelSearch": "Search", "ariaLabelClear": "Clear", "responseNoHit": "No hit", "communityAssociation": "Community Association", "communityAssociationDesignation": "Designation", "communityAssociationLandArea": "Land area", "communityAssociationWaterArea": "Water area", "communityAssociationRegisteredArea": "Registered area", "communityAssociationLastChanged": "Last changed", "communityAssociationStatus": "Status", "communityAssociationPurpose": "Purpose", "communityAssociationTitle": "Estate information", "communityAssociationShare": "Share", "communityAssociationMembers": "Part Owners", "communityAssociationOtherPartOwner": "Other Part Owner", "showFeatureInfoTitle": "Estate", "layerNameEstates": "Estate", "layerNameAddresses": "Address", "layerNamePlaces": "Place", "objectidentity": "Object Identity", "type": "Type" };
   const enLocale = {
     lmsearch: lmsearch$3
   };
-  const lmsearch$2 = { "title": "Zoekresultaat", "hintText": "Adres, vastgoed...", "searchLabelText": "Zoeken:", "tooltipText": "Toon vastgoed", "ariaLabelSearch": "Zoeken", "ariaLabelClear": "Wissen", "responseNoHit": "Geen resultaten", "communityAssociation": "Gemeenschapsvereniging", "communityAssociationDesignation": "Benaming", "communityAssociationLandArea": "Opppervlakte land", "communityAssociationWaterArea": "Wateroppervlakte", "communityAssociationRegisteredArea": "Geregistreerd gebied", "communityAssociationLastChanged": "Laatst gewijzigd", "communityAssociationStatus": "Status", "communityAssociationPurpose": "Doel", "communityAssociationTitle": "Vastgoedinformatie", "communityAssociationShare": "Aandeel", "communityAssociationMembers": "Deelnemers", "communityAssociationOtherPartOwner": "Andere deelnemer", "communityAssociationPartownerNotComplete": "Waarschuwing! De snellader is een volledige heroverweging.", "showFeatureInfoTitle": "Vastgoed", "layerNameEstates": "Vastgoed", "layerNameAddresses": "Adres", "layerNamePlaces": "Plaats", "objectidentity": "Objectidentiteit", "type": "Type" };
+  const lmsearch$2 = { "title": "Zoekresultaat", "hintText": "Adres, vastgoed...", "searchLabelText": "Zoeken:", "tooltipText": "Toon vastgoed", "ariaLabelSearch": "Zoeken", "ariaLabelClear": "Wissen", "responseNoHit": "Geen resultaten", "communityAssociation": "Gemeenschapsvereniging", "communityAssociationDesignation": "Benaming", "communityAssociationLandArea": "Opppervlakte land", "communityAssociationWaterArea": "Wateroppervlakte", "communityAssociationRegisteredArea": "Geregistreerd gebied", "communityAssociationLastChanged": "Laatst gewijzigd", "communityAssociationStatus": "Status", "communityAssociationPurpose": "Doel", "communityAssociationTitle": "Vastgoedinformatie", "communityAssociationShare": "Aandeel", "communityAssociationMembers": "Deelnemers", "communityAssociationOtherPartOwner": "Andere deelnemer", "showFeatureInfoTitle": "Vastgoed", "layerNameEstates": "Vastgoed", "layerNameAddresses": "Adres", "layerNamePlaces": "Plaats", "objectidentity": "Objectidentiteit", "type": "Type" };
   const nlLocale = {
     lmsearch: lmsearch$2
   };
-  const lmsearch$1 = { "title": "Hakutulos", "hintText": "Osoite, kiinteistö...", "searchLabelText": "Haku:", "tooltipText": "Näytä kiinteistö", "ariaLabelSearch": "Haku", "ariaLabelClear": "Tyhjennä", "responseNoHit": "Ei tuloksia", "communityAssociation": "Yhteisöyhdistys", "communityAssociationDesignation": "Nimike", "communityAssociationLandArea": "Pinta-ala", "communityAssociationWaterArea": "Vesialue", "communityAssociationRegisteredArea": "Rekisteröity alue", "communityAssociationLastChanged": "Viimeksi muutettu", "communityAssociationStatus": "Tila", "communityAssociationPurpose": "Tarkoitus", "communityAssociationTitle": "Kiinteistötieto", "communityAssociationShare": "Osuus", "communityAssociationMembers": "Yhteisöyhdistyksen jäsenet", "communityAssociationOtherPartOwner": "Toinen kumppani", "communityAssociationPartownerNotComplete": "Varoitus! Yhteisomistuksessa olevat kiinteistöt on raportoitu puutteellisesti.", "showFeatureInfoTitle": "Kiinteistö", "layerNameEstates": "Kiinteistö", "layerNameAddresses": "Osoite", "layerNamePlaces": "Paikka", "objectidentity": "Objektin identiteetti", "type": "Tyyppi" };
+  const lmsearch$1 = { "title": "Hakutulos", "hintText": "Osoite, kiinteistö...", "searchLabelText": "Haku:", "tooltipText": "Näytä kiinteistö", "ariaLabelSearch": "Haku", "ariaLabelClear": "Tyhjennä", "responseNoHit": "Ei tuloksia", "communityAssociation": "Yhteisöyhdistys", "communityAssociationDesignation": "Nimike", "communityAssociationLandArea": "Pinta-ala", "communityAssociationWaterArea": "Vesialue", "communityAssociationRegisteredArea": "Rekisteröity alue", "communityAssociationLastChanged": "Viimeksi muutettu", "communityAssociationStatus": "Tila", "communityAssociationPurpose": "Tarkoitus", "communityAssociationTitle": "Kiinteistötieto", "communityAssociationShare": "Osuus", "communityAssociationMembers": "Yhteisöyhdistyksen jäsenet", "communityAssociationOtherPartOwner": "Toinen kumppani", "showFeatureInfoTitle": "Kiinteistö", "layerNameEstates": "Kiinteistö", "layerNameAddresses": "Osoite", "layerNamePlaces": "Paikka", "objectidentity": "Objektin identiteetti", "type": "Tyyppi" };
   const fiLocale = {
     lmsearch: lmsearch$1
   };
-  const lmsearch = { "title": "Searjsegoe", "hintText": "Aadn, bijjove....", "searchLabelText": "Searjse:", "tooltipText": "Vis sjoen", "ariaLabelSearch": "Searjse", "ariaLabelClear": "Suohtse", "responseNoHit": "Inge searjse", "communityAssociation": "Biejjiehpa njuhke", "communityAssociationDesignation": "Niestiehke", "communityAssociationLandArea": "Máhtte", "communityAssociationWaterArea": "Váhke", "communityAssociationRegisteredArea": "Registrerhpa máhtte", "communityAssociationLastChanged": "Oavttihpa", "communityAssociationStatus": "Bárge", "communityAssociationPurpose": "Mååtsi", "communityAssociationTitle": "Biejjiehpatietne", "communityAssociationShare": "Oasse", "communityAssociationMembers": "Oassálastegårh", "communityAssociationOtherPartOwner": "Eará oassálaste", "communityAssociationPartownerNotComplete": "OBS! Oassálastïeresne eah leah åarjelsåbpoe redovieredamme.", "showFeatureInfoTitle": "Biejjie", "layerNameEstates": "Biejjie", "layerNameAddresses": "Aadn", "layerNamePlaces": "Gærjjen", "objectidentity": "Objektidentiteete", "type": "Tïjpe" };
+  const lmsearch = { "title": "Searjsegoe", "hintText": "Aadn, bijjove....", "searchLabelText": "Searjse:", "tooltipText": "Vis sjoen", "ariaLabelSearch": "Searjse", "ariaLabelClear": "Suohtse", "responseNoHit": "Inge searjse", "communityAssociation": "Biejjiehpa njuhke", "communityAssociationDesignation": "Niestiehke", "communityAssociationLandArea": "Máhtte", "communityAssociationWaterArea": "Váhke", "communityAssociationRegisteredArea": "Registrerhpa máhtte", "communityAssociationLastChanged": "Oavttihpa", "communityAssociationStatus": "Bárge", "communityAssociationPurpose": "Mååtsi", "communityAssociationTitle": "Biejjiehpatietne", "communityAssociationShare": "Oasse", "communityAssociationMembers": "Oassálastegårh", "communityAssociationOtherPartOwner": "Eará oassálaste", "showFeatureInfoTitle": "Biejjie", "layerNameEstates": "Biejjie", "layerNameAddresses": "Aadn", "layerNamePlaces": "Gærjjen", "objectidentity": "Objektidentiteete", "type": "Tïjpe" };
   const smaLocale = {
     lmsearch
   };
