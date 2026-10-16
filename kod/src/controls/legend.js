@@ -33,6 +33,7 @@ const Legend = function Legend(options = {}) {
     searchLayersMinLength = 2,
     searchLayersLimit = 10,
     searchLayersParameters = ['name', 'title'],
+    searchLayersExpandInLegend = true,
     searchLayersPlaceholderText = localize('placeholderText'),
     metadataUrl = ''
   } = options;
@@ -443,6 +444,13 @@ const Legend = function Legend(options = {}) {
         }
       } else if (!layer.get('secure')) {
         layer.setVisible(true);
+      }
+      if (searchLayersExpandInLegend) {
+        if (isGroup) {
+          overlaysCmp.showInLegend({ groupName: label });
+        } else {
+          overlaysCmp.showInLegend({ layer });
+        }
       }
       document.getElementsByClassName('o-search-layer-field')[0].value = '';
     } else {
