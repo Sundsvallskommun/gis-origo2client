@@ -75,7 +75,8 @@ const Viewer = function Viewer(targetOption, options = {}) {
     const capabilitiesPromises = [];
     (Object.keys(source)).forEach(sourceName => {
       const sourceOptions = source[sourceName];
-      if (sourceOptions && sourceOptions.capabilitiesURL) {
+      // Sources with lazyCapabilities are fetched in the background by loadLazyCapabilities instead
+      if (sourceOptions && sourceOptions.capabilitiesURL && !sourceOptions.lazyCapabilities) {
         capabilitiesPromises.push(getCapabilities(sourceName, sourceOptions.capabilitiesURL));
       }
     });
@@ -90,6 +91,38 @@ const Viewer = function Viewer(targetOption, options = {}) {
       });
       return layers;
     }).catch(error => console.log(error));
+  };
+
+  // { sourceName: { promise, resolve } } for sources with lazyCapabilities. Layers can wait on
+  // the promise before the fetch has started, since it starts first when the map has rendered.
+  const lazyCapabilities = {};
+
+  const getLazyCapabilitiesEntry = (sourceName) => {
+    if (!lazyCapabilities[sourceName]) {
+      let resolve;
+      const promise = new Promise((res) => { resolve = res; });
+      lazyCapabilities[sourceName] = { promise, resolve };
+    }
+    return lazyCapabilities[sourceName];
+  };
+
+  const getLazyCapabilitiesMetadata = sourceName => getLazyCapabilitiesEntry(sourceName).promise;
+
+  const loadLazyCapabilities = () => {
+    (Object.keys(source)).forEach(sourceName => {
+      const sourceOptions = source[sourceName];
+      if (sourceOptions && sourceOptions.capabilitiesURL && sourceOptions.lazyCapabilities) {
+        getCapabilities(sourceName, sourceOptions.capabilitiesURL)
+          .then(result => {
+            if (sourceOptions.saveCapabilitiesDoc !== false) {
+              sourceOptions.capabilitiesDoc = result.capabilitesDoc;
+            }
+            sourceOptions.metadataByLayer = result.metadataByLayer || {};
+            getLazyCapabilitiesEntry(sourceName).resolve(sourceOptions.metadataByLayer);
+          })
+          .catch(error => console.log(error));
+      }
+    });
   };
 
   const defaultTileGridOptions = {
@@ -342,7 +375,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
           layername = layername.substring(0, layername.lastIndexOf('__'));
         }
         const layerSourceOptions = layer.source ? getSource2(layer.source) : undefined;
-        if (layerSourceOptions && layerSourceOptions.capabilitiesURL) {
+        if (layerSourceOptions && layerSourceOptions.capabilitiesURL && capabilitiesLayers[layer.source]) {
           if (capabilitiesLayers[layer.source].indexOf(layername) >= 0) {
             secure = false;
           } else {
@@ -606,6 +639,9 @@ const Viewer = function Viewer(targetOption, options = {}) {
 
           this.addControls();
 
+          // Fetch capabilities for lazyCapabilities sources when the map has rendered, so it doesn't delay startup
+          map.once('rendercomplete', loadLazyCapabilities);
+
           if (urlParams.feature) {
             const featureId = urlParams.feature;
             const layerName = featureId.split('.')[0];
@@ -697,6 +733,7 @@ const Viewer = function Viewer(targetOption, options = {}) {
     getGroups,
     getMain,
     getMapSource,
+    getLazyCapabilitiesMetadata,
     getMapUtils,
     getUtils,
     getQueryableLayers,

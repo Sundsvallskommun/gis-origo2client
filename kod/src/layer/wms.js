@@ -8,10 +8,19 @@ function applyMetadataFromCapabilities(layer, wmsOptions, viewer, sourceKey) {
   const mapSource = viewer.getMapSource?.()?.[sourceKey];
   const layerName = wmsOptions.id; // det du stoppar i LAYERS
 
-  const urls = mapSource?.metadataByLayer?.[layerName];
-  if (urls?.length) {
-    layer.set('metadataUrls', urls);
-    layer.set('metadataUrl', urls[0]); // convenience
+  const setMetadataUrls = (metadataByLayer) => {
+    const urls = metadataByLayer?.[layerName];
+    if (urls?.length) {
+      layer.set('metadataUrls', urls);
+      layer.set('metadataUrl', urls[0]); // convenience
+    }
+  };
+
+  if (mapSource?.metadataByLayer) {
+    setMetadataUrls(mapSource.metadataByLayer);
+  } else if (mapSource?.lazyCapabilities) {
+    // Capabilities are fetched in the background after the map has rendered
+    viewer.getLazyCapabilitiesMetadata(sourceKey).then(setMetadataUrls);
   }
 }
 

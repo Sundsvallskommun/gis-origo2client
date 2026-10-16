@@ -46,24 +46,26 @@ export default function createMoreInfoButton(params) {
     popupMenuItems.push(layerInfoMenuItem);
   }
 
-  // Show a link to external metadata when the layer's GetCapabilities document declared a MetadataURL
+  // Show a link to external metadata when the layer's GetCapabilities document declared a MetadataURL.
+  // For sources with lazyCapabilities the URL may arrive after the legend is created, so the item can be added later.
+  const createMetadataMenuItem = () => Component({
+    onRender() {
+      const labelEl = document.getElementById(this.getId());
+      labelEl.addEventListener('click', (e) => {
+        window.open(layer.get('metadataUrl'), '_blank', 'noopener');
+        e.preventDefault();
+        e.stopPropagation();
+        popupMenu.setVisibility(false);
+      });
+    },
+    render() {
+      const labelCls = 'text-smaller padding-x-small grow pointer no-select overflow-hidden';
+      return `<li id="${this.getId()}" class="${labelCls}">${localize('metadataMenuItem')}</li>`;
+    }
+  });
+  const metadataMenuIndex = popupMenuItems.length;
   if (layer && layer.get('metadataUrl')) {
-    const metadataMenuItem = Component({
-      onRender() {
-        const labelEl = document.getElementById(this.getId());
-        labelEl.addEventListener('click', (e) => {
-          window.open(layer.get('metadataUrl'), '_blank', 'noopener');
-          e.preventDefault();
-          e.stopPropagation();
-          popupMenu.setVisibility(false);
-        });
-      },
-      render() {
-        const labelCls = 'text-smaller padding-x-small grow pointer no-select overflow-hidden';
-        return `<li id="${this.getId()}" class="${labelCls}">${localize('metadataMenuItem')}</li>`;
-      }
-    });
-    popupMenuItems.push(metadataMenuItem);
+    popupMenuItems.push(createMetadataMenuItem());
   }
 
   if ((layer && layer.get('zoomToExtent')) || (group.zoomToExtent && group.extent)) {
@@ -219,6 +221,18 @@ export default function createMoreInfoButton(params) {
       popupMenu.toggleVisibility();
     }
   };
+
+  if (layer && !layer.get('metadataUrl')) {
+    layer.once('change:metadataUrl', () => {
+      const metadataMenuItem = createMetadataMenuItem();
+      popupMenuItems.splice(metadataMenuIndex, 0, metadataMenuItem);
+      popupMenuList.addComponent(metadataMenuItem);
+      if (popupMenu) {
+        popupMenu.setContent(popupMenuList.render());
+        popupMenuList.dispatch('render');
+      }
+    });
+  }
 
   if (popupMenuItems.length > 0) {
     moreInfoButton = Button({
