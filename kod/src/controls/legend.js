@@ -445,6 +445,7 @@ const Legend = function Legend(options = {}) {
       } else if (!layer.get('secure')) {
         layer.setVisible(true);
       }
+      viewer.dispatch('legend:searchselect', { name: label, isGroup: Boolean(isGroup) });
       if (searchLayersExpandInLegend) {
         if (isGroup) {
           overlaysCmp.showInLegend({ groupName: label });
@@ -579,6 +580,8 @@ const Legend = function Legend(options = {}) {
       });
       awesomplete.list = hitArr;
       awesomplete.evaluate();
+      // Statistics event: number of hits, never the query itself
+      viewer.dispatch('legend:searchresult', { hits: hitArr.length });
     }
 
     if (typeof input !== 'undefined') {
