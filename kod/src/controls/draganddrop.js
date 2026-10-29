@@ -193,7 +193,13 @@ const DragAndDrop = function DragAndDrop(options = {}) {
           layerOptions.showCoordinates = options.showCoordinates === true;
         }
         const layer = viewer.addLayer(layerOptions);
-        if (coordinateLabels && hasGeometry) coordinateLabels.addLayer(layer);
+        if (coordinateLabels && hasGeometry) {
+          coordinateLabels.addLayer(layer);
+          // Statistics event when the coordinates are shown or hidden from the layer menu, with the file format only
+          layer.on('change:showCoordinates', () => {
+            viewer.dispatch('draganddrop:coordinates', { show: layer.get('showCoordinates'), format: fileExtension.toLowerCase() });
+          });
+        }
         // Statistics event: file format and number of features, never the file name or content
         viewer.dispatch('draganddrop:addfile', { format: fileExtension.toLowerCase(), features: event.features.length });
         if (zoomToExtentOnLoad) {
