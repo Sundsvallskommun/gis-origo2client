@@ -177,7 +177,10 @@
             "yourLayersName": "egna-lager",
             "yourLayersTitle": "Egna lager",
             "layerColorLabel": "Lagrets färg",
-            "ownStyleLabel": "Egen stil"
+            "ownStyleLabel": "Egen stil",
+            "coordinateNorth": "N",
+            "coordinateEast": "E",
+            "coordinateZ": "Z"
         },
         "legend": {
             "placeholderText": "Sök lager",
@@ -206,6 +209,8 @@
             "removeLayer": "Ta bort lager",
             "changeColor": "Byt färg",
             "customColor": "Valfri färg",
+            "showCoordinates": "Visa koordinater",
+            "hideCoordinates": "Dölj koordinater",
             "moreInfoButtonLabel": "Visa lagerinfo",
             "metadataMenuItem": "Visa metadata",
             "renderStyleSelect": "Välj stil",

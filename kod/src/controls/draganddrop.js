@@ -7,12 +7,14 @@ import TopoJSONFormat from 'ol/format/TopoJSON';
 import { Component, InputFile, Button, Element as El } from '../ui';
 import { getUnusedColor } from '../utils/colorpalette';
 import { addLayerStyle } from '../utils/layercolor';
+import CoordinateLabels from '../utils/coordinatelabels';
 
 const DragAndDrop = function DragAndDrop(options = {}) {
   let dragAndDrop;
   let viewer;
   let map;
   let legendButton;
+  let coordinateLabels;
   const localization = options.localization;
 
   function localize(key) {
@@ -82,6 +84,15 @@ const DragAndDrop = function DragAndDrop(options = {}) {
       const zoomToExtent = options.zoomToExtent !== false;
       const zoomToExtentOnLoad = options.zoomToExtentOnLoad !== false;
       const featureStyles = options.featureStyles;
+
+      // Coordinates for the vertices in the dropped layers, turned on and off per layer from the layer menu in the legend
+      if (options.coordinatesMenuItem !== false) {
+        coordinateLabels = CoordinateLabels({
+          map,
+          decimals: options.coordinateDecimals,
+          labels: { north: localize('coordinateNorth'), east: localize('coordinateEast'), z: localize('coordinateZ') }
+        });
+      }
 
       dragAndDrop = new olDragAndDrop({
         formatConstructors: [
@@ -176,7 +187,13 @@ const DragAndDrop = function DragAndDrop(options = {}) {
             layerOptions.styleDef = styles;
           }
         }
+        // The layer menu shows the coordinates item for layers that have the showCoordinates property
+        const hasGeometry = event.features.some(feature => feature.getGeometry());
+        if (coordinateLabels && hasGeometry) {
+          layerOptions.showCoordinates = options.showCoordinates === true;
+        }
         const layer = viewer.addLayer(layerOptions);
+        if (coordinateLabels && hasGeometry) coordinateLabels.addLayer(layer);
         // Statistics event: file format and number of features, never the file name or content
         viewer.dispatch('draganddrop:addfile', { format: fileExtension.toLowerCase(), features: event.features.length });
         if (zoomToExtentOnLoad) {
