@@ -81,53 +81,7 @@ const DragAndDrop = function DragAndDrop(options = {}) {
       const styleByAttribute = options.styleByAttribute || false;
       const zoomToExtent = options.zoomToExtent !== false;
       const zoomToExtentOnLoad = options.zoomToExtentOnLoad !== false;
-      const featureStyles = options.featureStyles || {
-        Point: [{
-          circle: {
-            radius: 5,
-            stroke: {
-              color: [0, 255, 255, 1],
-              width: 0
-            },
-            fill: {
-              color: [0, 255, 255, 1]
-            }
-          }
-        }],
-        LineString: [{
-          stroke: {
-            color: [255, 255, 255, 1],
-            width: 5
-          }
-        },
-        {
-          stroke: {
-            color: [0, 255, 255, 0.5],
-            width: 3
-          }
-        }],
-        Polygon: [{
-          stroke: {
-            color: [255, 255, 255, 1],
-            width: 5
-          }
-        },
-        {
-          stroke: {
-            color: [0, 255, 255, 1],
-            width: 3
-          }
-        },
-        {
-          fill: {
-            color: [0, 255, 255, 0.1]
-          }
-        }]
-      };
-      const alternateColors = typeof options.alternateColors !== 'undefined' ? options.alternateColors : true;
-      const alternateStrokeColors = typeof options.alternateStrokeColors !== 'undefined' ? options.alternateStrokeColors : [[166, 206, 227, 1], [31, 120, 180, 1], [178, 223, 138, 1], [51, 160, 44, 1], [251, 154, 153, 1], [227, 26, 28, 1], [253, 191, 111, 1]];
-      const alternateFillColors = typeof options.alternateFillColors !== 'undefined' ? options.alternateFillColors : [[166, 206, 227, 0.3], [31, 120, 180, 0.3], [178, 223, 138, 0.3], [51, 160, 44, 0.3], [251, 154, 153, 0.3], [227, 26, 28, 0.3], [253, 191, 111, 0.3]];
-      let alternateIdx = 0;
+      const featureStyles = options.featureStyles;
 
       dragAndDrop = new olDragAndDrop({
         formatConstructors: [
@@ -174,9 +128,8 @@ const DragAndDrop = function DragAndDrop(options = {}) {
           type: 'GEOJSON',
           features: event.features
         };
-        // Give each layer its own color unless styles are configured or the file has its own styles (kml).
-        // featureStyles always has a default here, so the option itself is checked.
-        if (!options.featureStyles && !['kml', 'kmz'].includes(fileExtension.toLowerCase())) {
+        // Give each layer its own color unless styles are configured or the file has its own styles (kml)
+        if (!featureStyles && !['kml', 'kmz'].includes(fileExtension.toLowerCase())) {
           if (styleByAttribute) {
             // Features with a style attribute keep their own style
             const getStyleFunction = viewer.getStylewindow().getStyleFunction;
@@ -203,46 +156,21 @@ const DragAndDrop = function DragAndDrop(options = {}) {
             viewer
           });
         } else if (!styleByAttribute) {
-          let styles = [];
-          const types = [];
+          const styles = [];
+          const types = new Set();
+          const getStyleFunction = viewer.getStylewindow().getStyleFunction;
           event.features.forEach((feature) => {
-            if (!types.includes(feature.getGeometry().getType())) {
-              const dadLayers = viewer.getLayersByProperty('group', groupName);
-              if (dadLayers.length > 0 && alternateColors) {
-                const tempStyle = featureStyles[feature.getGeometry().getType().replace('Multi', '').replace('GeometryCollection', 'Polygon')];
-                if (alternateStrokeColors.length === alternateIdx) {
-                  alternateIdx = 0;
+            if (feature.getGeometry() !== null) {
+              const geometryType = feature.getGeometry().getType();
+              if (featureStyles && featureStyles[geometryType]) {
+                if (!types.has(geometryType)) {
+                  styles.push(...featureStyles[geometryType]);
+                  types.add(geometryType);
                 }
-                if (typeof tempStyle !== 'undefined') {
-                  if (tempStyle.length > 1) {
-                    tempStyle.forEach((style, idx) => {
-                      if ('stroke' in style) {
-                        if (JSON.stringify(style.stroke.color) !== JSON.stringify([255, 255, 255, 1])) {
-                          tempStyle[idx].stroke.color = alternateStrokeColors[alternateIdx];
-                        }
-                      }
-                      if ('fill' in style) {
-                        tempStyle[idx].fill.color = alternateFillColors[alternateIdx];
-                      }
-                    });
-                  } else {
-                    if ('stroke' in tempStyle) {
-                      if (JSON.stringify(tempStyle.stroke.color) !== JSON.stringify([255, 255, 255, 1])) {
-                        tempStyle.stroke.color = alternateStrokeColors[alternateIdx];
-                      }
-                    }
-                    if ('fill' in tempStyle) {
-                      tempStyle.fill.color = alternateFillColors[alternateIdx];
-                    }
-                  }
-                }
-                styles = styles.concat(tempStyle);
-                alternateIdx += 1;
               } else {
-                styles = styles.concat(featureStyles[feature.getGeometry().getType().replace('Multi', '').replace('GeometryCollection', 'Polygon')]);
+                getStyleFunction(feature);
               }
             }
-            types.push(feature.getGeometry().getType());
           });
           if (styles.length && (!['kml', 'kmz'].includes(fileExtension.toLowerCase()))) {
             layerOptions.styleDef = styles;
