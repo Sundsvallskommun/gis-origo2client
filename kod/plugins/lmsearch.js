@@ -1172,10 +1172,10 @@ var Lmsearch = (function(Origo2) {
           })();
           var ctxClearTimeout = context.clearTimeout !== root.clearTimeout && context.clearTimeout, ctxNow = Date2 && Date2.now !== root.Date.now && Date2.now, ctxSetTimeout = context.setTimeout !== root.setTimeout && context.setTimeout;
           var nativeCeil = Math2.ceil, nativeFloor = Math2.floor, nativeGetSymbols = Object2.getOwnPropertySymbols, nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined$1, nativeIsFinite = context.isFinite, nativeJoin = arrayProto.join, nativeKeys = overArg(Object2.keys, Object2), nativeMax = Math2.max, nativeMin = Math2.min, nativeNow = Date2.now, nativeParseInt = context.parseInt, nativeRandom = Math2.random, nativeReverse = arrayProto.reverse;
-          var DataView = getNative(context, "DataView"), Map = getNative(context, "Map"), Promise2 = getNative(context, "Promise"), Set = getNative(context, "Set"), WeakMap = getNative(context, "WeakMap"), nativeCreate = getNative(Object2, "create");
+          var DataView = getNative(context, "DataView"), Map = getNative(context, "Map"), Promise2 = getNative(context, "Promise"), Set2 = getNative(context, "Set"), WeakMap = getNative(context, "WeakMap"), nativeCreate = getNative(Object2, "create");
           var metaMap = WeakMap && new WeakMap();
           var realNames = {};
-          var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map), promiseCtorString = toSource(Promise2), setCtorString = toSource(Set), weakMapCtorString = toSource(WeakMap);
+          var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map), promiseCtorString = toSource(Promise2), setCtorString = toSource(Set2), weakMapCtorString = toSource(WeakMap);
           var symbolProto = Symbol ? Symbol.prototype : undefined$1, symbolValueOf = symbolProto ? symbolProto.valueOf : undefined$1, symbolToString = symbolProto ? symbolProto.toString : undefined$1;
           function lodash2(value) {
             if (isObjectLike(value) && !isArray(value) && !(value instanceof LazyWrapper)) {
@@ -2942,8 +2942,8 @@ var Lmsearch = (function(Origo2) {
               return func(number);
             };
           }
-          var createSet = !(Set && 1 / setToArray(new Set([, -0]))[1] == INFINITY) ? noop : function(values2) {
-            return new Set(values2);
+          var createSet = !(Set2 && 1 / setToArray(new Set2([, -0]))[1] == INFINITY) ? noop : function(values2) {
+            return new Set2(values2);
           };
           function createToPairs(keysFunc) {
             return function(object) {
@@ -3242,7 +3242,7 @@ var Lmsearch = (function(Origo2) {
             return result2;
           };
           var getTag = baseGetTag;
-          if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map && getTag(new Map()) != mapTag || Promise2 && getTag(Promise2.resolve()) != promiseTag || Set && getTag(new Set()) != setTag || WeakMap && getTag(new WeakMap()) != weakMapTag) {
+          if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map && getTag(new Map()) != mapTag || Promise2 && getTag(Promise2.resolve()) != promiseTag || Set2 && getTag(new Set2()) != setTag || WeakMap && getTag(new WeakMap()) != weakMapTag) {
             getTag = function(value) {
               var result2 = baseGetTag(value), Ctor = result2 == objectTag ? value.constructor : undefined$1, ctorString = Ctor ? toSource(Ctor) : "";
               if (ctorString) {
@@ -6845,10 +6845,15 @@ var Lmsearch = (function(Origo2) {
           prepSuggestions.makeRequest(prepOptions, obj.value, viewer, localization, signal).then((response) => {
             if (signal.aborted) return;
             data = flattenData(response);
+            viewer.dispatch("lmsearch:result", {
+              hits: data.length,
+              types: [...new Set(data.map((item) => item[layerNameAttribute]).filter(Boolean))]
+            });
             handler(data);
           }).catch((err) => {
             if (signal.aborted) return;
             console.log(err.message);
+            viewer.dispatch("lmsearch:error");
             data = [{ label: "Error", value: "" }];
             document.getElementById("o-lmsearch-info").innerHTML = err.message;
             document.getElementById("o-lmsearch-info").style.display = "flex";
@@ -6888,6 +6893,7 @@ var Lmsearch = (function(Origo2) {
       selectHandler(evt) {
         let id = evt.text.label;
         const data = searchDb[id];
+        viewer.dispatch("lmsearch:select", { type: data && data[layerNameAttribute] });
         let layer;
         let feature;
         let content;
@@ -7051,6 +7057,7 @@ var Lmsearch = (function(Origo2) {
                 target: viewer.getId()
               });
               bindPartOwnerLinks(estateReportModal);
+              viewer.dispatch("lmsearch:estatereport");
               estateInfoClick = true;
             }
           }
@@ -7062,10 +7069,12 @@ var Lmsearch = (function(Origo2) {
           areaPromise.then((response) => {
             if (typeof response.features === "undefined") {
               console.log("There is no data available for this object!");
+              viewer.dispatch("lmsearch:estatelookup", { hit: false });
               return;
             }
             const format = new Origo2.ol.format.GeoJSON();
             const features = format.readFeatures(response);
+            viewer.dispatch("lmsearch:estatelookup", { hit: features.length > 0 });
             if (features.length > 1 && showFeature === "popup") {
               const enhetsOmrade = [];
               console.log("Found FeatureCollection with multiple features. Trying to merge them into a Multigeometry");
