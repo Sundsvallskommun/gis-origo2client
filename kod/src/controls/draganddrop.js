@@ -7,14 +7,12 @@ import TopoJSONFormat from 'ol/format/TopoJSON';
 import { Component, InputFile, Button, Element as El } from '../ui';
 import { getUnusedColor } from '../utils/colorpalette';
 import { addLayerStyle } from '../utils/layercolor';
-import CoordinateLabels from '../utils/coordinatelabels';
 
 const DragAndDrop = function DragAndDrop(options = {}) {
   let dragAndDrop;
   let viewer;
   let map;
   let legendButton;
-  let coordinateLabels;
   const localization = options.localization;
 
   function localize(key) {
@@ -84,15 +82,6 @@ const DragAndDrop = function DragAndDrop(options = {}) {
       const zoomToExtent = options.zoomToExtent !== false;
       const zoomToExtentOnLoad = options.zoomToExtentOnLoad !== false;
       const featureStyles = options.featureStyles;
-
-      // Coordinates for the vertices in the dropped layers, turned on and off per layer from the layer menu in the legend
-      if (options.coordinatesMenuItem !== false) {
-        coordinateLabels = CoordinateLabels({
-          map,
-          decimals: options.coordinateDecimals,
-          labels: { north: localize('coordinateNorth'), east: localize('coordinateEast'), z: localize('coordinateZ') }
-        });
-      }
 
       dragAndDrop = new olDragAndDrop({
         formatConstructors: [
@@ -187,14 +176,17 @@ const DragAndDrop = function DragAndDrop(options = {}) {
             layerOptions.styleDef = styles;
           }
         }
-        // The layer menu shows the coordinates item for layers that have the showCoordinates property
+        // "Visa koordinater" in the layer menu is handled by the viewer, for all vector layers. The control's
+        // coordinatesMenuItem overrides the map's for the layers added here; without geometries there is nothing to show.
         const hasGeometry = event.features.some(feature => feature.getGeometry());
-        if (coordinateLabels && hasGeometry) {
-          layerOptions.showCoordinates = options.showCoordinates === true;
+        if (!hasGeometry) {
+          layerOptions.coordinatesMenuItem = false;
+        } else if (typeof options.coordinatesMenuItem === 'boolean') {
+          layerOptions.coordinatesMenuItem = options.coordinatesMenuItem;
         }
+        layerOptions.showCoordinates = options.showCoordinates === true;
         const layer = viewer.addLayer(layerOptions);
-        if (coordinateLabels && hasGeometry) {
-          coordinateLabels.addLayer(layer);
+        if (typeof layer.get('showCoordinates') === 'boolean') {
           // Statistics event when the coordinates are shown or hidden from the layer menu, with the file format only
           layer.on('change:showCoordinates', () => {
             viewer.dispatch('draganddrop:coordinates', { show: layer.get('showCoordinates'), format: fileExtension.toLowerCase() });
