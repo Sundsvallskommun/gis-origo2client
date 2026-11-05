@@ -177,10 +177,7 @@
             "yourLayersName": "your-layers",
             "yourLayersTitle": "Your layers",
             "layerColorLabel": "Layer color",
-            "ownStyleLabel": "Own style",
-            "coordinateNorth": "N",
-            "coordinateEast": "E",
-            "coordinateZ": "Z"
+            "ownStyleLabel": "Own style"
         },
         "legend": {
             "placeholderText": "Search for layer",
@@ -211,6 +208,9 @@
             "customColor": "Custom color",
             "showCoordinates": "Show coordinates",
             "hideCoordinates": "Hide coordinates",
+            "coordinateNorth": "N",
+            "coordinateEast": "E",
+            "coordinateZ": "Z",
             "moreInfoButtonLabel": "Show layer info",
             "metadataMenuItem": "Show metadata",
             "renderStyleSelect": "Select style",

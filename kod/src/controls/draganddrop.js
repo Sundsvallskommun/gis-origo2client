@@ -179,7 +179,7 @@ const DragAndDrop = function DragAndDrop(options = {}) {
             layerOptions.styleDef = styles;
           }
         }
-        // "Visa koordinater" in the layer menu is handled by the viewer, for all vector layers. The control's
+        // "Show coordinates" in the layer menu is handled by the viewer, for all vector layers. The control's
         // coordinatesMenuItem overrides the map's for the layers added here; without geometries there is nothing to show.
         const hasGeometry = event.features.some(feature => feature.getGeometry());
         if (!hasGeometry) {
