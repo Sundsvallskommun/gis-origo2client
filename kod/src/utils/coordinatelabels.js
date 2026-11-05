@@ -1,7 +1,10 @@
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
+import VectorImageLayer from 'ol/layer/VectorImage';
+import ClusterSource from 'ol/source/Cluster';
 import VectorSource from 'ol/source/Vector';
+import { containsCoordinate } from 'ol/extent';
 import { Fill, Stroke, Style, Text } from 'ol/style';
 
 const textStyle = new Style({
@@ -40,14 +43,26 @@ function getVertices(geometry) {
 }
 
 /**
+ * Whether the coordinates of a layer's vertices can be shown: vector layers with their own features. Not raster
+ * or vector tile layers, and not clustered layers, whose source returns clusters instead of the real features.
+ */
+export function canShowCoordinates(layer) {
+  if (!(layer instanceof VectorLayer || layer instanceof VectorImageLayer)) return false;
+  const source = layer.getSource();
+  return Boolean(source) && !(source instanceof ClusterSource) && typeof source.getFeatures === 'function';
+}
+
+/**
  * Shows the coordinates of the vertices in the added layers that have the property showCoordinates, as labels
  * in an unmanaged layer which is not part of the legend. The property is turned on and off from the layer menu in the legend.
  * Z is only shown when the geometry has z values, e.g. elevation in gpx.
+ * Only vertices within the view get a label, at most maxLabels, so a large layer doesn't freeze the map.
  */
 export default function CoordinateLabels({
   map,
   decimals,
-  labels = { north: 'N', east: 'E', z: 'Z' }
+  labels = { north: 'N', east: 'E', z: 'Z' },
+  maxLabels = 2000
 }) {
   const layers = new Set();
   const source = new VectorSource();
@@ -74,15 +89,15 @@ export default function CoordinateLabels({
 
   function update() {
     source.clear();
+    const shown = [...layers].filter(layer => layer.getVisible() && layer.get('showCoordinates'));
+    if (shown.length === 0) return;
+    const viewExtent = map.getView().calculateExtent(map.getSize());
     const features = [];
-    layers.forEach((layer) => {
-      if (!layer.getVisible() || !layer.get('showCoordinates')) return;
-      layer.getSource().getFeatures().forEach((feature) => {
-        getVertices(feature.getGeometry()).forEach(([coordinates, hasZ]) => {
-          features.push(new Feature({ geometry: new Point(coordinates), text: getText(coordinates, hasZ) }));
-        });
-      });
-    });
+    shown.some((layer) => layer.getSource().getFeatures().some((feature) => getVertices(feature.getGeometry()).some(([coordinates, hasZ]) => {
+      if (!containsCoordinate(viewExtent, coordinates)) return false;
+      features.push(new Feature({ geometry: new Point(coordinates), text: getText(coordinates, hasZ) }));
+      return features.length >= maxLabels;
+    })));
     source.addFeatures(features);
   }
 
@@ -95,9 +110,11 @@ export default function CoordinateLabels({
   }
 
   map.getLayers().on('remove', evt => removeLayer(evt.element));
+  map.on('moveend', update);
 
   return {
     addLayer(layer) {
+      if (layers.has(layer)) return;
       layers.add(layer);
       layer.on('change:visible', update);
       layer.on('change:showCoordinates', update);
