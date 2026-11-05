@@ -5,7 +5,7 @@ import IGCFormat from 'ol/format/IGC';
 import KMLFormat from 'ol/format/KML';
 import TopoJSONFormat from 'ol/format/TopoJSON';
 import { Component, InputFile, Button, Element as El } from '../ui';
-import { getUnusedColor } from '../utils/colorpalette';
+import { getUnusedColor, createPalette } from '../utils/colorpalette';
 import { addLayerStyle } from '../utils/layercolor';
 import CoordinateLabels from '../utils/coordinatelabels';
 
@@ -84,6 +84,8 @@ const DragAndDrop = function DragAndDrop(options = {}) {
       const zoomToExtent = options.zoomToExtent !== false;
       const zoomToExtentOnLoad = options.zoomToExtentOnLoad !== false;
       const featureStyles = options.featureStyles;
+      // Colors for the layers, given out in order. Also the swatches when changing a layer's color.
+      const colorPalette = createPalette(options.colorPalette);
 
       // Coordinates for the vertices in the dropped layers, turned on and off per layer from the layer menu in the legend
       if (options.coordinatesMenuItem !== false) {
@@ -155,8 +157,9 @@ const DragAndDrop = function DragAndDrop(options = {}) {
           let layerColor;
           if (event.features.some(feature => feature.getGeometry() && !feature.getStyle())) {
             const usedColors = viewer.getLayers().map(l => l.get('layerColor')).filter(color => color);
-            layerColor = getUnusedColor(usedColors);
+            layerColor = getUnusedColor(usedColors, colorPalette);
             layerOptions.layerColor = layerColor;
+            layerOptions.colorPalette = colorPalette;
           }
           layerOptions.styleByAttribute = false;
           layerOptions.style = addLayerStyle({

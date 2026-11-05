@@ -144,8 +144,9 @@ export default function createMoreInfoButton(params) {
 
   if (layer && layer.get('layerColor')) {
     const colorPicker = ColorPicker({
-      cls: 'hidden padding-top-small',
+      cls: 'hidden',
       value: layer.get('layerColor'),
+      colors: layer.get('colorPalette'),
       ariaLabel: localize('changeColor'),
       customColorLabel: localize('customColor'),
       change(color) {
