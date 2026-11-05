@@ -146,6 +146,7 @@ export default function createMoreInfoButton(params) {
     const colorPicker = ColorPicker({
       cls: 'hidden',
       value: layer.get('layerColor'),
+      colors: layer.get('colorPalette'),
       ariaLabel: localize('changeColor'),
       customColorLabel: localize('customColor'),
       change(color) {
