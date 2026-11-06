@@ -60,8 +60,9 @@ const Viewer = function Viewer(targetOption, options = {}) {
     loggerOptions = {},
     url,
     palette,
-    // "Visa koordinater" in the layer menu of every vector layer. A layer, or the draganddrop control for
+    // "Show coordinates" in the layer menu of every vector layer. A layer, or the draganddrop control for
     // the layers it adds, can override it with its own coordinatesMenuItem.
+    // coordinateDecimals sets the decimals of the coordinates, default 2 for meters and 6 for degrees.
     coordinatesMenuItem = true,
     coordinateDecimals
   } = options;
@@ -506,7 +507,16 @@ const Viewer = function Viewer(targetOption, options = {}) {
     } else {
       map.addLayer(layer);
     }
-    if (showsCoordinates) coordinateLabels.addLayer(layer);
+    if (showsCoordinates) {
+      coordinateLabels.addLayer(layer);
+      // Statistics event when the coordinates are shown or hidden, with the configured layer name. Not for layers
+      // from a user's file (source 'none'), whose name comes from the file name; draganddrop has its own event.
+      if (layer.get('sourceName') !== 'none') {
+        layer.on('change:showCoordinates', () => {
+          this.dispatch('layer:coordinates', { show: layer.get('showCoordinates'), name: layer.get('name') });
+        });
+      }
+    }
     this.dispatch('addlayer', {
       layerName: layerProps.name
     });
@@ -629,13 +639,12 @@ const Viewer = function Viewer(targetOption, options = {}) {
 
       setMap(Map(Object.assign(options, { projection, center, zoom, target: this.getId() })));
 
-      // coordinateDecimals used to be an option of draganddrop only, which still works
+      // Labels for the coordinates of the layers with "Show coordinates" turned on in the layer menu
       const localization = controls.find((control) => control.name === 'localization');
-      const dragAndDropOptions = controls.find((control) => control.name === 'draganddrop')?.options || {};
-      const coordinateLabel = (key, fallback) => localization?.getStringByKeys({ targetParentKey: 'draganddrop', targetKey: key }) || fallback;
+      const coordinateLabel = (key, fallback) => localization?.getStringByKeys({ targetParentKey: 'legend', targetKey: key }) || fallback;
       coordinateLabels = CoordinateLabels({
         map,
-        decimals: coordinateDecimals ?? dragAndDropOptions.coordinateDecimals,
+        decimals: coordinateDecimals,
         labels: { north: coordinateLabel('coordinateNorth', 'N'), east: coordinateLabel('coordinateEast', 'E'), z: coordinateLabel('coordinateZ', 'Z') }
       });
 

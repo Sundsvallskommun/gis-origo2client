@@ -174,7 +174,8 @@ export default function createMoreInfoButton(params) {
     popupMenuItems.push(changeColorMenuItem);
   }
 
-  // Layers from draganddrop, shows or hides the coordinates of the vertices
+  // Vector layers, shows or hides the coordinates of the vertices. The viewer sets showCoordinates on the layers
+  // that can show them, see coordinatesMenuItem.
   if (layer && typeof layer.get('showCoordinates') === 'boolean') {
     const coordinatesMenuItem = Component({
       onRender() {
