@@ -143,6 +143,7 @@ self.addEventListener('fetch', (event) => {
 // It is important to implement this in your own service worker for the dialog in Origo to be able to activate this version,
 // it is not an event that the browser will fire.
 self.addEventListener('message', (event) => {
+  if (event.origin !== self.location.origin) return;
   if (event.data === 'SKIP_WAITING') {
     self.skipWaiting();
   }
