@@ -184,28 +184,7 @@ async function getFeatureInfoUrl({
     }
     return [];
   }
-  /* if (layer.get('infoFormat') === 'text/plain') {
-    const url = layer.getSource().getFeatureInfoUrl(coordinate, resolution, projection, {
-      INFO_FORMAT: 'text/plain',
-      FEATURE_COUNT: '20'
-    });
 
-    return fetch(url, { type: 'GET' })
-      .then((res) => {
-        console.log(res);
-        if (res.error) {
-          return [];
-        }
-        return res.text();
-      })
-      .then(text => {
-        console.log(text);
-        const result = text.split(/;/);
-        console.log(result);
-        return [];
-      })
-      .catch(error => console.error(error));
-  } */
   const url = layer.getSource().getFeatureInfoUrl(coordinate, resolution, projection, {
     INFO_FORMAT: 'application/json',
     FEATURE_COUNT: '20'
